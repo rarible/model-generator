@@ -16,9 +16,15 @@
             <artifactId>freemarker</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.everit-org.json-schema</groupId>
-            <artifactId>org.everit.json.schema</artifactId>
-            <version>1.12.2</version>
+            <groupId>com.reprezen.kaizen</groupId>
+            <artifactId>openapi-parser</artifactId>
+            <version>4.0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
