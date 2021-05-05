@@ -2,10 +2,7 @@ package com.rarible.protocol.generator.component
 
 abstract class ComponentDefinition {
 
-    abstract var name: String?
-    abstract var packageName: String?
+    abstract val name: String
+    abstract val qualifier: String
 
-    fun toClassName(): String? {
-        return "$packageName.$name"
-    }
 }

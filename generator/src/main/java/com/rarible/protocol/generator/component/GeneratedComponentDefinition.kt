@@ -4,16 +4,19 @@ import com.sun.deploy.util.StringUtils
 import java.util.stream.Collectors
 
 class GeneratedComponentDefinition(
-    override var name: String?,
-    override var packageName: String?
+    override val name: String,
+    override val qualifier: String,
+    val fields: Map<String, FieldDefinition>,
+    val oneOf: List<GeneratedComponentDefinition>
 ) : ComponentDefinition() {
 
-    var fields: Map<String, FieldDefinition>? = null
-
     override fun toString(): String {
-        return ("${toClassName()} {\n\t"
-                + StringUtils.join(fields!!.values.stream()
-            .map { obj: FieldDefinition -> obj.toString() }
-            .collect(Collectors.toList()), "\n\t") + "\n}\n")
+        return "$qualifier {\n\t" +
+                StringUtils.join(fields.values.stream()
+                    .map { d -> d.toString() }
+                    .collect(Collectors.toList()), "\n\t") +
+                StringUtils.join(oneOf.stream()
+                    .map { c -> c.qualifier + " -> " + c.fields["@type"]!!.enumValues }
+                    .collect(Collectors.toList()), "\n\t") + "\n}\n"
     }
 }

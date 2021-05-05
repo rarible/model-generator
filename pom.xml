@@ -197,6 +197,7 @@
                         <configuration>
                             <sources>
                                 <source>src/main/kotlin</source>
+                                <source>${basedir}/target/generated-sources</source>
                             </sources>
                         </configuration>
                     </execution>

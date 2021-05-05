@@ -1,40 +1,29 @@
 package com.rarible.protocol.generator
 
-import com.rarible.protocol.generator.type.ExternalTypeDefinition
-import com.rarible.protocol.generator.type.InternalTypeDefinition
+import com.rarible.protocol.generator.lang.KotlinGenerator
+import com.rarible.protocol.generator.openapi.OpenApiTypeDefinitionMapperFactory
+import com.rarible.protocol.generator.type.ProvidedTypeFileReader
 import org.junit.jupiter.api.Test
-import java.math.BigInteger
 import java.nio.file.Paths
-import javax.mail.Address
 
 internal class GeneratorTest {
 
     @Test
     fun test() {
+        val primitiveReader = ProvidedTypeFileReader(Paths.get("src/test/resources/lang/kotlin/primitives.json"))
+        val providedReader = ProvidedTypeFileReader(Paths.get("src/test/resources/lang/kotlin/provided.json"))
+        val templatePath = Paths.get("src/test/resources/lang/kotlin")
+        val ymlPath = Paths.get("src/test/resources/schema.yml")
+        val outPath = Paths.get("target/generated-sources")
 
-        val internalTypeDefinitions = listOf(
-            InternalTypeDefinition.of("array", List::class.java),
-            InternalTypeDefinition.of("string", String::class.java),
-            InternalTypeDefinition.of("integer", Integer::class.java)
+        val generator = KotlinGenerator(
+            primitiveReader,
+            providedReader,
+            OpenApiTypeDefinitionMapperFactory(),
+            templatePath,
+            "com.rarible.test"
         )
+        generator.generate(ymlPath, outPath)
 
-        val externalTypeDefinitions = listOf(
-            ExternalTypeDefinition.of("Address", Address::class.java),
-            ExternalTypeDefinition.of("BigInt", BigInteger::class.java)
-        )
-
-        val mapper = OpenApiTypeDefinitionMapper(
-            "com.rarible.test",
-            internalTypeDefinitions,
-            externalTypeDefinitions
-        )
-
-        val reader = OpenApiReader(Paths.get("src/test/resources/schema.yml"))
-
-        val generatedDefinitions = mapper.getGeneratedComponents(reader.openApi)
-
-        generatedDefinitions.forEach {
-            print(it.toString())
-        }
     }
 }

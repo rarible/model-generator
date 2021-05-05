@@ -7,11 +7,12 @@ class FieldDefinition(
     var name: String,
     var type: ComponentDefinition,
     var genericTypes: List<ComponentDefinition>,
+    val enumValues: List<String>,
     var isRequired: Boolean
 ) {
 
     override fun toString(): String {
-        var result = name + ": " + type.toClassName()
+        var result = name + ": " + type.qualifier
         if (!genericTypes.isEmpty()) {
             result = "$result<" + printGenerics()
         }
@@ -21,7 +22,7 @@ class FieldDefinition(
     private fun printGenerics(): String {
         return StringUtils.join(
             genericTypes.stream()
-                .map { obj: ComponentDefinition -> obj.toClassName() }
+                .map { obj: ComponentDefinition -> obj.qualifier }
                 .collect(Collectors.toList()), ", ") + ">"
     }
 

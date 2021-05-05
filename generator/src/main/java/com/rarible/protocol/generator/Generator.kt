@@ -1,7 +1,9 @@
 package com.rarible.protocol.generator
 
-class Generator {
+import java.nio.file.Path
 
-    fun read() {
-    }
+interface Generator {
+
+    fun generate(apiFilePath: Path, outputFolder: Path)
+
 }
