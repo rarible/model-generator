@@ -24,8 +24,8 @@ class KotlinGenerator(
 ) : AbstractGenerator(primitiveTypeFileReader, providedTypeFileReader, typeMapperFactory) {
 
     private companion object {
-        const val SINGLE_TEMPLATE: String = "single_dto"
-        const val MULTIPLE_TEMPLATE: String = "multiple_dto"
+        const val SINGLE_TEMPLATE: String = "single_ts_dto"
+        const val MULTIPLE_TEMPLATE: String = "multiple_ts_dto"
     }
 
     private val configuration: Configuration = Configuration(Configuration.VERSION_2_3_23)
@@ -86,7 +86,7 @@ class KotlinGenerator(
 
     private fun getOutFile(kotlinClass: KotlinClass, outputFolder: Path): File {
         val packageFolder = kotlinClass.packageName.replace('.', '/') + "/"
-        val classFileRelativePath = packageFolder + kotlinClass.name + ".kt"
+        val classFileRelativePath = packageFolder + kotlinClass.name + ".ts"
         val outFile = outputFolder.resolve(classFileRelativePath).toFile()
         outFile.parentFile.mkdirs()
         return outFile

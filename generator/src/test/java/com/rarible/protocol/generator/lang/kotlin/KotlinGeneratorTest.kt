@@ -22,13 +22,13 @@ internal class KotlinGeneratorTest {
     // For manual testing only
     @Test
     fun generateFiles() {
-//        generateAsFiles("test_simple.yaml")
-//        generateAsFiles("test_enums_single.yaml")
-//        generateAsFiles("test_enum_arrays_single.yaml")
-//        generateAsFiles("test_several_single_classes.yaml")
-//        generateAsFiles("test_provided_types.yaml")
-//        generateAsFiles("test_mixed_types.yaml")
-//        generateAsFiles("test_one_of_with_discriminator.yaml")
+        generateAsFiles("test_simple.yaml")
+        generateAsFiles("test_enums_single.yaml")
+        generateAsFiles("test_enum_arrays_single.yaml")
+        generateAsFiles("test_several_single_classes.yaml")
+        generateAsFiles("test_provided_types.yaml")
+        generateAsFiles("test_mixed_types.yaml")
+        generateAsFiles("test_one_of_with_discriminator.yaml")
     }
 
     @Test
