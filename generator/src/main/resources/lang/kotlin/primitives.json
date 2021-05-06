@@ -1,0 +1,9 @@
+{
+  "map": "kotlin.collections.Map",
+  "array": "kotlin.collections.List",
+  "string": "kotlin.String",
+  "integer": "java.lang.Integer",
+  "integer:int32": "java.lang.Integer",
+  "integer:int64": "java.lang.Long",
+  "string:date-time": "java.time.Instant"
+}

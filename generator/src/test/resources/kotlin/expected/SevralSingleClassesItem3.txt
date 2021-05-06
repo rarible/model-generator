@@ -1,0 +1,17 @@
+package com.rarible.test
+
+import kotlin.String
+import kotlin.collections.List
+
+data class SevralSingleClassesItem3 (
+    val id : String,
+    val modes : List<Modes>,
+) {
+
+    enum class Modes {
+        ONE,
+        TWO,
+        THREE,
+    }
+
+}

@@ -1,0 +1,19 @@
+package com.rarible.test
+
+import kotlin.String
+
+data class SingleEnumItem (
+    val type : Type,
+    val dataType : DataType,
+) {
+
+    enum class Type {
+        ERC721,
+        ERC1155,
+    }
+    enum class DataType {
+        LEGACY,
+        MODERN,
+    }
+
+}

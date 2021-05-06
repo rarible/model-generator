@@ -1,0 +1,19 @@
+package com.rarible.test
+
+import java.lang.Integer
+import java.lang.Long
+import java.time.Instant
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
+
+data class SimpleTestItem (
+    val id : Long,
+    val name : String,
+    val index : Integer,
+    val count : Integer,
+    val date : Instant?,
+    val strings : List<String>?,
+    val longs : List<Long>?,
+    val map : Map<String, Instant>?,
+)

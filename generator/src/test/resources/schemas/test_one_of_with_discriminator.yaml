@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+
+    DiscriminatorItem:
+      discriminator:
+        propertyName: assetClass
+        mapping:
+          SUB_ITEM_1: '#/components/schemas/DiscriminatorSubItem1'
+          SUB_ITEM_2: '#/components/schemas/DiscriminatorSubItem2'
+      oneOf:
+        - $ref: '#/components/schemas/DiscriminatorSubItem1'
+        - $ref: '#/components/schemas/DiscriminatorSubItem2'
+
+    DiscriminatorSubItem1:
+      required:
+        - assetClass
+        - name
+      type: object
+      properties:
+        assetClass:
+          type: string
+          enum:
+            - SUB_ITEM_1
+        name:
+          type: string
+
+    DiscriminatorSubItem2:
+      required:
+        - assetClass
+        - id
+      type: object
+      properties:
+        assetClass:
+          type: string
+          enum:
+            - SUB_ITEM_2
+        id:
+          type: integer

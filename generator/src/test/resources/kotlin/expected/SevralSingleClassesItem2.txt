@@ -1,0 +1,16 @@
+package com.rarible.test
+
+import java.lang.Integer
+import kotlin.String
+
+data class SevralSingleClassesItem2 (
+    val id : Integer,
+    val type : Type?,
+) {
+
+    enum class Type {
+        ERC721,
+        ERC1155,
+    }
+
+}

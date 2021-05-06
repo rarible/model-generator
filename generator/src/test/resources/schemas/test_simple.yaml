@@ -1,0 +1,46 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+    SimpleTestItem:
+      required:
+        - id
+        - name
+        - index
+        - count
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        index:
+          type: integer
+        count:
+          type: integer
+          format: int32
+        date:
+          type: string
+          format: date-time
+        strings:
+          type: array
+          items:
+            type: string
+        longs:
+          type: array
+          items:
+            type: integer
+            format: int64
+        map:
+          type: object
+          additionalProperties:
+            type: string
+            format: date-time

@@ -1,0 +1,45 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+    MixedEnumsItem:
+      required:
+        - type
+        - dataType
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ERC721
+            - ERC1155
+        dataType:
+          type: string
+          enum:
+            - LEGACY
+            - MODERN
+        features:
+          type: array
+          items:
+            type: string
+            enum:
+              - APPROVE_FOR_ALL
+              - SET_URI_PREFIX
+              - BURN
+              - MINT_WITH_ADDRESS
+              - SECONDARY_SALE_FEES
+        modes:
+          type: array
+          items:
+            type: string
+            enum:
+              - ONE
+              - TWO
+              - THREE

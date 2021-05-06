@@ -1,0 +1,46 @@
+package com.rarible.test
+
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.rarible.test.MixedPart
+import kotlin.String
+import kotlin.collections.List
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes(
+    JsonSubTypes.Type(name = "SUB_ITEM_1", value = SubItem1::class),
+    JsonSubTypes.Type(name = "SUB_ITEM_2", value = SubItem2::class),
+)
+sealed class MixedOneOfItem {
+    abstract val parts : List<MixedPart>
+}
+
+class SubItem1 (
+    override val parts : List<MixedPart>,
+    val modes : List<Modes>,
+    val features : List<Features>?,
+) : MixedOneOfItem()
+
+class SubItem2 (
+    override val parts : List<MixedPart>,
+    val dataType : DataType?,
+) : MixedOneOfItem()
+
+enum class Modes {
+    ONE,
+    TWO,
+    THREE,
+}
+
+enum class Features {
+    APPROVE_FOR_ALL,
+    SET_URI_PREFIX,
+    BURN,
+    MINT_WITH_ADDRESS,
+    SECONDARY_SALE_FEES,
+}
+
+enum class DataType {
+    LEGACY,
+    MODERN,
+}
