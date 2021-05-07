@@ -34,33 +34,38 @@ internal class KotlinGeneratorTest {
     }
 
     @Test
-    fun `test single class with primitive fields`() {
-        verifyGeneratedClasses(generateAsStrings("test_single_primitives.yaml", withInheritance))
+    fun `test class with primitive fields`() {
+        verifyGeneratedClasses(generateAsStrings("test_simple.yaml"))
     }
 
     @Test
-    fun `test single classes with basic types`() {
-        verifyGeneratedClasses(generateAsStrings("test_single_several_classes.yaml", withInheritance))
+    fun `test single class with several enums`() {
+        verifyGeneratedClasses(generateAsStrings("test_enums_single.yaml"))
+    }
+
+    @Test
+    fun `test single class with enums and arrays of enums`() {
+        verifyGeneratedClasses(generateAsStrings("test_enum_arrays_single.yaml"))
+    }
+
+    @Test
+    fun `test several single classes with basic types`() {
+        verifyGeneratedClasses(generateAsStrings("test_several_single_classes.yaml"))
     }
 
     @Test
     fun `test single class with provided type`() {
-        verifyGeneratedClasses(generateAsStrings("test_single_provided_types.yaml", withInheritance))
-    }
-
-    @Test
-    fun `test oneOf with discriminator`() {
-        verifyGeneratedClasses(generateAsStrings("test_multiple_with_discriminator.yaml", withInheritance))
-    }
-
-    @Test
-    fun `test oneOf without inheritance`() {
-        verifyGeneratedClasses(generateAsStrings("test_multiple_without_inheritance.yaml", withoutInheritance))
+        verifyGeneratedClasses(generateAsStrings("test_provided_types.yaml"))
     }
 
     @Test
     fun `test mixed classes with oneOf and enums`() {
-        verifyGeneratedClasses(generateAsStrings("test_mixed.yaml", withInheritance))
+        verifyGeneratedClasses(generateAsStrings("test_mixed_types.yaml"))
+    }
+
+    @Test
+    fun `test oneOf with discriminator`() {
+        verifyGeneratedClasses(generateAsStrings("test_one_of_with_discriminator.yaml"))
     }
 
     private fun verifyGeneratedClasses(classes: Map<String, String>) {
@@ -80,24 +85,25 @@ internal class KotlinGeneratorTest {
         return Files.readAllLines(expectedClassesFolder.resolve("$className.txt"))
     }
 
-    private fun generateAsStrings(yamlFileName: String, generator: KotlinGenerator): Map<String, String> {
+    private fun generateAsStrings(yamlFileName: String): Map<String, String> {
+        val generator = createDefaultGenerator()
         val ymlPath = testSchemasFolder.resolve(yamlFileName)
         return generator.generate(ymlPath)
     }
 
-    private fun generateAsFiles(yamlFileName: String, generator: KotlinGenerator) {
+    private fun generateAsFiles(yamlFileName: String) {
+        val generator = createDefaultGenerator()
         val ymlPath = testSchemasFolder.resolve(yamlFileName)
         generator.generate(ymlPath, outPath)
     }
 
-    private fun createDefaultGenerator(withInheritance: Boolean): KotlinGenerator {
+    private fun createDefaultGenerator(): KotlinGenerator {
         return KotlinGenerator(
             primitiveReader,
             providedReader,
             OpenApiTypeMapperFactory(),
             kotlinResourcesFolder,
-            "com.rarible.test",
-            withInheritance
+            "com.rarible.test"
         )
     }
 }
