@@ -19,7 +19,6 @@ class KotlinGenerator(
     primitiveTypeFileReader: ProvidedTypeReader,
     providedTypeFileReader: ProvidedTypeReader,
     typeMapperFactory: TypeMapperFactory,
-    templateFolder: Path,
     private val packageName: String,
     private val withInheritance: Boolean
 ) : AbstractGenerator(primitiveTypeFileReader, providedTypeFileReader, typeMapperFactory) {
@@ -38,6 +37,10 @@ class KotlinGenerator(
         configuration.templateLoader = ResourceTemplateLoader(templateFolder)
         configuration.defaultEncoding = StandardCharsets.UTF_8.displayName()
         configuration.localizedLookup = false
+    }
+
+    override fun getLang(): String {
+        return "kotlin"
     }
 
     override fun generate(apiFilePath: Path): Map<String, String> {
@@ -87,7 +90,7 @@ class KotlinGenerator(
 
     private fun getOutFile(kotlinClass: KotlinClass, outputFolder: Path): File {
         val packageFolder = kotlinClass.packageName.replace('.', '/') + "/"
-        val classFileRelativePath = packageFolder + kotlinClass.name + ".ts"
+        val classFileRelativePath = packageFolder + kotlinClass.name + ".kt"
         val outFile = outputFolder.resolve(classFileRelativePath).toFile()
         outFile.parentFile.mkdirs()
         return outFile

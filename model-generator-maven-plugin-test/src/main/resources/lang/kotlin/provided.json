@@ -1,0 +1,7 @@
+{
+  "Address": "com.rarible.protocol.provided.Address",
+  "Binary": "com.rarible.protocol.provided.Binary",
+  "ItemId": "com.rarible.protocol.provided.ItemId",
+  "OwnershipId": "com.rarible.protocol.provided.OwnershipId",
+  "Word": "com.rarible.protocol.provided.Word"
+}

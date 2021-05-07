@@ -1,11 +1,10 @@
 package com.rarible.protocol.generator.type
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import java.io.File
 
 
-class ProvidedTypeFileReader(
-    private val filePath: File
+class ProvidedTypeResourceReader(
+    private val filePath: String
 ) : ProvidedTypeReader {
 
     private val mapper: ObjectMapper = ObjectMapper()
@@ -17,6 +16,6 @@ class ProvidedTypeFileReader(
             String::class.java
         )
 
-        return mapper.readValue(filePath, type)
+        return mapper.readValue(javaClass.getResourceAsStream(filePath), type)
     }
 }

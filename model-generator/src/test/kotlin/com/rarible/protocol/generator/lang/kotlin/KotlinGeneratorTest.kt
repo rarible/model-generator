@@ -1,6 +1,6 @@
 import com.rarible.protocol.generator.lang.kotlin.KotlinGenerator
 import com.rarible.protocol.generator.openapi.OpenApiTypeMapperFactory
-import com.rarible.protocol.generator.type.ProvidedTypeFileReader
+import com.rarible.protocol.generator.type.ProvidedTypeConstantReader
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.nio.file.Files
@@ -9,9 +9,9 @@ import kotlin.math.max
 
 internal class KotlinGeneratorTest {
 
-    private val kotlinResourcesFolder = Paths.get("src/main/resources/lang/kotlin")
-    private val primitiveReader = ProvidedTypeFileReader(kotlinResourcesFolder.resolve("primitives.json"))
-    private val providedReader = ProvidedTypeFileReader(kotlinResourcesFolder.resolve("provided.json"))
+    // No additional mappings provided, only default used
+    private val primitiveReader = ProvidedTypeConstantReader(mapOf())
+    private val providedReader = ProvidedTypeConstantReader(mapOf())
 
     private val testSchemasFolder = Paths.get("src/test/resources/schemas")
     private val expectedClassesFolder = Paths.get("src/test/resources/kotlin/expected")
@@ -24,12 +24,12 @@ internal class KotlinGeneratorTest {
     // For manual testing only
     //@Test
     fun generateFiles() {
-        generateAsFiles("test_single_primitives.yaml", withoutInheritance)
-        generateAsFiles("test_single_several_classes.yaml", withoutInheritance)
-        generateAsFiles("test_single_provided_types.yaml", withoutInheritance)
-        generateAsFiles("test_mixed.yaml", withoutInheritance)
-        generateAsFiles("test_multiple_with_discriminator.yaml", withInheritance)
-        generateAsFiles("test_multiple_without_inheritance.yaml", withoutInheritance)
+//        generateAsFiles("test_single_primitives.yaml", withoutInheritance)
+//        generateAsFiles("test_single_several_classes.yaml", withoutInheritance)
+//        generateAsFiles("test_single_provided_types.yaml", withoutInheritance)
+//        generateAsFiles("test_mixed.yaml", withoutInheritance)
+//        generateAsFiles("test_multiple_with_discriminator.yaml", withInheritance)
+//        generateAsFiles("test_multiple_without_inheritance.yaml", withoutInheritance)
     }
 
     @Test
@@ -94,7 +94,6 @@ internal class KotlinGeneratorTest {
             primitiveReader,
             providedReader,
             OpenApiTypeMapperFactory(),
-            kotlinResourcesFolder,
             "com.rarible.test",
             withInheritance
         )

@@ -1,16 +1,17 @@
 package com.rarible.protocol.generator.template
 
 import freemarker.cache.TemplateLoader
-import java.io.*
-import java.nio.file.Path
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.io.Reader
 
 class ResourceTemplateLoader(
-    private val templatesFolder: Path
+    private val templatesFolder: String
 ) : TemplateLoader {
 
     override fun findTemplateSource(name: String): InputStream {
-        val templateFile = templatesFolder.resolve("$name.ftl")
-        return FileInputStream(templateFile.toFile())
+        return javaClass.getResourceAsStream("$templatesFolder/$name.ftl")
     }
 
     override fun getLastModified(templateSource: Any): Long {
