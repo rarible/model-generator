@@ -21,6 +21,7 @@ class KotlinGenerator(
     typeMapperFactory: TypeMapperFactory,
     templateFolder: Path,
     private val packageName: String,
+    private val withInheritance: Boolean
 ) : AbstractGenerator(primitiveTypeFileReader, providedTypeFileReader, typeMapperFactory) {
 
     private companion object {
@@ -66,7 +67,7 @@ class KotlinGenerator(
         }
 
         for (definition in multipleDefinitions) {
-            val kotlinClass = definition.getKotlinMultipleClass()
+            val kotlinClass = definition.getKotlinMultipleClass(withInheritance)
             val text = generateMultipleClass(kotlinClass)
             writer.write(kotlinClass.sealedClass, text, outputFolder)
         }

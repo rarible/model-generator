@@ -7,7 +7,6 @@ import com.rarible.protocol.generator.exception.IllegalOperationException
 import com.rarible.protocol.generator.exception.SchemaValidationException
 import org.apache.commons.lang3.StringUtils
 import java.util.*
-import java.util.stream.Collectors
 
 class KotlinComponent(
     private val definition: GeneratedComponent
@@ -29,7 +28,38 @@ class KotlinComponent(
         return KotlinClass(getName(), getPackage(), getImports(), getFields(oneOfEnum))
     }
 
-    fun getKotlinMultipleClass(): KotlinMultipleClass {
+    fun getKotlinMultipleClass(withInheritance: Boolean): KotlinMultipleClass {
+        return if (withInheritance) {
+            getKotlinMultipleClassWithInheritance()
+        } else {
+            getKotlinMultipleClass()
+        }
+    }
+
+    private fun getKotlinMultipleClass(): KotlinMultipleClass {
+        val discriminatorFieldName = getDiscriminator().fieldName
+        val subcomponents = getOneOfComponents().map { KotlinComponent(it) }
+        val imports = TreeSet(subcomponents.flatMap { it.getImports() })
+
+        val subclasses = ArrayList<KotlinClass>()
+        val oneOfMapping = LinkedHashMap<String, String>()
+        for (subcomponent in subcomponents) {
+            val kotlinClass = subcomponent.getKotlinSingleClass(discriminatorFieldName)
+            oneOfMapping[kotlinClass.name] = subcomponent.getOneOfEnum(discriminatorFieldName)
+            subclasses.add(kotlinClass)
+        }
+
+        val sealedClass = KotlinClass(
+            getName(),
+            getPackage(),
+            imports,
+            ArrayList(),
+        )
+
+        return KotlinMultipleClass(sealedClass, subclasses, discriminatorFieldName, oneOfMapping)
+    }
+
+    private fun getKotlinMultipleClassWithInheritance(): KotlinMultipleClass {
         val discriminatorFieldName = getDiscriminator().fieldName
         val subcomponents = getOneOfComponents().map { KotlinComponent(it) }
         val imports = TreeSet(subcomponents.flatMap { it.getImports() })
@@ -86,7 +116,7 @@ class KotlinComponent(
     private fun getFields(discriminatorFieldName: String?): List<KotlinField> {
         val result = ArrayList<KotlinField>()
         for (field in definition.fields.values) {
-            if (!field.name.startsWith("@")) {
+            if (!field.name.startsWith("@") && field.name != discriminatorFieldName) {
                 var kotlinEnum: KotlinEnum? = null
                 var filedType: String?
                 if (discriminatorFieldName != field.name && field.enumValues.isNotEmpty()) {
@@ -156,10 +186,9 @@ class KotlinComponent(
     private fun getFieldType(field: ComponentField): String {
         var result = getSimpleClassName(field.type.qualifier)
         if (field.genericTypes.isNotEmpty()) {
-            val genericList = StringUtils.join(field.genericTypes.stream()
-                .map { d -> getSimpleClassName(d.qualifier) }
-                .collect(Collectors.toList()), ", ")
-            result = "$result<$genericList>"
+            val genericList = field.genericTypes.map { getSimpleClassName(it.qualifier) }
+            val genericString = StringUtils.join(genericList, ", ")
+            result = "$result<$genericString>"
         }
         return result
     }
@@ -175,5 +204,4 @@ class KotlinComponent(
     private fun getName(): String {
         return definition.name
     }
-
 }

@@ -10,17 +10,17 @@ paths:
 components:
   schemas:
 
-    DiscriminatorItem:
+    MultipleWithDiscriminatorItem:
       discriminator:
         propertyName: assetClass
         mapping:
-          SUB_ITEM_1: '#/components/schemas/DiscriminatorSubItem1'
-          SUB_ITEM_2: '#/components/schemas/DiscriminatorSubItem2'
+          SUB_ITEM_1: '#/components/schemas/MultipleWithDiscriminatorSubItem1'
+          SUB_ITEM_2: '#/components/schemas/MultipleWithDiscriminatorSubItem2'
       oneOf:
-        - $ref: '#/components/schemas/DiscriminatorSubItem1'
-        - $ref: '#/components/schemas/DiscriminatorSubItem2'
+        - $ref: '#/components/schemas/MultipleWithDiscriminatorSubItem1'
+        - $ref: '#/components/schemas/MultipleWithDiscriminatorSubItem2'
 
-    DiscriminatorSubItem1:
+    MultipleWithDiscriminatorSubItem1:
       required:
         - assetClass
         - name
@@ -33,7 +33,7 @@ components:
         name:
           type: string
 
-    DiscriminatorSubItem2:
+    MultipleWithDiscriminatorSubItem2:
       required:
         - assetClass
         - id

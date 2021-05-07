@@ -24,10 +24,10 @@ components:
 
     MixedOneOfItem:
       oneOf:
-        - $ref: '#/components/schemas/SubItem1'
-        - $ref: '#/components/schemas/SubItem2'
+        - $ref: '#/components/schemas/MixedSubItem1'
+        - $ref: '#/components/schemas/MixedSubItem2'
 
-    SubItem1:
+    MixedSubItem1:
       required:
         - '@type'
         - name
@@ -62,7 +62,7 @@ components:
               - MINT_WITH_ADDRESS
               - SECONDARY_SALE_FEES
 
-    SubItem2:
+    MixedSubItem2:
       required:
         - '@type'
         - id

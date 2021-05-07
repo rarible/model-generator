@@ -3,7 +3,7 @@ package com.rarible.test
 import java.lang.Integer
 import kotlin.String
 
-data class SevralSingleClassesItem2 (
+data class SingleSeveralClassesItem2 (
     val id : Integer,
     val type : Type?,
 ) {

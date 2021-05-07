@@ -1,7 +1,7 @@
 package ${package}
 
 <#list imports![] as import>
-    import ${import}
+    <#lt>import ${import}
 </#list>
 
 data class ${name} (
@@ -11,12 +11,12 @@ data class ${name} (
 ) <#if enums?has_content>{
 
     <#list enums![] as enum>
-        enum class ${enum.name} {
+        <#lt>    enum class ${enum.name} {
         <#list enum.values![] as value>
-            ${value},
+            <#lt>        ${value},
         </#list>
-        }
+        <#lt>    }
 
     </#list>
-    }
+    <#lt>}
 </#if>

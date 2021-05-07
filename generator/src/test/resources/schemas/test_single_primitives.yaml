@@ -9,12 +9,14 @@ paths:
 
 components:
   schemas:
-    SimpleTestItem:
+    SinglePrimitivesItem:
       required:
         - id
         - name
         - index
         - count
+        - type
+        - modes
       type: object
       properties:
         id:
@@ -44,3 +46,29 @@ components:
           additionalProperties:
             type: string
             format: date-time
+        type:
+          type: string
+          enum:
+            - ERC721
+            - ERC1155
+        dataType:
+          type: string
+          enum:
+            - LEGACY
+            - MODERN
+        features:
+          type: array
+          items:
+            type: string
+            enum:
+              - APPROVE
+              - BURN
+              - MINT
+        modes:
+          type: array
+          items:
+            type: string
+            enum:
+              - ONE
+              - TWO
+              - THREE

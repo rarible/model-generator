@@ -1,0 +1,45 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+
+    MultipleWithoutInheritanceItem:
+      oneOf:
+        - $ref: '#/components/schemas/MultipleWithoutInheritanceSubItem1'
+        - $ref: '#/components/schemas/MultipleWithoutInheritanceSubItem2'
+
+    MultipleWithoutInheritanceSubItem1:
+      required:
+        - '@type'
+        - id
+        - name
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+            - SUB_ITEM_1
+        id:
+          type: integer
+        name:
+          type: string
+
+    MultipleWithoutInheritanceSubItem2:
+      required:
+        - '@type'
+        - id
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+            - SUB_ITEM_2
+        id:
+          type: integer
