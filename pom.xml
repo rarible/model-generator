@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    
+
     <modelVersion>4.0.0</modelVersion>
     <artifactId>model-generator-parent</artifactId>
     <groupId>com.rarible.protocol</groupId>
@@ -13,6 +13,22 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+
+        <!-- ============== Plugin versions ============== -->
+        <version.plugin.clean>3.1.0</version.plugin.clean>
+        <version.plugin.source>3.2.1</version.plugin.source>
+        <version.plugin.compiler>3.5.1</version.plugin.compiler>
+        <version.plugin.surefire>2.22.2</version.plugin.surefire>
+        <version.plugin.assembly>3.3.0</version.plugin.assembly>
+        <version.plugin.install>2.5.2</version.plugin.install>
+        <version.plugin.war>2.2</version.plugin.war>
+        <version.plugin.build.helper>3.2.0</version.plugin.build.helper>
+
+        <!-- ========= External Dependencies ========== -->
+        <version.openapi.parser>4.0.4</version.openapi.parser>
+        <version.maven.plugin.api>3.0</version.maven.plugin.api>
+        <version.maven.plugin.annotations>3.4</version.maven.plugin.annotations>
     </properties>
 
     <parent>
@@ -33,7 +49,26 @@
             <dependency>
                 <groupId>com.rarible.protocol</groupId>
                 <artifactId>model-generator</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.reprezen.kaizen</groupId>
+                <artifactId>openapi-parser</artifactId>
+                <version>${version.openapi.parser}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-plugin-api</artifactId>
+                <version>${version.maven.plugin.api}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.plugin-tools</groupId>
+                <artifactId>maven-plugin-annotations</artifactId>
+                <version>${version.maven.plugin.annotations}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -44,6 +79,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${version.plugin.compiler}</version>
                     <executions>
                         <!-- Replacing default-compile as it is treated specially by maven -->
                         <execution>
@@ -71,6 +107,7 @@
                         </execution>
                     </executions>
                 </plugin>
+
                 <plugin>
                     <artifactId>kotlin-maven-plugin</artifactId>
                     <groupId>org.jetbrains.kotlin</groupId>
@@ -79,7 +116,7 @@
                         <compilerPlugins>
                             <plugin>spring</plugin>
                         </compilerPlugins>
-                        <jvmTarget>1.8</jvmTarget>
+                        <jvmTarget>${maven.compiler.target}</jvmTarget>
                     </configuration>
                     <executions>
                         <execution>
@@ -115,29 +152,35 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.2</version>
+                    <version>${version.plugin.surefire}</version>
                 </plugin>
+
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>${version.plugin.assembly}</version>
                 </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${version.plugin.clean}</version>
                 </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
-                    <version>2.5.2</version>
+                    <version>${version.plugin.install}</version>
                 </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
-                    <version>2.2</version>
+                    <version>${version.plugin.war}</version>
                 </plugin>
+
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
@@ -155,10 +198,11 @@
                         <outputDirectory>target/${project.artifactId}/lib</outputDirectory>
                     </configuration>
                 </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>${version.plugin.source}</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -169,8 +213,15 @@
                         </execution>
                     </executions>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${version.plugin.build.helper}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
+
         <plugins>
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
@@ -187,7 +238,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
@@ -218,7 +268,7 @@
     </dependencies>
 
     <modules>
-        <module>maven-plugin</module>
-        <module>generator</module>
+        <module>model-generator</module>
+        <module>model-generator-maven-plugin</module>
     </modules>
 </project>
