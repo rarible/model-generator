@@ -25,8 +25,8 @@ class KotlinGenerator(
 ) : AbstractGenerator(primitiveTypeFileReader, providedTypeFileReader, typeMapperFactory) {
 
     private companion object {
-        const val SINGLE_TEMPLATE: String = "single_ts_dto"
-        const val MULTIPLE_TEMPLATE: String = "multiple_ts_dto"
+        const val SINGLE_TEMPLATE: String = "single_dto"
+        const val MULTIPLE_TEMPLATE: String = "multiple_dto"
     }
 
     private val configuration: Configuration = Configuration(Configuration.VERSION_2_3_23)
