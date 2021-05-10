@@ -23,12 +23,12 @@ class OpenApiComponent(
         val fieldSchema = schema.properties[fieldName]
             ?: throw IllegalOperationException("Field '$fieldName' not found in component '${name}'")
 
-        return OpenApiField(fieldSchema, requiredFields.contains(fieldSchema.name))
+        return OpenApiField(fieldName, fieldSchema, requiredFields.contains(fieldSchema.name))
     }
 
     fun getFields(): List<OpenApiField> {
         return schema.properties.map {
-            OpenApiField(it.value, requiredFields.contains(it.key))
+            OpenApiField(it.key, it.value, requiredFields.contains(it.key))
         }
     }
 

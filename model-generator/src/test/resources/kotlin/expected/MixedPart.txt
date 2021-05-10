@@ -4,6 +4,6 @@ import java.lang.Integer
 import java.math.BigInteger
 
 data class MixedPart (
-    val BigInt : BigInteger,
+    val partId : BigInteger,
     val partValue : Integer,
 )

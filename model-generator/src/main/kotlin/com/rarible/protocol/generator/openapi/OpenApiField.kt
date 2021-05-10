@@ -5,14 +5,24 @@ import com.reprezen.kaizen.oasparser.model3.Schema
 import com.reprezen.kaizen.oasparser.ovl3.SchemaImpl
 
 class OpenApiField(
+    val name: String,
     private val fieldSchema: Schema,
     val required: Boolean
 ) {
 
-    val name: String = fieldSchema.name
+
     val enumValues: List<String> = fieldSchema.enums.map { it.toString() }
-    val type: String = fieldSchema.type
+    val type: String
     val format: String? = fieldSchema.format
+
+    init {
+        // Case when reference is OneOf
+        if (isReference() && fieldSchema.type == null) {
+            type = "object"
+        } else {
+            type = fieldSchema.type
+        }
+    }
 
     fun isArray(): Boolean {
         return fieldSchema.type == "array"

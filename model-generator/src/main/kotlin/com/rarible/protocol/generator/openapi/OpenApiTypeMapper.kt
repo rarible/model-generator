@@ -93,6 +93,8 @@ class OpenApiTypeMapper(
             } else {
                 fieldGenericTypes = listOf(getOrCreateDefinition(field.getArrayComponent()))
             }
+        } else if (field.isReference()) {
+            fieldTypeDefinition = getOrCreateDefinition(field.getComponent())
         } else if (field.isMap()) {
             fieldTypeDefinition = primitiveTypeMapper.getDefinition("map")
             val stringType = primitiveTypeMapper.getDefinition("string")
@@ -103,8 +105,6 @@ class OpenApiTypeMapper(
             } else {
                 fieldGenericTypes = listOf(stringType, getOrCreateDefinition(field.getMapComponent()))
             }
-        } else if (field.isReference()) {
-            fieldTypeDefinition = getOrCreateDefinition(field.getComponent())
         } else {
             // Otherwise, this is one of primitive types like String or Integer
             fieldTypeDefinition = primitiveTypeMapper.getDefinition(field.type, field.format)

@@ -24,6 +24,7 @@ internal class KotlinGeneratorTest {
     // For manual testing only
     //@Test
     fun generateFiles() {
+//       generateAsFiles("test_oneof_as_field.yaml", withoutInheritance)
 //        generateAsFiles("test_single_primitives.yaml", withoutInheritance)
 //        generateAsFiles("test_single_several_classes.yaml", withoutInheritance)
 //        generateAsFiles("test_single_provided_types.yaml", withoutInheritance)
@@ -55,6 +56,16 @@ internal class KotlinGeneratorTest {
     @Test
     fun `test oneOf without inheritance`() {
         verifyGeneratedClasses(generateAsStrings("test_multiple_without_inheritance.yaml", withoutInheritance))
+    }
+
+    @Test
+    fun `test class with inner refs as fields and map`() {
+        verifyGeneratedClasses(generateAsStrings("test_refs.yaml", withInheritance))
+    }
+
+    @Test
+    fun `test oneOf used as field of another class`() {
+        verifyGeneratedClasses(generateAsStrings("test_oneof_as_field.yaml", withoutInheritance))
     }
 
     @Test

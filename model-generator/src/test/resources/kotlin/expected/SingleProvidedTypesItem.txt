@@ -4,6 +4,6 @@ import java.math.BigInteger
 import kotlin.String
 
 data class SingleProvidedTypesItem (
-    val BigInt : BigInteger,
+    val id : BigInteger,
     val name : String,
 )

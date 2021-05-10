@@ -1,0 +1,56 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+
+    OneOfItemHolder:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+        oneof:
+          $ref: '#/components/schemas/OneOfFieldItem'
+
+
+    OneOfFieldItem:
+      oneOf:
+        - $ref: '#/components/schemas/OneOfFieldSubItem1'
+        - $ref: '#/components/schemas/OneOfFieldSubItem2'
+
+    OneOfFieldSubItem1:
+      required:
+        - '@type'
+        - id
+        - name
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+            - SUB_ITEM_1
+        id:
+          type: integer
+        name:
+          type: string
+
+    OneOfFieldSubItem2:
+      required:
+        - '@type'
+        - id
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+            - SUB_ITEM_2
+        id:
+          type: integer    

@@ -1,6 +1,7 @@
 {
   "map": "kotlin.collections.Map",
   "array": "kotlin.collections.List",
+  "boolean": "java.lang.Boolean",
   "string": "kotlin.String",
   "integer": "java.lang.Integer",
   "integer:int32": "java.lang.Integer",
