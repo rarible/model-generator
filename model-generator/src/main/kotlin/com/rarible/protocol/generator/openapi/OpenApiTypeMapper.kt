@@ -1,13 +1,14 @@
 package com.rarible.protocol.generator.openapi
 
 import com.rarible.protocol.generator.QualifierGenerator
-import com.rarible.protocol.generator.TypeDefinitionMapper
+import com.rarible.protocol.generator.TypeMapper
 import com.rarible.protocol.generator.component.AbstractComponent
 import com.rarible.protocol.generator.component.ComponentField
 import com.rarible.protocol.generator.component.Discriminator
 import com.rarible.protocol.generator.component.GeneratedComponent
 import com.rarible.protocol.generator.exception.SchemaValidationException
 import com.reprezen.kaizen.oasparser.OpenApi3Parser
+import com.reprezen.kaizen.oasparser.model3.OpenApi3
 import java.nio.file.Path
 import java.util.*
 
@@ -15,12 +16,17 @@ class OpenApiTypeMapper(
     private val qualifierGenerator: QualifierGenerator,
     private val primitiveTypeMapper: OpenApiPrimitiveTypeMapper,
     private val providedTypeMapper: OpenApiProvidedTypeMapper
-) : TypeDefinitionMapper {
+) : TypeMapper {
 
     private val generatedComponents: MutableMap<String, GeneratedComponent> = LinkedHashMap()
 
     override fun readGeneratedComponents(path: Path): List<GeneratedComponent> {
         val openApi = OpenApi3Parser().parse(path.toFile())
+        return readGeneratedComponents(openApi)
+    }
+
+    private fun readGeneratedComponents(openApi: OpenApi3): List<GeneratedComponent> {
+        generatedComponents.clear()
         for (schema in openApi.schemas.values) {
             getOrCreateDefinition(OpenApiComponent(schema))
         }

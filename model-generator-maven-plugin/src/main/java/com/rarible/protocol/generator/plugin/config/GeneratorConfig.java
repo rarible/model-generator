@@ -1,11 +1,11 @@
-package com.rarible.protocol.generator.plugin;
+package com.rarible.protocol.generator.plugin.config;
 
 import java.util.Properties;
 
 public class GeneratorConfig {
 
     private String lang;
-    private Properties properties;
+    private Properties properties = new Properties();
 
     public String getLang() {
         return lang;

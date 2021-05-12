@@ -1,6 +1,9 @@
-package com.rarible.protocol.generator.plugin;
+package com.rarible.protocol.generator.plugin.config;
 
 import org.apache.maven.plugins.annotations.Parameter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TaskConfig {
 
@@ -18,6 +21,16 @@ public class TaskConfig {
 
     @Parameter
     private String outputDirectory;
+
+    private List<DependencyConfig> dependencies = new ArrayList<>();
+
+    public List<DependencyConfig> getDependencies() {
+        return dependencies;
+    }
+
+    public void setDependencies(List<DependencyConfig> dependencies) {
+        this.dependencies = dependencies;
+    }
 
     public SchemaConfig getSchema() {
         return schema;

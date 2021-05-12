@@ -19,6 +19,7 @@
         <version.plugin.clean>3.1.0</version.plugin.clean>
         <version.plugin.source>3.2.1</version.plugin.source>
         <version.plugin.compiler>3.5.1</version.plugin.compiler>
+        <version.plugin.resources>3.2.0</version.plugin.resources>
         <version.plugin.surefire>2.22.2</version.plugin.surefire>
         <version.plugin.assembly>3.3.0</version.plugin.assembly>
         <version.plugin.install>2.5.2</version.plugin.install>
@@ -30,7 +31,7 @@
 
         <!-- ========= External Dependencies ========== -->
         <version.openapi.parser>4.0.4</version.openapi.parser>
-        <version.maven.plugin.api>3.0</version.maven.plugin.api>
+        <version.maven.core>3.8.1</version.maven.core>
         <version.maven.plugin.annotations>3.4</version.maven.plugin.annotations>
     </properties>
 
@@ -63,8 +64,8 @@
 
             <dependency>
                 <groupId>org.apache.maven</groupId>
-                <artifactId>maven-plugin-api</artifactId>
-                <version>${version.maven.plugin.api}</version>
+                <artifactId>maven-core</artifactId>
+                <version>${version.maven.core}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.maven.plugin-tools</groupId>
@@ -178,6 +179,12 @@
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${version.plugin.resources}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-plugin-plugin</artifactId>
                     <version>${version.plugin.plugin}</version>
                 </plugin>
@@ -278,5 +285,7 @@
         <module>model-generator</module>
         <module>model-generator-maven-plugin</module>
         <module>model-generator-maven-plugin-test</module>
+        <module>test-model</module>
+        <module>test-service</module>
     </modules>
 </project>

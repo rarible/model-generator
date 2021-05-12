@@ -1,11 +1,22 @@
 package com.rarible.protocol.generator.plugin;
 
+import com.rarible.protocol.generator.Generator;
+import com.rarible.protocol.generator.GeneratorFactory;
 import com.rarible.protocol.generator.TypeMapperFactory;
-import com.rarible.protocol.generator.lang.kotlin.KotlinGenerator;
-import com.rarible.protocol.generator.openapi.OpenApiTypeMapperFactory;
+import com.rarible.protocol.generator.plugin.config.DependencyConfig;
+import com.rarible.protocol.generator.plugin.config.GeneratorConfig;
+import com.rarible.protocol.generator.plugin.config.SchemaConfig;
+import com.rarible.protocol.generator.plugin.config.TaskConfig;
+import com.rarible.protocol.generator.plugin.dependency.ModelDependencyManager;
+import com.rarible.protocol.generator.plugin.lang.GeneratorRegistry;
+import com.rarible.protocol.generator.plugin.mapper.TypeMapperRegistry;
+import com.rarible.protocol.generator.plugin.mapper.TypeMapperSettings;
+import com.rarible.protocol.generator.type.ProvidedTypeCascadeReader;
 import com.rarible.protocol.generator.type.ProvidedTypeConstantReader;
 import com.rarible.protocol.generator.type.ProvidedTypeFileReader;
 import com.rarible.protocol.generator.type.ProvidedTypeReader;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -14,10 +25,11 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class ModelGeneratorMojo extends AbstractMojo {
@@ -30,58 +42,98 @@ public class ModelGeneratorMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-
         for (TaskConfig task : tasks) {
-            String lang = task.getGenerator().getLang();
-
-            getLog().info("Starting to generate classes for lang: " + lang
-                    + "\n\t--- Schema type: " + task.getSchema().getType()
-                    + "\n\t--- Schema file: " + task.getSchema().getFileName()
-                    + "\n\t--- Primitive types mapping file: " + task.getPrimitiveTypesFile()
-                    + "\n\t--- Provided types mapping file: " + task.getProvidedTypesFile()
-                    + "\n\t--- Output directory: " + task.getOutputDirectory()
-                    + "\n\t--- Properties: " + task.getGenerator().getProperties()
-            );
-
-            if (lang.equals("kotlin")) {
-                generateKotlin(task);
-                continue;
+            try {
+                executeTask(task);
+            } catch (IOException e) {
+                throw new MojoExecutionException(e.getMessage(), e);
             }
-            throw new MojoExecutionException("Model generation for lang '" + lang + "' is not supported");
         }
     }
 
-    private void generateKotlin(TaskConfig task) throws MojoExecutionException {
-        SchemaConfig schemaConfig = task.getSchema();
+    private void executeTask(TaskConfig task) throws MojoExecutionException, IOException {
+        String lang = task.getGenerator().getLang();
         GeneratorConfig generatorConfig = task.getGenerator();
         Properties properties = generatorConfig.getProperties();
+        SchemaConfig schema = task.getSchema();
 
-        ProvidedTypeReader primitiveTypesReader = task.getPrimitiveTypesFile() == null
-                ? new ProvidedTypeConstantReader(new HashMap<>())
-                : new ProvidedTypeFileReader(new File(task.getPrimitiveTypesFile()));
+        String outputDirectory = task.getOutputDirectory();
+        if (StringUtils.isBlank(outputDirectory)) {
+            outputDirectory = new File(project.getBasedir(), "target/generated-sources").toString();
+        }
 
-        ProvidedTypeReader providedTypesReader = task.getProvidedTypesFile() == null
-                ? new ProvidedTypeConstantReader(new HashMap<>())
-                : new ProvidedTypeFileReader(new File(task.getProvidedTypesFile()));
+        getLog().info("Directory for generated classes: " + outputDirectory);
 
-        KotlinGenerator generator = new KotlinGenerator(
-                primitiveTypesReader,
-                providedTypesReader,
-                getTypeMapperFactory(schemaConfig.getType()),
-                properties.getProperty("packageName"),
-                Boolean.valueOf(properties.getProperty("withInheritance", "false"))
+        TypeMapperSettings typeMapperSettings = TypeMapperRegistry.getTypeMapperSettings(schema.getType());
+        TypeMapperFactory typeMapperFactory = typeMapperSettings.getTypeMapperFactory();
+        GeneratorFactory generatorFactory = GeneratorRegistry.getGeneratorFactory(lang, properties);
+
+        applyFullJarNames(task.getDependencies());
+        ModelDependencyManager dependencyManager = new ModelDependencyManager(
+                getLog(),
+                lang,
+                task.getDependencies(),
+                typeMapperSettings
+        );
+
+        File schemaFile = new File(schema.getFileName());
+        File mergedSchemaFile = new File(task.getOutputDirectory(), schemaFile.getName());
+        mergedSchemaFile.getParentFile().mkdirs();
+
+        getLog().info("Merging all schemas into file: " + mergedSchemaFile);
+        typeMapperFactory.mergeSchemas(
+                schemaFile,
+                mergedSchemaFile,
+                dependencyManager.getSchemaTexts()
+        );
+
+        List<ProvidedTypeReader> primitiveTypeReaders = dependencyManager.getPrimitiveTypeReaders();
+        List<ProvidedTypeReader> providedTypeReaders = dependencyManager.getProvidedTypeReaders();
+
+        primitiveTypeReaders.add(getTypeReader(task.getPrimitiveTypesFile()));
+        providedTypeReaders.add(getTypeReader(task.getProvidedTypesFile()));
+
+        Generator generator = generatorFactory.getGenerator(
+                new ProvidedTypeCascadeReader(primitiveTypeReaders),
+                new ProvidedTypeCascadeReader(providedTypeReaders),
+                typeMapperFactory
         );
 
         generator.generate(
-                Paths.get(schemaConfig.getFileName()),
+                Paths.get(mergedSchemaFile.toURI()),
                 Paths.get(task.getOutputDirectory())
         );
     }
 
-    private TypeMapperFactory getTypeMapperFactory(String type) throws MojoExecutionException {
-        if ("openapi".equals(type)) {
-            return new OpenApiTypeMapperFactory();
+    private ProvidedTypeReader getTypeReader(String filePath) {
+        return filePath == null
+                ? new ProvidedTypeConstantReader(new HashMap<>())
+                : new ProvidedTypeFileReader(new File(filePath));
+    }
+
+    private void applyFullJarNames(List<DependencyConfig> dependencyConfigs) throws MojoExecutionException {
+        Set<Artifact> artifacts = getDependencies();
+        Map<String, Artifact> mapped = artifacts.stream().collect(Collectors.toMap(
+                Artifact::getArtifactId,
+                (a) -> a)
+        );
+        for (DependencyConfig dep : dependencyConfigs) {
+            Artifact a = mapped.get(dep.getName());
+            dep.setJarFile(a.getFile().toString());
         }
-        throw new MojoExecutionException("Schema type '" + type + "' is not supported");
+    }
+
+    private Set<Artifact> getDependencies() throws MojoExecutionException {
+        Field field = null;
+        try {
+            field = project.getClass().getDeclaredField("resolvedArtifacts");
+            field.setAccessible(true);
+            Set<Artifact> result = (Set<Artifact>) field.get(project);
+            return result;
+        } catch (ReflectiveOperationException e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        } finally {
+            field.setAccessible(false);
+        }
     }
 }

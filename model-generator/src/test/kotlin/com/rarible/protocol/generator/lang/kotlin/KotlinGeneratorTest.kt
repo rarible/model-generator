@@ -1,4 +1,5 @@
-import com.rarible.protocol.generator.lang.kotlin.KotlinGenerator
+import com.rarible.protocol.generator.Generator
+import com.rarible.protocol.generator.lang.kotlin.KotlinGeneratorFactory
 import com.rarible.protocol.generator.openapi.OpenApiTypeMapperFactory
 import com.rarible.protocol.generator.type.ProvidedTypeConstantReader
 import org.junit.jupiter.api.Assertions
@@ -18,8 +19,8 @@ internal class KotlinGeneratorTest {
 
     private val outPath = Paths.get("target/generated-sources")
 
-    private val withInheritance: KotlinGenerator = createDefaultGenerator(true)
-    private val withoutInheritance: KotlinGenerator = createDefaultGenerator(false)
+    private val withInheritance: Generator = createDefaultGenerator(true)
+    private val withoutInheritance: Generator = createDefaultGenerator(false)
 
     // For manual testing only
     //@Test
@@ -90,23 +91,22 @@ internal class KotlinGeneratorTest {
         return Files.readAllLines(expectedClassesFolder.resolve("$className.txt"))
     }
 
-    private fun generateAsStrings(yamlFileName: String, generator: KotlinGenerator): Map<String, String> {
+    private fun generateAsStrings(yamlFileName: String, generator: Generator): Map<String, String> {
         val ymlPath = testSchemasFolder.resolve(yamlFileName)
         return generator.generate(ymlPath)
     }
 
-    private fun generateAsFiles(yamlFileName: String, generator: KotlinGenerator) {
+    private fun generateAsFiles(yamlFileName: String, generator: Generator) {
         val ymlPath = testSchemasFolder.resolve(yamlFileName)
         generator.generate(ymlPath, outPath)
     }
 
-    private fun createDefaultGenerator(withInheritance: Boolean): KotlinGenerator {
-        return KotlinGenerator(
-            primitiveReader,
-            providedReader,
-            OpenApiTypeMapperFactory(),
+    private fun createDefaultGenerator(withInheritance: Boolean): Generator {
+        val factory = KotlinGeneratorFactory(
             "com.rarible.test",
             withInheritance
         )
+
+        return factory.getGenerator(primitiveReader, providedReader, OpenApiTypeMapperFactory())
     }
 }

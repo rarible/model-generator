@@ -1,4 +1,4 @@
-package com.rarible.protocol.generator.plugin;
+package com.rarible.protocol.generator.plugin.config;
 
 public class SchemaConfig {
 

@@ -16,12 +16,13 @@ import java.nio.file.Paths
 
 
 class KotlinGenerator(
-    primitiveTypeFileReader: ProvidedTypeReader,
-    providedTypeFileReader: ProvidedTypeReader,
+    lang: String,
+    private val primitiveTypesFileReader: ProvidedTypeReader,
+    private val providedTypesFileReader: ProvidedTypeReader,
     typeMapperFactory: TypeMapperFactory,
-    private val packageName: String,
+    private val qualifierGenerator: QualifierGenerator,
     private val withInheritance: Boolean
-) : AbstractGenerator(primitiveTypeFileReader, providedTypeFileReader, typeMapperFactory) {
+) : AbstractGenerator(lang, typeMapperFactory) {
 
     private companion object {
         const val SINGLE_TEMPLATE: String = "single_dto"
@@ -29,7 +30,6 @@ class KotlinGenerator(
     }
 
     private val configuration: Configuration = Configuration(Configuration.VERSION_2_3_23)
-    private val qualifierGenerator: QualifierGenerator = QualifierGenerator { "$packageName.$it" }
 
     private val fileWriter: ClassWriter = ClassWriter { c, t, o -> write(c, t, o) }
 
@@ -37,10 +37,6 @@ class KotlinGenerator(
         configuration.templateLoader = ResourceTemplateLoader(templateFolder)
         configuration.defaultEncoding = StandardCharsets.UTF_8.displayName()
         configuration.localizedLookup = false
-    }
-
-    override fun getLang(): String {
-        return "kotlin"
     }
 
     override fun generate(apiFilePath: Path): Map<String, String> {
@@ -140,8 +136,8 @@ class KotlinGenerator(
     }
 
     private fun readDefinitions(apiFilePath: Path): List<GeneratedComponent> {
-        val primitiveTypeMapping = primitiveTypeReader.getMapping()
-        val providedTypeMapping = providedTypeReader.getMapping()
+        val primitiveTypeMapping = primitiveTypesFileReader.getMapping()
+        val providedTypeMapping = providedTypesFileReader.getMapping()
 
         val typeDefinitionMapper = typeMapperFactory.getTypeDefinitionMapper(
             qualifierGenerator,
