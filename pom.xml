@@ -14,6 +14,12 @@
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <dir.src.generated>${basedir}/target/generated-sources</dir.src.generated>
+        <dir.src.kotlin>${project.basedir}/src/main/kotlin</dir.src.kotlin>
+        <dir.src.java>${project.basedir}/src/main/java</dir.src.java>
+        <dir.src.kotlin.test>${project.basedir}/src/test/kotlin</dir.src.kotlin.test>
+        <dir.src.java.test>${project.basedir}/src/test/java</dir.src.java.test>
+
 
         <!-- ============== Plugin versions ============== -->
         <version.plugin.clean>3.1.0</version.plugin.clean>
@@ -23,6 +29,7 @@
         <version.plugin.surefire>2.22.2</version.plugin.surefire>
         <version.plugin.assembly>3.3.0</version.plugin.assembly>
         <version.plugin.install>2.5.2</version.plugin.install>
+        <version.plugin.jar>3.2.0</version.plugin.jar>
         <version.plugin.plugin>3.6.1</version.plugin.plugin>
         <version.plugin.build.helper>3.2.0</version.plugin.build.helper>
 
@@ -80,6 +87,27 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${version.plugin.clean}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${version.plugin.source}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${version.plugin.compiler}</version>
                     <executions>
@@ -128,8 +156,9 @@
                             </goals>
                             <configuration>
                                 <sourceDirs>
-                                    <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
-                                    <sourceDir>${project.basedir}/src/main/java</sourceDir>
+                                    <sourceDir>${dir.src.kotlin}</sourceDir>
+                                    <sourceDir>${dir.src.java}</sourceDir>
+                                    <sourceDir>${dir.src.generated}</sourceDir>
                                 </sourceDirs>
                             </configuration>
                         </execution>
@@ -140,8 +169,9 @@
                             </goals>
                             <configuration>
                                 <sourceDirs>
-                                    <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
-                                    <sourceDir>${project.basedir}/src/test/java</sourceDir>
+                                    <sourceDir>${dir.src.kotlin.test}</sourceDir>
+                                    <sourceDir>${dir.src.java.test}</sourceDir>
+                                    <sourceDir>${dir.src.generated}</sourceDir>
                                 </sourceDirs>
                             </configuration>
                         </execution>
@@ -156,6 +186,12 @@
                 </plugin>
 
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${version.plugin.resources}</version>
+                </plugin>
+
+                <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${version.plugin.surefire}</version>
                 </plugin>
@@ -167,20 +203,8 @@
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>${version.plugin.clean}</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
                     <version>${version.plugin.install}</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>${version.plugin.resources}</version>
                 </plugin>
 
                 <plugin>
@@ -215,17 +239,8 @@
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>${version.plugin.source}</version>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>jar-no-fork</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${version.plugin.jar}</version>
                 </plugin>
 
                 <plugin>
@@ -260,12 +275,16 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>src/main/kotlin</source>
-                                <source>${basedir}/target/generated-sources</source>
+                                <source>${dir.src.kotlin}</source>
+                                <source>${dir.src.generated}</source>
                             </sources>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
@@ -284,7 +303,6 @@
     <modules>
         <module>model-generator</module>
         <module>model-generator-maven-plugin</module>
-        <module>model-generator-maven-plugin-test</module>
         <module>test-model</module>
         <module>test-service</module>
     </modules>

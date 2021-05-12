@@ -11,10 +11,16 @@
     <artifactId>test-service</artifactId>
 
     <properties>
-        <path.resources>${basedir}/src/main/resources</path.resources>
-        <model.generator.kotlin>kotlin</model.generator.kotlin>
-        <model.generator.kotlin.dir>${path.resources}/model-generator/${model.generator.kotlin}
-        </model.generator.kotlin.dir>
+        <dir.resources>${basedir}/src/main/resources</dir.resources>
+        <dir.generator.resources>${dir.resources}/model-generator</dir.generator.resources>
+        <dir.generator.resources.kotlin>${dir.generator.resources}/${generator.kotlin}</dir.generator.resources.kotlin>
+
+        <generator.kotlin>kotlin</generator.kotlin>
+        <generator.package>com.rarible.protocol.dto</generator.package>
+
+        <openapi.input.file>${dir.resources}/openapi.yaml</openapi.input.file>
+        <openapi.output.file>${dir.src.generated}/openapi.yaml</openapi.output.file>
+
     </properties>
 
 
@@ -27,6 +33,16 @@
     </dependencies>
 
     <build>
+
+        <resources>
+            <resource>
+                <directory>${dir.resources}</directory>
+                <excludes>
+                    <exclude>openapi.yaml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>com.rarible.protocol</groupId>
@@ -45,13 +61,11 @@
                         <task>
                             <schema>
                                 <type>openapi</type>
-                                <fileName>${path.resources}/openapi.yaml</fileName>
+                                <fileName>${openapi.input.file}</fileName>
                             </schema>
 
-                            <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
-
                             <generator>
-                                <lang>${model.generator.kotlin}</lang>
+                                <lang>${generator.kotlin}</lang>
                                 <properties>
                                     <property>
                                         <name>withInheritance</name>
@@ -59,7 +73,7 @@
                                     </property>
                                     <property>
                                         <name>packageName</name>
-                                        <value>com.rarible.protocol.dto</value>
+                                        <value>${generator.package}</value>
                                     </property>
                                 </properties>
                             </generator>
@@ -70,14 +84,13 @@
                                     <properties>
                                         <property>
                                             <name>packageName</name>
-                                            <value>com.rarible.protocol.dto</value>
+                                            <value>${generator.package}</value>
                                         </property>
                                     </properties>
                                 </dependency>
                             </dependencies>
                         </task>
                     </tasks>
-
                 </configuration>
             </plugin>
 

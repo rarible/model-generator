@@ -13,10 +13,12 @@ import kotlin.String
 sealed class MultipleWithDiscriminatorItem {
 }
 
+//--------------- MultipleWithDiscriminatorSubItem1 ---------------//
 class MultipleWithDiscriminatorSubItem1 (
     val name : String,
 ) : MultipleWithDiscriminatorItem()
 
+//--------------- MultipleWithDiscriminatorSubItem2 ---------------//
 class MultipleWithDiscriminatorSubItem2 (
     val id : Integer,
 ) : MultipleWithDiscriminatorItem()

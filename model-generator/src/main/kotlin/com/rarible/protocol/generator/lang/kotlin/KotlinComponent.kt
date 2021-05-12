@@ -16,8 +16,16 @@ class KotlinComponent(
         return definition.discriminator != null
     }
 
-    fun getOneOfComponents(): Collection<GeneratedComponent> {
-        return getDiscriminator().mapping.values
+    fun getAllOneOfComponents(): Collection<GeneratedComponent> {
+        val result = HashSet<GeneratedComponent>()
+        val subcomponents = getOneOfComponents().map { KotlinComponent(it) }
+        for (subcomponent in subcomponents) {
+            result.add(subcomponent.definition)
+            if (subcomponent.isOneOf()) {
+                result.addAll(subcomponent.getAllOneOfComponents())
+            }
+        }
+        return result
     }
 
     fun getKotlinSingleClass(): KotlinClass {
@@ -29,65 +37,55 @@ class KotlinComponent(
     }
 
     fun getKotlinMultipleClass(withInheritance: Boolean): KotlinMultipleClass {
-        return if (withInheritance) {
-            getKotlinMultipleClassWithInheritance()
-        } else {
-            getKotlinMultipleClass()
-        }
+        return getKotlinMultipleClass(withInheritance, mapOf())
     }
 
-    private fun getKotlinMultipleClass(): KotlinMultipleClass {
+    private fun getKotlinMultipleClass(
+        withInheritance: Boolean,
+        parentFields: Map<String, KotlinField>
+    ): KotlinMultipleClass {
         val discriminatorFieldName = getDiscriminator().fieldName
         val subcomponents = getOneOfComponents().map { KotlinComponent(it) }
+        val leafSubcomponents = getAllOneOfComponents().map { KotlinComponent(it) }.filter { !it.isOneOf() }
         val imports = TreeSet(subcomponents.flatMap { it.getImports() })
+
+        val commonFields = if (withInheritance) getCommonFields(leafSubcomponents) else mutableMapOf()
 
         val subclasses = ArrayList<KotlinClass>()
         val oneOfMapping = LinkedHashMap<String, String>()
         for (subcomponent in subcomponents) {
-            val kotlinClass = subcomponent.getKotlinSingleClass(discriminatorFieldName)
-            oneOfMapping[kotlinClass.name] = subcomponent.getOneOfEnum(discriminatorFieldName)
-            subclasses.add(kotlinClass)
-        }
-
-        val sealedClass = KotlinClass(
-            getName(),
-            getPackage(),
-            imports,
-            ArrayList(),
-        )
-
-        return KotlinMultipleClass(sealedClass, subclasses, discriminatorFieldName, oneOfMapping)
-    }
-
-    private fun getKotlinMultipleClassWithInheritance(): KotlinMultipleClass {
-        val discriminatorFieldName = getDiscriminator().fieldName
-        val subcomponents = getOneOfComponents().map { KotlinComponent(it) }
-        val imports = TreeSet(subcomponents.flatMap { it.getImports() })
-
-        val parentFields = getCommonFields(subcomponents, discriminatorFieldName)
-        parentFields.values.forEach { it.abstract = true }
-
-        val subclasses = ArrayList<KotlinClass>()
-        val oneOfMapping = LinkedHashMap<String, String>()
-        for (subcomponent in subcomponents) {
-            val kotlinClass = subcomponent.getKotlinSingleClass(discriminatorFieldName)
-            kotlinClass.fields.forEach {
-                it.overriden = parentFields.contains(it.name)
+            if (subcomponent.isOneOf()) {
+                val kotlinClass = subcomponent.getKotlinMultipleClass(withInheritance, commonFields)
+                subclasses.add(kotlinClass)
+                imports.addAll(kotlinClass.imports)
+                oneOfMapping.putAll(kotlinClass.oneOfMapping)
+            } else {
+                val kotlinClass = subcomponent.getKotlinSingleClass(discriminatorFieldName)
+                applyInheritance(kotlinClass, commonFields.keys)
+                oneOfMapping[kotlinClass.name] = subcomponent.getOneOfEnum(discriminatorFieldName)
+                subclasses.add(kotlinClass)
             }
-            // Not-inherited fields should be last
-            Collections.sort(kotlinClass.fields) { f, s -> s.overriden.compareTo(f.overriden) }
-            oneOfMapping[kotlinClass.name] = subcomponent.getOneOfEnum(discriminatorFieldName)
-            subclasses.add(kotlinClass)
         }
 
-        val sealedClass = KotlinClass(
+        parentFields.forEach { commonFields.remove(it.key) }
+
+        return KotlinMultipleClass(
             getName(),
             getPackage(),
             imports,
-            ArrayList(parentFields.values),
+            ArrayList(commonFields.values),
+            subclasses,
+            discriminatorFieldName,
+            oneOfMapping
         )
+    }
 
-        return KotlinMultipleClass(sealedClass, subclasses, discriminatorFieldName, oneOfMapping)
+    private fun applyInheritance(kotlinClass: KotlinClass, parentFields: Set<String>) {
+        kotlinClass.fields.forEach {
+            it.overriden = parentFields.contains(it.name)
+        }
+        // Not-inherited fields should be last
+        Collections.sort(kotlinClass.fields) { f, s -> s.overriden.compareTo(f.overriden) }
     }
 
     private fun getDiscriminator(): Discriminator {
@@ -147,9 +145,9 @@ class KotlinComponent(
     }
 
     private fun getCommonFields(
-        subcomponents: Collection<KotlinComponent>,
-        discriminatorFieldName: String
-    ): Map<String, KotlinField> {
+        subcomponents: Collection<KotlinComponent>
+    ): MutableMap<String, KotlinField> {
+        val discriminatorFieldName = getDiscriminator().fieldName
         val commonFields = LinkedHashMap<String, KotlinField>()
 
         val componentFieldNames = ArrayList<Set<String>>()
@@ -180,6 +178,7 @@ class KotlinComponent(
                 }
             }
         }
+        commonFields.values.forEach { it.abstract = true }
         return commonFields
     }
 
@@ -191,6 +190,10 @@ class KotlinComponent(
             result = "$result<$genericString>"
         }
         return result
+    }
+
+    private fun getOneOfComponents(): Collection<GeneratedComponent> {
+        return getDiscriminator().mapping.values
     }
 
     private fun getSimpleClassName(fullClassName: String): String {

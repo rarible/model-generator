@@ -51,31 +51,29 @@ class KotlinGenerator(
     }
 
     private fun generate(apiFilePath: Path, outputFolder: Path, writer: ClassWriter) {
-        val definitions = readDefinitions(apiFilePath)
-        val singleDefinitions = LinkedHashSet(definitions)
+        val rootDefinitions = HashSet(readDefinitions(apiFilePath))
+        val leafDefinitions: HashSet<GeneratedComponent> = HashSet()
 
-        val multipleDefinitions = LinkedHashSet<KotlinComponent>()
-
-        for (definition in definitions) {
-            val kotlinDefinition = KotlinComponent(definition)
-            if (kotlinDefinition.isOneOf()) {
-                multipleDefinitions.add(kotlinDefinition)
-                singleDefinitions.removeAll(kotlinDefinition.getOneOfComponents())
-                singleDefinitions.remove(definition)
+        for (rootDefinition in rootDefinitions) {
+            val kotlinComponent = KotlinComponent(rootDefinition)
+            if (kotlinComponent.isOneOf()) {
+                leafDefinitions.addAll(kotlinComponent.getAllOneOfComponents())
             }
         }
 
-        for (definition in multipleDefinitions) {
-            val kotlinClass = definition.getKotlinMultipleClass(withInheritance)
-            val text = generateMultipleClass(kotlinClass)
-            writer.write(kotlinClass.sealedClass, text, outputFolder)
-        }
+        rootDefinitions.removeAll(leafDefinitions)
 
-        for (definition in singleDefinitions) {
-            val kotlinDefinition = KotlinComponent(definition)
-            val kotlinClass = kotlinDefinition.getKotlinSingleClass()
-            val text = generateSingleClass(kotlinClass)
-            writer.write(kotlinClass, text, outputFolder)
+        for (rootDefinition in rootDefinitions) {
+            val kotlinComponent = KotlinComponent(rootDefinition)
+            if (kotlinComponent.isOneOf()) {
+                val kotlinClass = kotlinComponent.getKotlinMultipleClass(withInheritance)
+                val text = generateMultipleClass(kotlinClass)
+                writer.write(kotlinClass, text, outputFolder)
+            } else {
+                val kotlinClass = kotlinComponent.getKotlinSingleClass()
+                val text = generateSingleClass(kotlinClass)
+                writer.write(kotlinClass, text, outputFolder)
+            }
         }
     }
 
@@ -111,11 +109,10 @@ class KotlinGenerator(
         ByteArrayOutputStream().use { out ->
             OutputStreamWriter(out).use { writer ->
                 val model = HashMap<String, Any>()
-                fillKotlinClassModel(model, kotlinClass.sealedClass)
+                fillKotlinClassModel(model, kotlinClass)
                 model["subclasses"] = kotlinClass.subclasses
                 model["discriminatorField"] = kotlinClass.discriminatorField
                 model["oneOf"] = kotlinClass.oneOfMapping
-                model["enums"] = kotlinClass.enums
                 generate(writer, MULTIPLE_TEMPLATE, model)
                 writer.flush()
             }

@@ -22,21 +22,54 @@ sealed class ${name} {
 </#list>
 }
 
-<#list subclasses![] as sublass>
-    <#lt>class ${sublass.name} (
-    <#list sublass.fields![] as field>
-        <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>,
-    </#list>
-    <#lt>) : ${name}()
-
-</#list>
-<#if enums?has_content>
-    <#list enums![] as enum>
-        <#lt>enum class ${enum.name} {
-        <#list enum.values![] as value>
-            <#lt>    ${value},
+<#list subclasses![] as subclass>
+    <#lt>//--------------- ${subclass.name} ---------------//
+    <#if subclass.subclasses?has_content>
+        <#lt>sealed class ${subclass.name} : ${name}() {
+        <#list subclass.fields![] as field>
+            <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>
         </#list>
         <#lt>}
 
-    </#list>
-</#if>
+        <#list subclass.subclasses![] as subsubclass>
+            <#lt>class ${subsubclass.name} (
+            <#list subsubclass.fields![] as field>
+                <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>,
+            </#list>
+            <#lt>) : ${subclass.name}() <#if subsubclass.enums?has_content> {
+
+            <#list subsubclass.enums![] as enum>
+                <#lt>    enum class ${enum.name} {
+                <#list enum.values![] as value>
+                    <#lt>        ${value},
+                </#list>
+                <#lt>    }
+
+            </#list>
+            <#lt>}
+
+        <#else>
+
+
+        </#if>
+        </#list>
+    <#else>
+        <#lt>class ${subclass.name} (
+        <#list subclass.fields![] as field>
+            <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>,
+        </#list>
+        <#lt>) : ${name}()<#if subclass.enums?has_content> {
+
+        <#list subclass.enums![] as enum>
+            <#lt>    enum class ${enum.name} {
+            <#list enum.values![] as value>
+                <#lt>        ${value},
+            </#list>
+            <#lt>    }
+
+        </#list>
+        <#lt>}
+    </#if>
+    </#if>
+
+</#list>

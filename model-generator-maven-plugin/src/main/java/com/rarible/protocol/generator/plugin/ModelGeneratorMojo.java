@@ -57,12 +57,17 @@ public class ModelGeneratorMojo extends AbstractMojo {
         Properties properties = generatorConfig.getProperties();
         SchemaConfig schema = task.getSchema();
 
-        String outputDirectory = task.getOutputDirectory();
-        if (StringUtils.isBlank(outputDirectory)) {
-            outputDirectory = new File(project.getBasedir(), "target/generated-sources").toString();
+        String modelOutputDirectory = task.getModelOutputDirectory();
+        String schemaOutputDirectory = task.getModelOutputDirectory();
+        if (StringUtils.isBlank(modelOutputDirectory)) {
+            modelOutputDirectory = new File(project.getBasedir(), "target/generated-sources").toString();
+        }
+        if (StringUtils.isBlank(schemaOutputDirectory)) {
+            schemaOutputDirectory = new File(project.getBasedir(), "target/classes").toString();
         }
 
-        getLog().info("Directory for generated classes: " + outputDirectory);
+        getLog().info("Directory for generated classes: " + modelOutputDirectory);
+        getLog().info("Directory for merged schema: " + modelOutputDirectory);
 
         TypeMapperSettings typeMapperSettings = TypeMapperRegistry.getTypeMapperSettings(schema.getType());
         TypeMapperFactory typeMapperFactory = typeMapperSettings.getTypeMapperFactory();
@@ -77,7 +82,7 @@ public class ModelGeneratorMojo extends AbstractMojo {
         );
 
         File schemaFile = new File(schema.getFileName());
-        File mergedSchemaFile = new File(task.getOutputDirectory(), schemaFile.getName());
+        File mergedSchemaFile = new File(schemaOutputDirectory, schemaFile.getName());
         mergedSchemaFile.getParentFile().mkdirs();
 
         getLog().info("Merging all schemas into file: " + mergedSchemaFile);
@@ -101,7 +106,7 @@ public class ModelGeneratorMojo extends AbstractMojo {
 
         generator.generate(
                 Paths.get(mergedSchemaFile.toURI()),
-                Paths.get(task.getOutputDirectory())
+                Paths.get(modelOutputDirectory)
         );
     }
 

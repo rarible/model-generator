@@ -1,10 +1,13 @@
 package com.rarible.protocol.generator.lang.kotlin
 
-data class KotlinMultipleClass(
-    val sealedClass: KotlinClass,
+class KotlinMultipleClass(
+    name: String,
+    packageName: String,
+    imports: Set<String>,
+    fields: List<KotlinField>,
     val subclasses: List<KotlinClass>,
     val discriminatorField: String,
-    val oneOfMapping: Map<String, String>
-) {
-    val enums: List<KotlinEnum> = subclasses.flatMap { it.enums }
+    val oneOfMapping: Map<String, String>,
+) : KotlinClass(name, packageName, imports, fields) {
+
 }

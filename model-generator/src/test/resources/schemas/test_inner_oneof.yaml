@@ -1,0 +1,185 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /activity:
+    post:
+      tags:
+        - order-controller
+      description: Create or update Order
+      operationId: createOrUpdateOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InnerOneOf'
+        required: true
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal Server Error
+
+components:
+  schemas:
+
+    InnerOneOf:
+      oneOf:
+        - $ref: '#/components/schemas/OrderActivity'
+        - $ref: '#/components/schemas/NftActivity'
+
+    OrderActivity:
+      oneOf:
+        - $ref: '#/components/schemas/OrderActivitySell'
+        - $ref: '#/components/schemas/OrderActivityList'
+        - $ref: '#/components/schemas/OrderActivityBid'
+
+    NftActivity:
+      oneOf:
+        - $ref: '#/components/schemas/NftActivityBurn'
+        - $ref: '#/components/schemas/NftActivityTransfer'
+        - $ref: '#/components/schemas/NftActivityMint'
+
+    OrderActivitySell:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+            - sell
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        address:
+          $ref: '#/components/schemas/BigInt'
+        transactionHash:
+          type: string
+        mode:
+          type: string
+          enum:
+            - FIRST
+            - SECOND
+            - THIRD
+
+    OrderActivityList:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+            - list
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        address:
+          $ref: '#/components/schemas/BigInt'
+        price:
+          $ref: '#/components/schemas/BigInt'
+        mode:
+          type: string
+          enum:
+            - FIRST
+            - SECOND
+            - THIRD
+
+    OrderActivityBid:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+            - bid
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        address:
+          $ref: '#/components/schemas/BigInt'
+        price:
+          $ref: '#/components/schemas/BigInt'
+
+
+    NftActivityMint:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+            - mint
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        address:
+          $ref: '#/components/schemas/BigInt'
+        tokenId:
+          $ref: '#/components/schemas/BigInt'
+        value:
+          $ref: '#/components/schemas/BigInt'
+        transactionHash:
+          type: string
+
+    NftActivityBurn:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+            - burn
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        address:
+          $ref: '#/components/schemas/BigInt'
+        tokenId:
+          $ref: '#/components/schemas/BigInt'
+        value:
+          $ref: '#/components/schemas/BigInt'
+        transactionHash:
+          type: string
+        burn:
+          type: string
+        mode:
+          type: string
+          enum:
+            - FIRST
+            - SECOND
+            - THIRD
+
+    NftActivityTransfer:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+            - transfer
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        address:
+          $ref: '#/components/schemas/BigInt'
+        tokenId:
+          $ref: '#/components/schemas/BigInt'
+        value:
+          $ref: '#/components/schemas/BigInt'
+        transactionHash:
+          type: string
+        from:
+          type: string
+
+    BigInt:
+      type: string

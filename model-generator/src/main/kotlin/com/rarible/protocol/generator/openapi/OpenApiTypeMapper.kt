@@ -55,30 +55,39 @@ class OpenApiTypeMapper(
             { it.name }, { createFieldDefinition(it) }
         )
 
-        var discriminator: Discriminator? = null
-        // Gathering GeneratedComponentDefinitions for OneOf list
-        if (component.isOneOf()) {
-            val discriminatorField = component.getDiscriminatorField()
-            val discriminatorMapping = LinkedHashMap<String, GeneratedComponent>()
-            for (oneOfComponent in component.getOneOf()) {
-                val field = oneOfComponent.getField(discriminatorField)
-                val mappingValue = field.getOneOfEnumValue()
-                val generatedComponent = getOrCreateGeneratedDefinition(oneOfComponent)
-                discriminatorMapping[mappingValue] = generatedComponent
-            }
-            discriminator = Discriminator(discriminatorField, discriminatorMapping)
-        }
-
-
         val generatedComponentDefinition = GeneratedComponent(
             component.name,
             qualifierGenerator.getQualifier(component.name),
             fields,
-            discriminator
+            getDiscriminator(component)
         )
 
         generatedComponents[component.name] = generatedComponentDefinition
         return generatedComponentDefinition
+    }
+
+    private fun getDiscriminator(component: OpenApiComponent): Discriminator? {
+        var discriminator: Discriminator? = null
+        // Gathering GeneratedComponentDefinitions for OneOf list
+        if (!component.isOneOf()) {
+            return null
+        }
+
+        val discriminatorField = component.getDiscriminatorField()
+        val componentMapping = LinkedHashMap<String, GeneratedComponent>()
+        val discriminatorMapping = LinkedHashMap<String, GeneratedComponent>()
+        for (oneOfComponent in component.getOneOf()) {
+            val generatedComponent = getOrCreateGeneratedDefinition(oneOfComponent)
+            if (oneOfComponent.isOneOf()) {
+                componentMapping[generatedComponent.name] = generatedComponent
+            } else {
+                val field = oneOfComponent.getField(discriminatorField)
+                val mappingValue = field.getOneOfEnumValue()
+                componentMapping[mappingValue] = generatedComponent
+            }
+        }
+
+        return Discriminator(discriminatorField, componentMapping, discriminatorMapping)
     }
 
     private fun createFieldDefinition(

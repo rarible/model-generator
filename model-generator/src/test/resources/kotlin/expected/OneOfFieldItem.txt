@@ -13,11 +13,13 @@ import kotlin.String
 sealed class OneOfFieldItem {
 }
 
+//--------------- OneOfFieldSubItem1 ---------------//
 class OneOfFieldSubItem1 (
     val id : Integer,
     val name : String,
 ) : OneOfFieldItem()
 
+//--------------- OneOfFieldSubItem2 ---------------//
 class OneOfFieldSubItem2 (
     val id : Integer,
 ) : OneOfFieldItem()

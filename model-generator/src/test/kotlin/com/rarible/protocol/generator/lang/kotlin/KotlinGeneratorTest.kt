@@ -23,9 +23,9 @@ internal class KotlinGeneratorTest {
     private val withoutInheritance: Generator = createDefaultGenerator(false)
 
     // For manual testing only
-    //@Test
+    @Test
     fun generateFiles() {
-//       generateAsFiles("test_oneof_as_field.yaml", withoutInheritance)
+//        generateAsFiles("test_inner_oneof.yaml", withInheritance)
 //        generateAsFiles("test_single_primitives.yaml", withoutInheritance)
 //        generateAsFiles("test_single_several_classes.yaml", withoutInheritance)
 //        generateAsFiles("test_single_provided_types.yaml", withoutInheritance)
@@ -72,6 +72,11 @@ internal class KotlinGeneratorTest {
     @Test
     fun `test mixed classes with oneOf and enums`() {
         verifyGeneratedClasses(generateAsStrings("test_mixed.yaml", withInheritance))
+    }
+
+    @Test
+    fun `test oneOf with inner oneOf`() {
+        verifyGeneratedClasses(generateAsStrings("test_inner_oneof.yaml", withInheritance))
     }
 
     private fun verifyGeneratedClasses(classes: Map<String, String>) {

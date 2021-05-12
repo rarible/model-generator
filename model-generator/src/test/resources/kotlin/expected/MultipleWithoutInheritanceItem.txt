@@ -13,11 +13,13 @@ import kotlin.String
 sealed class MultipleWithoutInheritanceItem {
 }
 
+//--------------- MultipleWithoutInheritanceSubItem1 ---------------//
 class MultipleWithoutInheritanceSubItem1 (
     val id : Integer,
     val name : String,
 ) : MultipleWithoutInheritanceItem()
 
+//--------------- MultipleWithoutInheritanceSubItem2 ---------------//
 class MultipleWithoutInheritanceSubItem2 (
     val id : Integer,
 ) : MultipleWithoutInheritanceItem()

@@ -9,7 +9,6 @@ public class DependencyConfig {
     @Parameter
     private String name;
 
-
     private String jarFile;
 
     @Parameter

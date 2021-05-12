@@ -20,7 +20,10 @@ public class TaskConfig {
     private String providedTypesFile;
 
     @Parameter
-    private String outputDirectory;
+    private String modelOutputDirectory;
+
+    @Parameter
+    private String schemaOutputDirectory;
 
     private List<DependencyConfig> dependencies = new ArrayList<>();
 
@@ -64,11 +67,19 @@ public class TaskConfig {
         this.providedTypesFile = providedTypesFile;
     }
 
-    public String getOutputDirectory() {
-        return outputDirectory;
+    public String getModelOutputDirectory() {
+        return modelOutputDirectory;
     }
 
-    public void setOutputDirectory(String outputDirectory) {
-        this.outputDirectory = outputDirectory;
+    public void setModelOutputDirectory(String modelOutputDirectory) {
+        this.modelOutputDirectory = modelOutputDirectory;
+    }
+
+    public String getSchemaOutputDirectory() {
+        return schemaOutputDirectory;
+    }
+
+    public void setSchemaOutputDirectory(String schemaOutputDirectory) {
+        this.schemaOutputDirectory = schemaOutputDirectory;
     }
 }

@@ -11,14 +11,29 @@
     <artifactId>test-model</artifactId>
 
     <properties>
-        <path.resources>${basedir}/src/main/resources</path.resources>
-        <model.generator.kotlin>kotlin</model.generator.kotlin>
-        <model.generator.kotlin.dir>${path.resources}/model-generator/${model.generator.kotlin}
-        </model.generator.kotlin.dir>
+        <dir.resources>${basedir}/src/main/resources</dir.resources>
+        <dir.generator.resources>${dir.resources}/model-generator</dir.generator.resources>
+        <dir.generator.resources.kotlin>${dir.generator.resources}/${generator.kotlin}</dir.generator.resources.kotlin>
+
+        <generator.kotlin>kotlin</generator.kotlin>
+        <generator.package>com.rarible.protocol.dto</generator.package>
+
+        <openapi.input.file>${dir.resources}/openapi.yaml</openapi.input.file>
+        <openapi.output.file>${dir.src.generated}/openapi.yaml</openapi.output.file>
     </properties>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${dir.resources}</directory>
+                <excludes>
+                    <exclude>openapi.yaml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
         <plugins>
+
             <plugin>
                 <groupId>com.rarible.protocol</groupId>
                 <artifactId>model-generator-maven-plugin</artifactId>
@@ -29,17 +44,19 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
 
+                <configuration>
                     <tasks>
                         <task>
                             <schema>
                                 <type>openapi</type>
-                                <fileName>${path.resources}/openapi.yaml</fileName>
+                                <fileName>${openapi.input.file}</fileName>
                             </schema>
 
+                            <providedTypesFile>${dir.generator.resources.kotlin}/provided.json</providedTypesFile>
+
                             <generator>
-                                <lang>${model.generator.kotlin}</lang>
+                                <lang>${generator.kotlin}</lang>
                                 <properties>
                                     <property>
                                         <name>withInheritance</name>
@@ -47,18 +64,15 @@
                                     </property>
                                     <property>
                                         <name>packageName</name>
-                                        <value>com.rarible.protocol.dto</value>
+                                        <value>${generator.package}</value>
                                     </property>
                                 </properties>
                             </generator>
-
-                            <providedTypesFile>${model.generator.kotlin.dir}/provided.json</providedTypesFile>
-                            <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
                         </task>
                     </tasks>
-
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
