@@ -1,0 +1,30 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0.1
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+
+    Model:
+      required:
+        - id
+        - name
+        - items
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelItem'
+
+    ModelItem:
+      type: string
