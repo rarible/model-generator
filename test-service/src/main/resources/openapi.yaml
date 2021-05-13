@@ -5,6 +5,21 @@ info:
 servers:
   - url: 'https'
 paths:
+  /test-service-endpoint:
+    post:
+      operationId: testServiceEndpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceModel'
+        required: true
+
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal Server Error
 
 components:
   schemas:
