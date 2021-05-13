@@ -13,9 +13,8 @@ pipeline {
 				branch 'master'
 			}
 			steps {
-				sh 'mvn clean'
 				dir('model-generator') {
-					sh 'mvn test'
+					sh 'mvn clean test'
 				}
 				deployToMaven('jenkins-rarible-ci')
 			}
