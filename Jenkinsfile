@@ -20,6 +20,7 @@ pipeline {
 				branch 'master'
 			}
 			steps {
+				sh 'mvn clean install'
 				deployToMaven('jenkins-rarible-ci')
 			}
 		}
