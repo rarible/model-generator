@@ -1,0 +1,59 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+
+    RefItemRoot:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        image:
+          $ref: '#/components/schemas/RefItem'
+        animation:
+          $ref: '#/components/schemas/RefItem'
+
+    RefItem:
+      required:
+        - url
+        - meta
+      type: object
+      properties:
+        url:
+          type: object
+          additionalProperties:
+            type: string
+        meta:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/RefItemMeta'
+          example:
+            ORIGINAL:
+              type: "image/png"
+              width: 100
+              height: 100
+
+    RefItemMeta:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+        width:
+          type: integer
+          format: int32
+        height:
+          type: integer
+          format: int32

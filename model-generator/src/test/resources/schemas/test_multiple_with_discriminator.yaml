@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+
+    MultipleWithDiscriminatorItem:
+      discriminator:
+        propertyName: assetClass
+        mapping:
+          SUB_ITEM_1: '#/components/schemas/MultipleWithDiscriminatorSubItem1'
+          SUB_ITEM_2: '#/components/schemas/MultipleWithDiscriminatorSubItem2'
+      oneOf:
+        - $ref: '#/components/schemas/MultipleWithDiscriminatorSubItem1'
+        - $ref: '#/components/schemas/MultipleWithDiscriminatorSubItem2'
+
+    MultipleWithDiscriminatorSubItem1:
+      required:
+        - assetClass
+        - name
+      type: object
+      properties:
+        assetClass:
+          type: string
+          enum:
+            - SUB_ITEM_1
+        name:
+          type: string
+
+    MultipleWithDiscriminatorSubItem2:
+      required:
+        - assetClass
+        - id
+      type: object
+      properties:
+        assetClass:
+          type: string
+          enum:
+            - SUB_ITEM_2
+        id:
+          type: integer

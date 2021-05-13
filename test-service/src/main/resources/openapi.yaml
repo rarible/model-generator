@@ -1,0 +1,42 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0.1
+servers:
+  - url: 'https'
+paths:
+  /test-service-endpoint:
+    post:
+      operationId: testServiceEndpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceModel'
+        required: true
+
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal Server Error
+
+components:
+  schemas:
+
+    ServiceModel:
+      required:
+        - id
+        - model
+        - items
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        model:
+          $ref: '#/components/schemas/Model'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelItem'

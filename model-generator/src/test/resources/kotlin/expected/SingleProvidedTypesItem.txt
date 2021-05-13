@@ -1,0 +1,9 @@
+package com.rarible.test
+
+import java.math.BigInteger
+import kotlin.String
+
+data class SingleProvidedTypesItem (
+    val id : BigInteger,
+    val name : String,
+)

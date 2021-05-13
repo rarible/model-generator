@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+
+    SingleProvidedTypesItem:
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/BigInt'
+        name:
+          type: string
+
+    BigInt:
+      type: string

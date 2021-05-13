@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>model-generator-parent</artifactId>
+        <groupId>com.rarible.protocol</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>test-service</artifactId>
+
+    <properties>
+        <dir.resources>${basedir}/src/main/resources</dir.resources>
+        <dir.generator.resources>${dir.resources}/model-generator</dir.generator.resources>
+        <dir.generator.resources.kotlin>${dir.generator.resources}/${generator.kotlin}</dir.generator.resources.kotlin>
+
+        <generator.kotlin>kotlin</generator.kotlin>
+        <generator.package>com.rarible.protocol.dto</generator.package>
+
+        <openapi.input.file>${dir.resources}/openapi.yaml</openapi.input.file>
+        <openapi.output.file>${dir.src.generated}/openapi.yaml</openapi.output.file>
+
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.rarible.protocol</groupId>
+            <artifactId>test-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+
+        <resources>
+            <resource>
+                <directory>${dir.resources}</directory>
+                <excludes>
+                    <exclude>openapi.yaml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>com.rarible.protocol</groupId>
+                <artifactId>model-generator-maven-plugin</artifactId>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <tasks>
+                        <task>
+                            <schema>
+                                <type>openapi</type>
+                                <fileName>${openapi.input.file}</fileName>
+                            </schema>
+
+                            <generator>
+                                <lang>${generator.kotlin}</lang>
+                                <properties>
+                                    <property>
+                                        <name>withInheritance</name>
+                                        <value>true</value>
+                                    </property>
+                                    <property>
+                                        <name>packageName</name>
+                                        <value>${generator.package}</value>
+                                    </property>
+                                </properties>
+                            </generator>
+
+                            <dependencies>
+                                <dependency>
+                                    <name>test-model</name>
+                                    <properties>
+                                        <property>
+                                            <name>packageName</name>
+                                            <value>${generator.package}</value>
+                                        </property>
+                                    </properties>
+                                </dependency>
+                            </dependencies>
+                        </task>
+                    </tasks>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
+

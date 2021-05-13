@@ -1,0 +1,9 @@
+package com.rarible.test
+
+import java.lang.Long
+import kotlin.String
+
+data class SingleSeveralClassesItem1 (
+    val id : Long,
+    val name : String,
+)

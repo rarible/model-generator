@@ -1,0 +1,53 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+
+    SingleSeveralClassesItem1:
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+
+    SingleSeveralClassesItem2:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum:
+            - ERC721
+            - ERC1155
+
+    SingleSeveralClassesItem3:
+      required:
+        - id
+        - modes
+      type: object
+      properties:
+        id:
+          type: string
+        modes:
+          type: array
+          items:
+            type: string
+            enum:
+              - ONE
+              - TWO
+              - THREE
