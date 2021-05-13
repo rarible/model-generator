@@ -90,9 +90,9 @@ components:
       type: object
       properties:
         partId:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         partValue:
           type: integer
 
-    BigInt:
+    BigInteger:
       type: string

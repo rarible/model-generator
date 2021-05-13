@@ -17,9 +17,9 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         name:
           type: string
 
-    BigInt:
+    BigInteger:
       type: string

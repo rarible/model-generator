@@ -57,7 +57,7 @@ components:
           type: string
           format: date-time
         address:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         transactionHash:
           type: string
         mode:
@@ -80,9 +80,9 @@ components:
           type: string
           format: date-time
         address:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         price:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         mode:
           type: string
           enum:
@@ -103,9 +103,9 @@ components:
           type: string
           format: date-time
         address:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         price:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
 
 
     NftActivityMint:
@@ -121,11 +121,11 @@ components:
           type: string
           format: date-time
         address:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         tokenId:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         value:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         transactionHash:
           type: string
 
@@ -142,11 +142,11 @@ components:
           type: string
           format: date-time
         address:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         tokenId:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         value:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         transactionHash:
           type: string
         burn:
@@ -171,15 +171,15 @@ components:
           type: string
           format: date-time
         address:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         tokenId:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         value:
-          $ref: '#/components/schemas/BigInt'
+          $ref: '#/components/schemas/BigInteger'
         transactionHash:
           type: string
         from:
           type: string
 
-    BigInt:
+    BigInteger:
       type: string

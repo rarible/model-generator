@@ -1,3 +1,4 @@
 {
-  "BigInt": "java.math.BigInteger"
+  "BigInteger": "java.math.BigInteger",
+  "BigDecimal": "java.math.BigDecimal"
 }
