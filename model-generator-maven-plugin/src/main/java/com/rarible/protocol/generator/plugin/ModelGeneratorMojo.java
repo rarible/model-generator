@@ -86,17 +86,20 @@ public class ModelGeneratorMojo extends AbstractMojo {
         mergedSchemaFile.getParentFile().mkdirs();
 
         getLog().info("Merging all schemas into file: " + mergedSchemaFile);
-        typeMapperFactory.mergeSchemas(
-                schemaFile,
-                mergedSchemaFile,
-                dependencyManager.getSchemaTexts()
+
+        typeMapperFactory.mergeSchemas(schemaFile, mergedSchemaFile, dependencyManager.getSchemaTexts());
+
+        List<ProvidedTypeReader> primitiveTypeReaders = getCascadePrimitiveTypeReaders(
+                dependencyManager,
+                task.getPrimitiveTypesFile(),
+                lang
         );
 
-        List<ProvidedTypeReader> primitiveTypeReaders = dependencyManager.getPrimitiveTypeReaders();
-        List<ProvidedTypeReader> providedTypeReaders = dependencyManager.getProvidedTypeReaders();
-
-        primitiveTypeReaders.add(getTypeReader(task.getPrimitiveTypesFile()));
-        providedTypeReaders.add(getTypeReader(task.getProvidedTypesFile()));
+        List<ProvidedTypeReader> providedTypeReaders = getCascadeProvidedTypeReaders(
+                dependencyManager,
+                task.getProvidedTypesFile(),
+                lang
+        );
 
         Generator generator = generatorFactory.getGenerator(
                 new ProvidedTypeCascadeReader(primitiveTypeReaders),
@@ -110,18 +113,71 @@ public class ModelGeneratorMojo extends AbstractMojo {
         );
     }
 
-    private ProvidedTypeReader getTypeReader(String filePath) {
-        return filePath == null
-                ? new ProvidedTypeConstantReader(new HashMap<>())
-                : new ProvidedTypeFileReader(new File(filePath));
+    private List<ProvidedTypeReader> getCascadePrimitiveTypeReaders(ModelDependencyManager dependencyManager,
+                                                                    String primitiveTypesFile,
+                                                                    String lang) throws MojoExecutionException {
+
+        File defaultPrimitiveTypesFile = new File(
+                project.getBasedir(),
+                "src/main/resources/model-generator/" + lang + "/primitives.json"
+        );
+
+        List<ProvidedTypeReader> primitiveTypeReaders = dependencyManager.getPrimitiveTypeReaders();
+        getLog().debug("Combined primitive types from dependencies: "
+                + new ProvidedTypeCascadeReader(primitiveTypeReaders).getMapping());
+
+        primitiveTypeReaders.add(getTypeReader(primitiveTypesFile, defaultPrimitiveTypesFile));
+        getLog().debug("Full list of primitive types: "
+                + new ProvidedTypeCascadeReader(primitiveTypeReaders).getMapping());
+
+        return primitiveTypeReaders;
+    }
+
+    private List<ProvidedTypeReader> getCascadeProvidedTypeReaders(ModelDependencyManager dependencyManager,
+                                                                   String providedTypesFile,
+                                                                   String lang) throws MojoExecutionException {
+
+        File defaultProvidedTypesFile = new File(
+                project.getBasedir(),
+                "src/main/resources/model-generator/" + lang + "/provided.json"
+        );
+
+        List<ProvidedTypeReader> providedTypeReaders = dependencyManager.getProvidedTypeReaders();
+        getLog().debug("Combined provided types from dependencies: "
+                + new ProvidedTypeCascadeReader(providedTypeReaders).getMapping());
+
+        providedTypeReaders.add(getTypeReader(providedTypesFile, defaultProvidedTypesFile));
+        getLog().debug("Full list of provided types: "
+                + new ProvidedTypeCascadeReader(providedTypeReaders).getMapping());
+
+        return providedTypeReaders;
+    }
+
+    private ProvidedTypeReader getTypeReader(String filePath, File defaultFile) throws MojoExecutionException {
+        if (filePath == null) {
+            if (defaultFile.exists()) {
+                getLog().debug("Reading default file with types: " + defaultFile);
+                return new ProvidedTypeFileReader(defaultFile);
+            } else {
+                getLog().debug("Default file with types not found, skipping: " + defaultFile);
+                return new ProvidedTypeConstantReader(new HashMap<>());
+            }
+        }
+        File file = new File(filePath);
+        if (!file.exists()) {
+            throw new MojoExecutionException("File not found: " + filePath);
+        }
+        return new ProvidedTypeFileReader(file);
     }
 
     private void applyFullJarNames(List<DependencyConfig> dependencyConfigs) throws MojoExecutionException {
         Set<Artifact> artifacts = getDependencies();
         Map<String, Artifact> mapped = artifacts.stream().collect(Collectors.toMap(
                 Artifact::getArtifactId,
-                (a) -> a)
-        );
+                (a) -> a,
+                // Duplicated jar names possible for some external dependencies we are not interested in
+                (a, b) -> a
+        ));
         for (DependencyConfig dep : dependencyConfigs) {
             Artifact a = mapped.get(dep.getName());
             dep.setJarFile(a.getFile().toString());

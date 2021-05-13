@@ -6,7 +6,7 @@
     <artifactId>model-generator-parent</artifactId>
     <groupId>com.rarible.protocol</groupId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
 
     <distributionManagement>
         <repository>
@@ -28,7 +28,6 @@
         <dir.src.kotlin.test>${project.basedir}/src/test/kotlin</dir.src.kotlin.test>
         <dir.src.java.test>${project.basedir}/src/test/java</dir.src.java.test>
 
-
         <!-- ============== Plugin versions ============== -->
         <version.plugin.clean>3.1.0</version.plugin.clean>
         <version.plugin.source>3.2.1</version.plugin.source>
@@ -42,7 +41,7 @@
         <version.plugin.build.helper>3.2.0</version.plugin.build.helper>
 
         <!-- ========= Internal Dependencies ========== -->
-        <version.model.generator>1.0</version.model.generator>
+        <version.model.generator>1.0.2-SNAPSHOT</version.model.generator>
 
         <!-- ========= External Dependencies ========== -->
         <version.openapi.parser>4.0.4</version.openapi.parser>

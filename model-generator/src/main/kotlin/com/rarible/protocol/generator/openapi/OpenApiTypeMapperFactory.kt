@@ -27,18 +27,28 @@ class OpenApiTypeMapperFactory : TypeMapperFactory {
 
     override fun mergeSchemas(origin: File, dest: File, schemaTexts: List<String>) {
         val loader = JsonLoader()
-        val root = loader.load(origin.toURI().toURL())
+        val root = loader.load(origin.toURI().toURL()) as ObjectNode
 
         for (text in schemaTexts) {
-            val json = loader.loadString(null, text)
-            mergeObjectFields(root.get("paths"), json.get("paths"))
-            mergeObjectFields(root.get("components"), json.get("components"))
+            val json = loader.loadString(null, text) as ObjectNode
+            mergeOrSet(root, json, "components")
+            mergeOrSet(root, json, "paths")
         }
 
         YAMLMapper().writeValue(dest, root)
     }
 
-    private fun mergeObjectFields(main: JsonNode, ext: JsonNode) {
+    private fun mergeOrSet(root: ObjectNode, ext: ObjectNode, fieldName: String) {
+        val mainField = root.get(fieldName)
+        val extField = ext.get(fieldName)
+        if (mainField != null) {
+            mergeObjectFields(mainField, extField)
+        } else if (extField != null) {
+            root.set<JsonNode>(fieldName, extField)
+        }
+    }
+
+    private fun mergeObjectFields(main: JsonNode, ext: JsonNode?) {
         if (main == null || ext == null || !main.isObject || !ext.isObject) {
             return
         }
@@ -72,7 +82,7 @@ class OpenApiTypeMapperFactory : TypeMapperFactory {
         }
     }
 
-    private fun mergeArrayFields(main: JsonNode, ext: JsonNode) {
+    private fun mergeArrayFields(main: JsonNode, ext: JsonNode?) {
         if (main == null || ext == null || !main.isArray || !ext.isArray) {
             return
         }
