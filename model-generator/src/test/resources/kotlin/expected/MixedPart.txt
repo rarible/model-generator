@@ -3,7 +3,7 @@ package com.rarible.test
 import java.lang.Integer
 import java.math.BigInteger
 
-data class MixedPart (
+data class MixedPartDto (
     val partId : BigInteger,
     val partValue : Integer,
 )

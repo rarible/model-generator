@@ -3,7 +3,7 @@ package com.rarible.test
 import java.lang.Integer
 import kotlin.String
 
-data class RefItemMeta (
+data class RefItemMetaDto (
     val type : String,
     val width : Integer?,
     val height : Integer?,

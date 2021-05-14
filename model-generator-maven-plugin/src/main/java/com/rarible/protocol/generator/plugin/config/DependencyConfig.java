@@ -15,12 +15,6 @@ public class DependencyConfig {
     private String schemaFile;
 
     @Parameter
-    private String primitiveTypesFile;
-
-    @Parameter
-    private String providedTypesFile;
-
-    @Parameter
     private Properties properties = new Properties();
 
     public String getName() {
@@ -45,22 +39,6 @@ public class DependencyConfig {
 
     public void setSchemaFile(String schemaFile) {
         this.schemaFile = schemaFile;
-    }
-
-    public String getPrimitiveTypesFile() {
-        return primitiveTypesFile;
-    }
-
-    public void setPrimitiveTypesFile(String primitiveTypesFile) {
-        this.primitiveTypesFile = primitiveTypesFile;
-    }
-
-    public String getProvidedTypesFile() {
-        return providedTypesFile;
-    }
-
-    public void setProvidedTypesFile(String providedTypesFile) {
-        this.providedTypesFile = providedTypesFile;
     }
 
     public Properties getProperties() {

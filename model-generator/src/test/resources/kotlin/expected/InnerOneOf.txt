@@ -8,30 +8,30 @@ import kotlin.String
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes(
-    JsonSubTypes.Type(name = "sell", value = OrderActivitySell::class),
-    JsonSubTypes.Type(name = "list", value = OrderActivityList::class),
-    JsonSubTypes.Type(name = "bid", value = OrderActivityBid::class),
-    JsonSubTypes.Type(name = "burn", value = NftActivityBurn::class),
-    JsonSubTypes.Type(name = "transfer", value = NftActivityTransfer::class),
-    JsonSubTypes.Type(name = "mint", value = NftActivityMint::class),
+    JsonSubTypes.Type(name = "sell", value = OrderActivitySellDto::class),
+    JsonSubTypes.Type(name = "list", value = OrderActivityListDto::class),
+    JsonSubTypes.Type(name = "bid", value = OrderActivityBidDto::class),
+    JsonSubTypes.Type(name = "burn", value = NftActivityBurnDto::class),
+    JsonSubTypes.Type(name = "transfer", value = NftActivityTransferDto::class),
+    JsonSubTypes.Type(name = "mint", value = NftActivityMintDto::class),
 )
-sealed class InnerOneOf {
+sealed class InnerOneOfDto {
     abstract val id : String?
     abstract val date : Instant?
     abstract val address : BigInteger?
 }
 
-//--------------- OrderActivity ---------------//
-sealed class OrderActivity : InnerOneOf() {
+//--------------- OrderActivityDto ---------------//
+sealed class OrderActivityDto : InnerOneOfDto() {
 }
 
-class OrderActivitySell (
+class OrderActivitySellDto (
     override val id : String?,
     override val date : Instant?,
     override val address : BigInteger?,
     val transactionHash : String?,
     val mode : Mode?,
-) : OrderActivity()  {
+) : OrderActivityDto()  {
 
     enum class Mode {
         FIRST,
@@ -41,13 +41,13 @@ class OrderActivitySell (
 
 }
 
-class OrderActivityList (
+class OrderActivityListDto (
     override val id : String?,
     override val date : Instant?,
     override val address : BigInteger?,
     val price : BigInteger?,
     val mode : Mode?,
-) : OrderActivity()  {
+) : OrderActivityDto()  {
 
     enum class Mode {
         FIRST,
@@ -57,22 +57,22 @@ class OrderActivityList (
 
 }
 
-class OrderActivityBid (
+class OrderActivityBidDto (
     override val id : String?,
     override val date : Instant?,
     override val address : BigInteger?,
     val price : BigInteger?,
-) : OrderActivity()
+) : OrderActivityDto()
 
 
-//--------------- NftActivity ---------------//
-sealed class NftActivity : InnerOneOf() {
+//--------------- NftActivityDto ---------------//
+sealed class NftActivityDto : InnerOneOfDto() {
     abstract val tokenId : BigInteger?
     abstract val value : BigInteger?
     abstract val transactionHash : String?
 }
 
-class NftActivityBurn (
+class NftActivityBurnDto (
     override val id : String?,
     override val date : Instant?,
     override val address : BigInteger?,
@@ -81,7 +81,7 @@ class NftActivityBurn (
     override val transactionHash : String?,
     val burn : String?,
     val mode : Mode?,
-) : NftActivity()  {
+) : NftActivityDto()  {
 
     enum class Mode {
         FIRST,
@@ -91,7 +91,7 @@ class NftActivityBurn (
 
 }
 
-class NftActivityTransfer (
+class NftActivityTransferDto (
     override val id : String?,
     override val date : Instant?,
     override val address : BigInteger?,
@@ -99,15 +99,15 @@ class NftActivityTransfer (
     override val value : BigInteger?,
     override val transactionHash : String?,
     val from : String?,
-) : NftActivity()
+) : NftActivityDto()
 
-class NftActivityMint (
+class NftActivityMintDto (
     override val id : String?,
     override val date : Instant?,
     override val address : BigInteger?,
     override val tokenId : BigInteger?,
     override val value : BigInteger?,
     override val transactionHash : String?,
-) : NftActivity()
+) : NftActivityDto()
 
 

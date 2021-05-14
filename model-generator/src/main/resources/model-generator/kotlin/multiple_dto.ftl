@@ -16,27 +16,27 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     JsonSubTypes.Type(name = "${enum}", value = ${type}::class),
 </#list>
 )
-sealed class ${name} {
+sealed class ${simpleClassName} {
 <#list fields![] as field>
     <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>
 </#list>
 }
 
 <#list subclasses![] as subclass>
-    <#lt>//--------------- ${subclass.name} ---------------//
+    <#lt>//--------------- ${subclass.simpleClassName} ---------------//
     <#if subclass.subclasses?has_content>
-        <#lt>sealed class ${subclass.name} : ${name}() {
+        <#lt>sealed class ${subclass.simpleClassName} : ${simpleClassName}() {
         <#list subclass.fields![] as field>
             <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>
         </#list>
         <#lt>}
 
         <#list subclass.subclasses![] as subsubclass>
-            <#lt>class ${subsubclass.name} (
+            <#lt>class ${subsubclass.simpleClassName} (
             <#list subsubclass.fields![] as field>
                 <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>,
             </#list>
-            <#lt>) : ${subclass.name}() <#if subsubclass.enums?has_content> {
+            <#lt>) : ${subclass.simpleClassName}() <#if subsubclass.enums?has_content> {
 
             <#list subsubclass.enums![] as enum>
                 <#lt>    enum class ${enum.name} {
@@ -54,11 +54,11 @@ sealed class ${name} {
         </#if>
         </#list>
     <#else>
-        <#lt>class ${subclass.name} (
+        <#lt>class ${subclass.simpleClassName} (
         <#list subclass.fields![] as field>
             <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>,
         </#list>
-        <#lt>) : ${name}()<#if subclass.enums?has_content> {
+        <#lt>) : ${simpleClassName}()<#if subclass.enums?has_content> {
 
         <#list subclass.enums![] as enum>
             <#lt>    enum class ${enum.name} {

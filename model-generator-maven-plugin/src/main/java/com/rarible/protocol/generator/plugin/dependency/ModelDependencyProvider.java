@@ -5,6 +5,7 @@ import com.rarible.protocol.generator.QualifierGenerator;
 import com.rarible.protocol.generator.TypeMapper;
 import com.rarible.protocol.generator.TypeMapperFactory;
 import com.rarible.protocol.generator.component.GeneratedComponent;
+import com.rarible.protocol.generator.plugin.Folders;
 import com.rarible.protocol.generator.plugin.config.DependencyConfig;
 import com.rarible.protocol.generator.plugin.mapper.TypeMapperSettings;
 import com.rarible.protocol.generator.type.ProvidedTypeStreamReader;
@@ -32,10 +33,6 @@ public class ModelDependencyProvider {
     private final String jarFile;
     private final String schemaFile;
     private final String defaultSchemaFile;
-    private final String primitiveTypesFile;
-    private final String defaultPrimitiveTypesFile;
-    private final String providedTypesFile;
-    private final String defaultProvidedTypesFile;
 
     private final QualifierGenerator qualifierGenerator;
     private final TypeMapperFactory typeMapperFactory;
@@ -50,14 +47,6 @@ public class ModelDependencyProvider {
         this.jarFile = dependency.getJarFile();
         this.schemaFile = dependency.getSchemaFile();
         this.defaultSchemaFile = typeMapperSettings.getDefaultSchemaPath();
-
-        String lang = generatorFactory.getLang();
-        this.primitiveTypesFile = dependency.getPrimitiveTypesFile();
-        this.defaultPrimitiveTypesFile = "model-generator/" + lang + "/primitives.json";
-
-        this.providedTypesFile = dependency.getProvidedTypesFile();
-        this.defaultProvidedTypesFile = "model-generator/" + lang + "/provided.json";
-
         this.qualifierGenerator = generatorFactory.getQualifierGenerator();
         this.generatorFactory = generatorFactory;
         this.typeMapperFactory = typeMapperSettings.getTypeMapperFactory();
@@ -73,8 +62,12 @@ public class ModelDependencyProvider {
             Map<String, String> defaultPrimitiveTypes = generatorFactory.getDefaultPrimitiveTypesReader().getMapping();
             Map<String, String> defaultProvidedTypes = generatorFactory.getDefaultProvidedTypesReader().getMapping();
 
-            defaultPrimitiveTypes.putAll(readTypes(jar, primitiveTypesFile, defaultPrimitiveTypesFile));
-            defaultProvidedTypes.putAll(readTypes(jar, providedTypesFile, defaultProvidedTypesFile));
+            String lang = generatorFactory.getLang();
+            String primitiveTypesFile = Folders.getMergedPrimitiveTypesFileRelativePath(lang);
+            String providedTypesFile = Folders.getMergedProvidedTypesFileRelativePath(lang);
+
+            defaultPrimitiveTypes.putAll(readTypes(jar, primitiveTypesFile));
+            defaultProvidedTypes.putAll(readTypes(jar, providedTypesFile));
             log.debug("Primitive types (default included): " + defaultPrimitiveTypes);
             log.debug("Provided types (default included): " + defaultProvidedTypes);
 
@@ -136,26 +129,11 @@ public class ModelDependencyProvider {
         }
     }
 
-    private Map<String, String> readTypes(JarFile jar, String filePath, String defaultFilePath) throws IOException {
-        if (StringUtils.isBlank(filePath)) {
-            return readTypes(jar, defaultFilePath);
-        }
-        log.debug("Reading type mapping from: " + jar.getName() + " -> " + filePath);
-        ZipEntry zipEntry = jar.getEntry(filePath);
-        if (zipEntry == null) {
-            throw new IOException("Can't find file: " + jar.getName() + " -> " + filePath);
-        }
-
-        return readTypes(jar, zipEntry);
-    }
-
     private Map<String, String> readTypes(JarFile jar, String defaultFilePath) throws IOException {
-        log.debug("Custom path for type mapping not specified, reading default: "
-                + jar.getName() + " -> " + defaultFilePath);
-
+        log.debug("Reading type mapping from: " + jar.getName() + " -> " + defaultFilePath);
         ZipEntry zipEntry = jar.getEntry(defaultFilePath);
         if (zipEntry == null) {
-            log.debug("No default type mapping found in " + jar.getName() + " -> " + defaultFilePath);
+            log.debug("No type mapping found in " + jar.getName() + " -> " + defaultFilePath);
             return new HashMap<>();
         }
         return readTypes(jar, zipEntry);

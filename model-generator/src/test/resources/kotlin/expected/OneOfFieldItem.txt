@@ -7,20 +7,20 @@ import kotlin.String
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes(
-    JsonSubTypes.Type(name = "SUB_ITEM_1", value = OneOfFieldSubItem1::class),
-    JsonSubTypes.Type(name = "SUB_ITEM_2", value = OneOfFieldSubItem2::class),
+    JsonSubTypes.Type(name = "SUB_ITEM_1", value = OneOfFieldSubItem1Dto::class),
+    JsonSubTypes.Type(name = "SUB_ITEM_2", value = OneOfFieldSubItem2Dto::class),
 )
-sealed class OneOfFieldItem {
+sealed class OneOfFieldItemDto {
 }
 
-//--------------- OneOfFieldSubItem1 ---------------//
-class OneOfFieldSubItem1 (
+//--------------- OneOfFieldSubItem1Dto ---------------//
+class OneOfFieldSubItem1Dto (
     val id : Integer,
     val name : String,
-) : OneOfFieldItem()
+) : OneOfFieldItemDto()
 
-//--------------- OneOfFieldSubItem2 ---------------//
-class OneOfFieldSubItem2 (
+//--------------- OneOfFieldSubItem2Dto ---------------//
+class OneOfFieldSubItem2Dto (
     val id : Integer,
-) : OneOfFieldItem()
+) : OneOfFieldItemDto()
 
