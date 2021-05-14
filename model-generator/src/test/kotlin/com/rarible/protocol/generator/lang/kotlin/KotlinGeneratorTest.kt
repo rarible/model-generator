@@ -25,13 +25,15 @@ internal class KotlinGeneratorTest {
     // For manual testing only
     @Test
     fun generateFiles() {
-//        generateAsFiles("test_inner_oneof.yaml", withInheritance)
-//        generateAsFiles("test_single_primitives.yaml", withoutInheritance)
-//        generateAsFiles("test_single_several_classes.yaml", withoutInheritance)
-//        generateAsFiles("test_single_provided_types.yaml", withoutInheritance)
-//        generateAsFiles("test_mixed.yaml", withoutInheritance)
-//        generateAsFiles("test_multiple_with_discriminator.yaml", withInheritance)
-//        generateAsFiles("test_multiple_without_inheritance.yaml", withoutInheritance)
+        generateAsFiles("test_single_primitives.yaml", withoutInheritance)
+        generateAsFiles("test_single_several_classes.yaml", withoutInheritance)
+        generateAsFiles("test_single_provided_types.yaml", withoutInheritance)
+        generateAsFiles("test_multiple_with_discriminator.yaml", withInheritance)
+        generateAsFiles("test_multiple_without_inheritance.yaml", withoutInheritance)
+        generateAsFiles("test_refs.yaml", withInheritance)
+        generateAsFiles("test_mixed.yaml", withoutInheritance)
+        generateAsFiles("test_oneof_as_field.yaml", withoutInheritance)
+        generateAsFiles("test_inner_oneof.yaml", withInheritance)
     }
 
     @Test
@@ -64,14 +66,15 @@ internal class KotlinGeneratorTest {
         verifyGeneratedClasses(generateAsStrings("test_refs.yaml", withInheritance))
     }
 
-    @Test
-    fun `test oneOf used as field of another class`() {
-        verifyGeneratedClasses(generateAsStrings("test_oneof_as_field.yaml", withoutInheritance))
-    }
 
     @Test
     fun `test mixed classes with oneOf and enums`() {
         verifyGeneratedClasses(generateAsStrings("test_mixed.yaml", withInheritance))
+    }
+
+    @Test
+    fun `test oneOf used as field of another class`() {
+        verifyGeneratedClasses(generateAsStrings("test_oneof_as_field.yaml", withoutInheritance))
     }
 
     @Test

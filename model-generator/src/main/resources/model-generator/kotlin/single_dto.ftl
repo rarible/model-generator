@@ -4,7 +4,7 @@ package ${package}
     <#lt>import ${import}
 </#list>
 
-data class ${name} (
+data class ${simpleClassName} (
 <#list fields![] as field>
     <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>,
 </#list>

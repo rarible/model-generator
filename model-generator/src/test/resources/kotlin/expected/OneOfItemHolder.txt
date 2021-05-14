@@ -1,9 +1,9 @@
 package com.rarible.test
 
-import com.rarible.test.OneOfFieldItem
+import com.rarible.test.OneOfFieldItemDto
 import java.lang.Integer
 
-data class OneOfItemHolder (
+data class OneOfItemHolderDto (
     val id : Integer,
-    val oneof : OneOfFieldItem?,
+    val oneof : OneOfFieldItemDto?,
 )

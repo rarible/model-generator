@@ -7,20 +7,20 @@ import kotlin.String
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes(
-    JsonSubTypes.Type(name = "SUB_ITEM_1", value = MultipleWithoutInheritanceSubItem1::class),
-    JsonSubTypes.Type(name = "SUB_ITEM_2", value = MultipleWithoutInheritanceSubItem2::class),
+    JsonSubTypes.Type(name = "SUB_ITEM_1", value = MultipleWithoutInheritanceSubItem1Dto::class),
+    JsonSubTypes.Type(name = "SUB_ITEM_2", value = MultipleWithoutInheritanceSubItem2Dto::class),
 )
-sealed class MultipleWithoutInheritanceItem {
+sealed class MultipleWithoutInheritanceItemDto {
 }
 
-//--------------- MultipleWithoutInheritanceSubItem1 ---------------//
-class MultipleWithoutInheritanceSubItem1 (
+//--------------- MultipleWithoutInheritanceSubItem1Dto ---------------//
+class MultipleWithoutInheritanceSubItem1Dto (
     val id : Integer,
     val name : String,
-) : MultipleWithoutInheritanceItem()
+) : MultipleWithoutInheritanceItemDto()
 
-//--------------- MultipleWithoutInheritanceSubItem2 ---------------//
-class MultipleWithoutInheritanceSubItem2 (
+//--------------- MultipleWithoutInheritanceSubItem2Dto ---------------//
+class MultipleWithoutInheritanceSubItem2Dto (
     val id : Integer,
-) : MultipleWithoutInheritanceItem()
+) : MultipleWithoutInheritanceItemDto()
 

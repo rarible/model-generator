@@ -11,7 +11,7 @@ class KotlinGeneratorFactory(
     private val withInheritance: Boolean
 ) : AbstractGeneratorFactory() {
 
-    private val qualifierGenerator: QualifierGenerator = QualifierGenerator { "$packageName.$it" }
+    private val qualifierGenerator: QualifierGenerator = QualifierGenerator { "$packageName.${it}Dto" }
 
     override fun getGeneratorWithDefaultTypes(
         primitiveTypesFileReader: ProvidedTypeReader,

@@ -3,7 +3,7 @@ package com.rarible.test
 import kotlin.String
 import kotlin.collections.List
 
-data class SingleSeveralClassesItem3 (
+data class SingleSeveralClassesItem3Dto (
     val id : String,
     val modes : List<Modes>,
 ) {

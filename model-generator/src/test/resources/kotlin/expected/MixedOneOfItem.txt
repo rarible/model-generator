@@ -2,25 +2,25 @@ package com.rarible.test
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.rarible.test.MixedPart
+import com.rarible.test.MixedPartDto
 import kotlin.String
 import kotlin.collections.List
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes(
-    JsonSubTypes.Type(name = "SUB_ITEM_1", value = MixedSubItem1::class),
-    JsonSubTypes.Type(name = "SUB_ITEM_2", value = MixedSubItem2::class),
+    JsonSubTypes.Type(name = "SUB_ITEM_1", value = MixedSubItem1Dto::class),
+    JsonSubTypes.Type(name = "SUB_ITEM_2", value = MixedSubItem2Dto::class),
 )
-sealed class MixedOneOfItem {
-    abstract val parts : List<MixedPart>
+sealed class MixedOneOfItemDto {
+    abstract val parts : List<MixedPartDto>
 }
 
-//--------------- MixedSubItem1 ---------------//
-class MixedSubItem1 (
-    override val parts : List<MixedPart>,
+//--------------- MixedSubItem1Dto ---------------//
+class MixedSubItem1Dto (
+    override val parts : List<MixedPartDto>,
     val modes : List<Modes>,
     val features : List<Features>?,
-) : MixedOneOfItem() {
+) : MixedOneOfItemDto() {
 
     enum class Modes {
         ONE,
@@ -38,11 +38,11 @@ class MixedSubItem1 (
 
 }
 
-//--------------- MixedSubItem2 ---------------//
-class MixedSubItem2 (
-    override val parts : List<MixedPart>,
+//--------------- MixedSubItem2Dto ---------------//
+class MixedSubItem2Dto (
+    override val parts : List<MixedPartDto>,
     val dataType : DataType?,
-) : MixedOneOfItem() {
+) : MixedOneOfItemDto() {
 
     enum class DataType {
         LEGACY,

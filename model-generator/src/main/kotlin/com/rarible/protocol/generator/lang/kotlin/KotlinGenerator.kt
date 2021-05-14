@@ -84,7 +84,7 @@ class KotlinGenerator(
 
     private fun getOutFile(kotlinClass: KotlinClass, outputFolder: Path): File {
         val packageFolder = kotlinClass.packageName.replace('.', '/') + "/"
-        val classFileRelativePath = packageFolder + kotlinClass.name + ".kt"
+        val classFileRelativePath = packageFolder + kotlinClass.simpleClassName + ".kt"
         val outFile = outputFolder.resolve(classFileRelativePath).toFile()
         outFile.parentFile.mkdirs()
         return outFile
@@ -127,6 +127,7 @@ class KotlinGenerator(
 
     private fun fillKotlinClassModel(model: HashMap<String, Any>, kotlinClass: KotlinClass) {
         model["name"] = kotlinClass.name
+        model["simpleClassName"] = kotlinClass.simpleClassName
         model["package"] = kotlinClass.packageName
         model["imports"] = kotlinClass.imports
         model["fields"] = kotlinClass.fields

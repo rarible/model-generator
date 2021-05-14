@@ -1,11 +1,11 @@
 package com.rarible.test
 
-import com.rarible.test.RefItem
+import com.rarible.test.RefItemDto
 import kotlin.String
 
-data class RefItemRoot (
+data class RefItemRootDto (
     val name : String,
     val description : String?,
-    val image : RefItem?,
-    val animation : RefItem?,
+    val image : RefItemDto?,
+    val animation : RefItemDto?,
 )

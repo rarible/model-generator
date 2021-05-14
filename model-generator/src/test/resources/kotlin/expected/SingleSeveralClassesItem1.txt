@@ -3,7 +3,7 @@ package com.rarible.test
 import java.lang.Long
 import kotlin.String
 
-data class SingleSeveralClassesItem1 (
+data class SingleSeveralClassesItem1Dto (
     val id : Long,
     val name : String,
 )

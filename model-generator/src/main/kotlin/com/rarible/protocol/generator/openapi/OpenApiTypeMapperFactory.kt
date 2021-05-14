@@ -41,7 +41,7 @@ class OpenApiTypeMapperFactory : TypeMapperFactory {
     private fun mergeOrSet(root: ObjectNode, ext: ObjectNode, fieldName: String) {
         val mainField = root.get(fieldName)
         val extField = ext.get(fieldName)
-        if (mainField != null) {
+        if (mainField != null && !mainField.isNull) {
             mergeObjectFields(mainField, extField)
         } else if (extField != null) {
             root.set<JsonNode>(fieldName, extField)

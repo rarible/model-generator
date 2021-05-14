@@ -1,10 +1,10 @@
 package com.rarible.test
 
-import com.rarible.test.RefItemMeta
+import com.rarible.test.RefItemMetaDto
 import kotlin.String
 import kotlin.collections.Map
 
-data class RefItem (
+data class RefItemDto (
     val url : Map<String, String>,
-    val meta : Map<String, RefItemMeta>,
+    val meta : Map<String, RefItemMetaDto>,
 )

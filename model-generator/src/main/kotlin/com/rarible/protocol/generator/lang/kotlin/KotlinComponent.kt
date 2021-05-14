@@ -33,7 +33,7 @@ class KotlinComponent(
     }
 
     private fun getKotlinSingleClass(oneOfEnum: String?): KotlinClass {
-        return KotlinClass(getName(), getPackage(), getImports(), getFields(oneOfEnum))
+        return KotlinClass(getName(), definition.qualifier, getImports(), getFields(oneOfEnum))
     }
 
     fun getKotlinMultipleClass(withInheritance: Boolean): KotlinMultipleClass {
@@ -62,7 +62,7 @@ class KotlinComponent(
             } else {
                 val kotlinClass = subcomponent.getKotlinSingleClass(discriminatorFieldName)
                 applyInheritance(kotlinClass, commonFields.keys)
-                oneOfMapping[kotlinClass.name] = subcomponent.getOneOfEnum(discriminatorFieldName)
+                oneOfMapping[kotlinClass.simpleClassName] = subcomponent.getOneOfEnum(discriminatorFieldName)
                 subclasses.add(kotlinClass)
             }
         }
@@ -71,7 +71,7 @@ class KotlinComponent(
 
         return KotlinMultipleClass(
             getName(),
-            getPackage(),
+            definition.qualifier,
             imports,
             ArrayList(commonFields.values),
             subclasses,
@@ -198,10 +198,6 @@ class KotlinComponent(
 
     private fun getSimpleClassName(fullClassName: String): String {
         return fullClassName.substringAfterLast('.')
-    }
-
-    private fun getPackage(): String {
-        return definition.qualifier.substringBeforeLast('.')
     }
 
     private fun getName(): String {
