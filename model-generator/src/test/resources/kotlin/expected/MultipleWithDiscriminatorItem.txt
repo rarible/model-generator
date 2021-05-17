@@ -2,7 +2,7 @@ package com.rarible.test
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import java.lang.Integer
+import kotlin.Int
 import kotlin.String
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "assetClass", visible=true)
@@ -20,6 +20,6 @@ class MultipleWithDiscriminatorSubItem1Dto (
 
 //--------------- MultipleWithDiscriminatorSubItem2Dto ---------------//
 class MultipleWithDiscriminatorSubItem2Dto (
-    val id : Integer
+    val id : Int
 ) : MultipleWithDiscriminatorItemDto()
 

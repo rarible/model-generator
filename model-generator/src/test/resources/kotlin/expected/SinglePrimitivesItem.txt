@@ -1,8 +1,8 @@
 package com.rarible.test
 
-import java.lang.Integer
-import java.lang.Long
 import java.time.Instant
+import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
@@ -10,8 +10,8 @@ import kotlin.collections.Map
 data class SinglePrimitivesItemDto (
     val id : Long,
     val name : String,
-    val index : Integer,
-    val count : Integer,
+    val index : Int,
+    val count : Int,
     val date : Instant?,
     val strings : List<String>?,
     val longs : List<Long>?,

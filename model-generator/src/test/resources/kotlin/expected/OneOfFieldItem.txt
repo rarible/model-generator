@@ -2,7 +2,7 @@ package com.rarible.test
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import java.lang.Integer
+import kotlin.Int
 import kotlin.String
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
@@ -15,12 +15,12 @@ sealed class OneOfFieldItemDto {
 
 //--------------- OneOfFieldSubItem1Dto ---------------//
 class OneOfFieldSubItem1Dto (
-    val id : Integer,
+    val id : Int,
     val name : String
 ) : OneOfFieldItemDto()
 
 //--------------- OneOfFieldSubItem2Dto ---------------//
 class OneOfFieldSubItem2Dto (
-    val id : Integer
+    val id : Int
 ) : OneOfFieldItemDto()
 

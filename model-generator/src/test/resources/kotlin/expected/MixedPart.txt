@@ -1,9 +1,9 @@
 package com.rarible.test
 
-import java.lang.Integer
 import java.math.BigInteger
+import kotlin.Int
 
 data class MixedPartDto (
     val partId : BigInteger,
-    val partValue : Integer
+    val partValue : Int
 )

@@ -3,8 +3,8 @@
   "array": "kotlin.collections.List",
   "boolean": "java.lang.Boolean",
   "string": "kotlin.String",
-  "integer": "java.lang.Integer",
-  "integer:int32": "java.lang.Integer",
-  "integer:int64": "java.lang.Long",
+  "integer": "kotlin.Int",
+  "integer:int32": "kotlin.Int",
+  "integer:int64": "kotlin.Long",
   "string:date-time": "java.time.Instant"
 }

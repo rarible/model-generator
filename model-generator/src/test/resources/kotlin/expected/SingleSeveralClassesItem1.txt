@@ -1,6 +1,6 @@
 package com.rarible.test
 
-import java.lang.Long
+import kotlin.Long
 import kotlin.String
 
 data class SingleSeveralClassesItem1Dto (

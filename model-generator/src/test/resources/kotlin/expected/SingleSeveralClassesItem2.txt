@@ -1,10 +1,10 @@
 package com.rarible.test
 
-import java.lang.Integer
+import kotlin.Int
 import kotlin.String
 
 data class SingleSeveralClassesItem2Dto (
-    val id : Integer,
+    val id : Int,
     val type : Type?
 ) {
 
