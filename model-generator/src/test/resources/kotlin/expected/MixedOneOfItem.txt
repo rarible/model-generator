@@ -9,7 +9,7 @@ import kotlin.collections.List
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes(
     JsonSubTypes.Type(name = "SUB_ITEM_1", value = MixedSubItem1Dto::class),
-    JsonSubTypes.Type(name = "SUB_ITEM_2", value = MixedSubItem2Dto::class),
+    JsonSubTypes.Type(name = "SUB_ITEM_2", value = MixedSubItem2Dto::class)
 )
 sealed class MixedOneOfItemDto {
     abstract val parts : List<MixedPartDto>
@@ -19,13 +19,13 @@ sealed class MixedOneOfItemDto {
 class MixedSubItem1Dto (
     override val parts : List<MixedPartDto>,
     val modes : List<Modes>,
-    val features : List<Features>?,
+    val features : List<Features>?
 ) : MixedOneOfItemDto() {
 
     enum class Modes {
         ONE,
         TWO,
-        THREE,
+        THREE
     }
 
     enum class Features {
@@ -33,7 +33,7 @@ class MixedSubItem1Dto (
         SET_URI_PREFIX,
         BURN,
         MINT_WITH_ADDRESS,
-        SECONDARY_SALE_FEES,
+        SECONDARY_SALE_FEES
     }
 
 }
@@ -41,12 +41,12 @@ class MixedSubItem1Dto (
 //--------------- MixedSubItem2Dto ---------------//
 class MixedSubItem2Dto (
     override val parts : List<MixedPartDto>,
-    val dataType : DataType?,
+    val dataType : DataType?
 ) : MixedOneOfItemDto() {
 
     enum class DataType {
         LEGACY,
-        MODERN,
+        MODERN
     }
 
 }

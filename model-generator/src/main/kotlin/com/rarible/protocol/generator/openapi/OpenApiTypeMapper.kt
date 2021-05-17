@@ -67,7 +67,6 @@ class OpenApiTypeMapper(
     }
 
     private fun getDiscriminator(component: OpenApiComponent): Discriminator? {
-        var discriminator: Discriminator? = null
         // Gathering GeneratedComponentDefinitions for OneOf list
         if (!component.isOneOf()) {
             return null
@@ -108,7 +107,7 @@ class OpenApiTypeMapper(
             } else {
                 fieldGenericTypes = listOf(getOrCreateDefinition(field.getArrayComponent()))
             }
-        } else if (field.isReference()) {
+        } else if (field.isCreatingReference() || generatedComponents.containsKey(field.getReferencedSchemaName())) {
             fieldTypeDefinition = getOrCreateDefinition(field.getComponent())
         } else if (field.isMap()) {
             fieldTypeDefinition = primitiveTypeMapper.getDefinition("map")

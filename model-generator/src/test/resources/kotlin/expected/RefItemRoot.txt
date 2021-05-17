@@ -7,5 +7,5 @@ data class RefItemRootDto (
     val name : String,
     val description : String?,
     val image : RefItemDto?,
-    val animation : RefItemDto?,
+    val animation : RefItemDto?
 )

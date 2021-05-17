@@ -4,7 +4,6 @@ import com.rarible.protocol.generator.component.ComponentField
 import com.rarible.protocol.generator.component.Discriminator
 import com.rarible.protocol.generator.component.GeneratedComponent
 import com.rarible.protocol.generator.exception.IllegalOperationException
-import com.rarible.protocol.generator.exception.SchemaValidationException
 import org.apache.commons.lang3.StringUtils
 import java.util.*
 
@@ -29,41 +28,50 @@ class KotlinComponent(
     }
 
     fun getKotlinSingleClass(): KotlinClass {
-        return getKotlinSingleClass(null)
+        return getKotlinSingleClass(null, listOf())
     }
 
-    private fun getKotlinSingleClass(oneOfEnum: String?): KotlinClass {
-        return KotlinClass(getName(), definition.qualifier, getImports(), getFields(oneOfEnum))
+    private fun getKotlinSingleClass(oneOfEnum: String?, parentFields: Collection<KotlinField>): KotlinClass {
+        val allFields = ArrayList(parentFields.map { KotlinField(it.name, it.type, null, it.required) })
+        allFields.addAll(getFields(oneOfEnum))
+        return KotlinClass(
+            getName(),
+            definition.qualifier,
+            getImports(),
+            allFields
+        )
     }
 
-    fun getKotlinMultipleClass(withInheritance: Boolean): KotlinMultipleClass {
-        return getKotlinMultipleClass(withInheritance, mapOf())
+    fun getKotlinMultipleClass(): KotlinMultipleClass {
+        return getKotlinMultipleClass(mapOf())
     }
 
     private fun getKotlinMultipleClass(
-        withInheritance: Boolean,
         parentFields: Map<String, KotlinField>
     ): KotlinMultipleClass {
         val discriminatorFieldName = getDiscriminator().fieldName
         val subcomponents = getOneOfComponents().map { KotlinComponent(it) }
-        val leafSubcomponents = getAllOneOfComponents().map { KotlinComponent(it) }.filter { !it.isOneOf() }
         val imports = TreeSet(subcomponents.flatMap { it.getImports() })
+        imports.addAll(getImports())
 
-        val commonFields = if (withInheritance) getCommonFields(leafSubcomponents) else mutableMapOf()
+        val commonFields = LinkedHashMap(getFields(discriminatorFieldName).associateBy { it.name })
+        commonFields.values.forEach { it.abstract = true }
+        commonFields.putAll(parentFields)
 
         val subclasses = ArrayList<KotlinClass>()
         val oneOfMapping = LinkedHashMap<String, String>()
         for (subcomponent in subcomponents) {
             if (subcomponent.isOneOf()) {
-                val kotlinClass = subcomponent.getKotlinMultipleClass(withInheritance, commonFields)
+                val kotlinClass = subcomponent.getKotlinMultipleClass(commonFields)
                 subclasses.add(kotlinClass)
                 imports.addAll(kotlinClass.imports)
                 oneOfMapping.putAll(kotlinClass.oneOfMapping)
             } else {
-                val kotlinClass = subcomponent.getKotlinSingleClass(discriminatorFieldName)
+                val kotlinClass = subcomponent.getKotlinSingleClass(discriminatorFieldName, commonFields.values)
                 applyInheritance(kotlinClass, commonFields.keys)
                 oneOfMapping[kotlinClass.simpleClassName] = subcomponent.getOneOfEnum(discriminatorFieldName)
                 subclasses.add(kotlinClass)
+                imports.addAll(kotlinClass.imports)
             }
         }
 
@@ -117,7 +125,7 @@ class KotlinComponent(
             if (!field.name.startsWith("@") && field.name != discriminatorFieldName) {
                 var kotlinEnum: KotlinEnum? = null
                 var filedType: String?
-                if (discriminatorFieldName != field.name && field.enumValues.isNotEmpty()) {
+                if (field.enumValues.isNotEmpty()) {
                     kotlinEnum = KotlinEnum(
                         field.name.capitalize(),
                         field.enumValues
@@ -144,44 +152,6 @@ class KotlinComponent(
         return result
     }
 
-    private fun getCommonFields(
-        subcomponents: Collection<KotlinComponent>
-    ): MutableMap<String, KotlinField> {
-        val discriminatorFieldName = getDiscriminator().fieldName
-        val commonFields = LinkedHashMap<String, KotlinField>()
-
-        val componentFieldNames = ArrayList<Set<String>>()
-
-        // Have no idea how to find common fields in several collections in better way
-        var intersectedFields: MutableSet<String> = HashSet()
-        for (definition in subcomponents) {
-            val fieldNames = HashSet(definition.getFields(discriminatorFieldName).map { it.name })
-            componentFieldNames.add(fieldNames)
-            intersectedFields.addAll(fieldNames)
-        }
-        for (fieldSet in componentFieldNames) {
-            intersectedFields = HashSet(intersectedFields.intersect(fieldSet))
-        }
-
-        for (definition in subcomponents) {
-            val fields = definition.getFields(discriminatorFieldName)
-            for (field in fields) {
-                if (intersectedFields.contains(field.name)) {
-                    val exist = commonFields[field.name]
-                    if (exist != null && field != exist) {
-                        throw SchemaValidationException(
-                            "Common field '${field.name}' type defined differently " +
-                                    "in oneOf DTOs: $exist != $field"
-                        )
-                    }
-                    commonFields[field.name] = field
-                }
-            }
-        }
-        commonFields.values.forEach { it.abstract = true }
-        return commonFields
-    }
-
     private fun getFieldType(field: ComponentField): String {
         var result = getSimpleClassName(field.type.qualifier)
         if (field.genericTypes.isNotEmpty()) {
@@ -203,4 +173,5 @@ class KotlinComponent(
     private fun getName(): String {
         return definition.name
     }
+
 }

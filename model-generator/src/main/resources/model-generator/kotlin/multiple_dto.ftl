@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 </#if>
 @JsonSubTypes(
 <#list oneOf![] as type, enum>
-    JsonSubTypes.Type(name = "${enum}", value = ${type}::class),
+    JsonSubTypes.Type(name = "${enum}", value = ${type}::class)<#if type?has_next>,</#if>
 </#list>
 )
 sealed class ${simpleClassName} {
@@ -29,19 +29,28 @@ sealed class ${simpleClassName} {
         <#list subclass.fields![] as field>
             <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>
         </#list>
+        <#list subclass.enums![] as enum>
+
+            <#lt>    enum class ${enum.name} {
+            <#list enum.values![] as value>
+                <#lt>        ${value}<#if value?has_next>,</#if>
+            </#list>
+            <#lt>    }
+
+        </#list>
         <#lt>}
 
         <#list subclass.subclasses![] as subsubclass>
             <#lt>class ${subsubclass.simpleClassName} (
             <#list subsubclass.fields![] as field>
-                <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>,
+                <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if><#if field?has_next>,</#if>
             </#list>
             <#lt>) : ${subclass.simpleClassName}() <#if subsubclass.enums?has_content> {
 
             <#list subsubclass.enums![] as enum>
                 <#lt>    enum class ${enum.name} {
                 <#list enum.values![] as value>
-                    <#lt>        ${value},
+                    <#lt>        ${value}<#if value?has_next>,</#if>
                 </#list>
                 <#lt>    }
 
@@ -56,14 +65,14 @@ sealed class ${simpleClassName} {
     <#else>
         <#lt>class ${subclass.simpleClassName} (
         <#list subclass.fields![] as field>
-            <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>,
+            <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if><#if field?has_next>,</#if>
         </#list>
         <#lt>) : ${simpleClassName}()<#if subclass.enums?has_content> {
 
         <#list subclass.enums![] as enum>
             <#lt>    enum class ${enum.name} {
             <#list enum.values![] as value>
-                <#lt>        ${value},
+                <#lt>        ${value}<#if value?has_next>,</#if>
             </#list>
             <#lt>    }
 

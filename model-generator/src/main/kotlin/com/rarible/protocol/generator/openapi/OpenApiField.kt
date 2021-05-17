@@ -17,7 +17,7 @@ class OpenApiField(
 
     init {
         // Case when reference is OneOf
-        if (isReference() && fieldSchema.type == null) {
+        if (isCreatingReference() && fieldSchema.type == null) {
             type = "object"
         } else {
             type = fieldSchema.type
@@ -39,15 +39,16 @@ class OpenApiField(
         return enumValues[0]
     }
 
-    fun isReference(): Boolean {
-        // The only way to define our type is referenced, not primitive
+    fun getReferencedSchemaName(): String {
+        return fieldSchema.name
+    }
+
+    fun isCreatingReference(): Boolean {
+        // Returns true if type is reference, but reference is not created yet
         return ((fieldSchema as SchemaImpl)._getCreatingRef() != null)
     }
 
     fun getComponent(): OpenApiComponent {
-        if (!isReference()) {
-            throw IllegalOperationException("Field '$name' if not a referenced type")
-        }
         return OpenApiComponent(fieldSchema)
     }
 

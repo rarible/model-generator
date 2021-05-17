@@ -6,5 +6,5 @@ import kotlin.collections.Map
 
 data class RefItemDto (
     val url : Map<String, String>,
-    val meta : Map<String, RefItemMetaDto>,
+    val meta : Map<String, RefItemMetaDto>
 )

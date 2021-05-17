@@ -6,7 +6,7 @@
     <artifactId>model-generator-parent</artifactId>
     <groupId>com.rarible.protocol</groupId>
     <packaging>pom</packaging>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
 
     <distributionManagement>
         <repository>
@@ -22,7 +22,11 @@
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <dir.src.generated>${basedir}/target/generated-sources</dir.src.generated>
+        <dir.src.generated>${basedir}/target/generated-sources/rarible</dir.src.generated>
+        <dir.src.generated.kotlin>${dir.src.generated}/src/main/kotlin</dir.src.generated.kotlin>
+        <dir.src.generated.java>${dir.src.generated}/src/main/java</dir.src.generated.java>
+        <dir.src.generated.kotlin.test>${dir.src.generated}/src/test/kotlin</dir.src.generated.kotlin.test>
+        <dir.src.generated.java.test>${dir.src.generated}/src/test/java</dir.src.generated.java.test>
         <dir.src.kotlin>${project.basedir}/src/main/kotlin</dir.src.kotlin>
         <dir.src.java>${project.basedir}/src/main/java</dir.src.java>
         <dir.src.kotlin.test>${project.basedir}/src/test/kotlin</dir.src.kotlin.test>
@@ -165,7 +169,8 @@
                                 <sourceDirs>
                                     <sourceDir>${dir.src.kotlin}</sourceDir>
                                     <sourceDir>${dir.src.java}</sourceDir>
-                                    <sourceDir>${dir.src.generated}</sourceDir>
+                                    <sourceDir>${dir.src.generated.kotlin}</sourceDir>
+                                    <sourceDir>${dir.src.generated.java}</sourceDir>
                                 </sourceDirs>
                             </configuration>
                         </execution>
@@ -178,7 +183,8 @@
                                 <sourceDirs>
                                     <sourceDir>${dir.src.kotlin.test}</sourceDir>
                                     <sourceDir>${dir.src.java.test}</sourceDir>
-                                    <sourceDir>${dir.src.generated}</sourceDir>
+                                    <sourceDir>${dir.src.generated.kotlin.test}</sourceDir>
+                                    <sourceDir>${dir.src.generated.java.test}</sourceDir>
                                 </sourceDirs>
                             </configuration>
                         </execution>
@@ -283,7 +289,9 @@
                         <configuration>
                             <sources>
                                 <source>${dir.src.kotlin}</source>
-                                <source>${dir.src.generated}</source>
+                                <source>${dir.src.java}</source>
+                                <source>${dir.src.generated.kotlin}</source>
+                                <source>${dir.src.generated.java}</source>
                             </sources>
                         </configuration>
                     </execution>

@@ -79,10 +79,10 @@ public class ModelGeneratorTask {
 
     private void checkOutputDirs() {
         if (StringUtils.isBlank(modelOutputDirectory)) {
-            modelOutputDirectory = new File(project.getBasedir(), "target/generated-sources").toString();
+            modelOutputDirectory = Folders.getDefaultGeneratedSourcesFolder(project.getBasedir(), lang).toString();
         }
         if (StringUtils.isBlank(schemaOutputDirectory)) {
-            schemaOutputDirectory = new File(project.getBasedir(), "target/classes").toString();
+            schemaOutputDirectory = Folders.getDefaultClassesFolder(project.getBasedir()).toString();
         }
 
         log.info("Directory for generated classes: " + modelOutputDirectory);

@@ -5,5 +5,5 @@ import java.lang.Integer
 
 data class OneOfItemHolderDto (
     val id : Integer,
-    val oneof : OneOfFieldItemDto?,
+    val oneof : OneOfFieldItemDto?
 )

@@ -8,18 +8,18 @@ import kotlin.String
 @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "assetClass", visible=true)
 @JsonSubTypes(
     JsonSubTypes.Type(name = "SUB_ITEM_1", value = MultipleWithDiscriminatorSubItem1Dto::class),
-    JsonSubTypes.Type(name = "SUB_ITEM_2", value = MultipleWithDiscriminatorSubItem2Dto::class),
+    JsonSubTypes.Type(name = "SUB_ITEM_2", value = MultipleWithDiscriminatorSubItem2Dto::class)
 )
 sealed class MultipleWithDiscriminatorItemDto {
 }
 
 //--------------- MultipleWithDiscriminatorSubItem1Dto ---------------//
 class MultipleWithDiscriminatorSubItem1Dto (
-    val name : String,
+    val name : String
 ) : MultipleWithDiscriminatorItemDto()
 
 //--------------- MultipleWithDiscriminatorSubItem2Dto ---------------//
 class MultipleWithDiscriminatorSubItem2Dto (
-    val id : Integer,
+    val id : Integer
 ) : MultipleWithDiscriminatorItemDto()
 

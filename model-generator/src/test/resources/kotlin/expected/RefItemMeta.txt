@@ -6,5 +6,5 @@ import kotlin.String
 data class RefItemMetaDto (
     val type : String,
     val width : Integer?,
-    val height : Integer?,
+    val height : Integer?
 )

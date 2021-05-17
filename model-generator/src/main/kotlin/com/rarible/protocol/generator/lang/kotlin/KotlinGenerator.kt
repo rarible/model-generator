@@ -20,8 +20,7 @@ class KotlinGenerator(
     private val primitiveTypesFileReader: ProvidedTypeReader,
     private val providedTypesFileReader: ProvidedTypeReader,
     typeMapperFactory: TypeMapperFactory,
-    private val qualifierGenerator: QualifierGenerator,
-    private val withInheritance: Boolean
+    private val qualifierGenerator: QualifierGenerator
 ) : AbstractGenerator(lang, typeMapperFactory) {
 
     private companion object {
@@ -66,7 +65,7 @@ class KotlinGenerator(
         for (rootDefinition in rootDefinitions) {
             val kotlinComponent = KotlinComponent(rootDefinition)
             if (kotlinComponent.isOneOf()) {
-                val kotlinClass = kotlinComponent.getKotlinMultipleClass(withInheritance)
+                val kotlinClass = kotlinComponent.getKotlinMultipleClass()
                 val text = generateMultipleClass(kotlinClass)
                 writer.write(kotlinClass, text, outputFolder)
             } else {

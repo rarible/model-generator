@@ -5,5 +5,5 @@ import java.math.BigInteger
 
 data class MixedPartDto (
     val partId : BigInteger,
-    val partValue : Integer,
+    val partValue : Integer
 )

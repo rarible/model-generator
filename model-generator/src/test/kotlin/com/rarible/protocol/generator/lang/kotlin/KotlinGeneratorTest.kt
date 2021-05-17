@@ -19,67 +19,59 @@ internal class KotlinGeneratorTest {
 
     private val outPath = Paths.get("target/generated-sources")
 
-    private val withInheritance: Generator = createDefaultGenerator(true)
-    private val withoutInheritance: Generator = createDefaultGenerator(false)
+    private val generator: Generator = createDefaultGenerator()
 
     // For manual testing only
-    @Test
+    //@Test
     fun generateFiles() {
-        generateAsFiles("test_single_primitives.yaml", withoutInheritance)
-        generateAsFiles("test_single_several_classes.yaml", withoutInheritance)
-        generateAsFiles("test_single_provided_types.yaml", withoutInheritance)
-        generateAsFiles("test_multiple_with_discriminator.yaml", withInheritance)
-        generateAsFiles("test_multiple_without_inheritance.yaml", withoutInheritance)
-        generateAsFiles("test_refs.yaml", withInheritance)
-        generateAsFiles("test_mixed.yaml", withoutInheritance)
-        generateAsFiles("test_oneof_as_field.yaml", withoutInheritance)
-        generateAsFiles("test_inner_oneof.yaml", withInheritance)
+        generateAsFiles("test_single_primitives.yaml", generator)
+        generateAsFiles("test_single_several_classes.yaml", generator)
+        generateAsFiles("test_single_provided_types.yaml", generator)
+        generateAsFiles("test_multiple_with_discriminator.yaml", generator)
+        generateAsFiles("test_refs.yaml", generator)
+        generateAsFiles("test_mixed.yaml", generator)
+        generateAsFiles("test_oneof_as_field.yaml", generator)
+        generateAsFiles("test_inner_oneof.yaml", generator)
     }
 
     @Test
     fun `test single class with primitive fields`() {
-        verifyGeneratedClasses(generateAsStrings("test_single_primitives.yaml", withInheritance))
+        verifyGeneratedClasses(generateAsStrings("test_single_primitives.yaml", generator))
     }
 
     @Test
     fun `test single classes with basic types`() {
-        verifyGeneratedClasses(generateAsStrings("test_single_several_classes.yaml", withInheritance))
+        verifyGeneratedClasses(generateAsStrings("test_single_several_classes.yaml", generator))
     }
 
     @Test
     fun `test single class with provided type`() {
-        verifyGeneratedClasses(generateAsStrings("test_single_provided_types.yaml", withInheritance))
+        verifyGeneratedClasses(generateAsStrings("test_single_provided_types.yaml", generator))
     }
 
     @Test
     fun `test oneOf with discriminator`() {
-        verifyGeneratedClasses(generateAsStrings("test_multiple_with_discriminator.yaml", withInheritance))
-    }
-
-    @Test
-    fun `test oneOf without inheritance`() {
-        verifyGeneratedClasses(generateAsStrings("test_multiple_without_inheritance.yaml", withoutInheritance))
+        verifyGeneratedClasses(generateAsStrings("test_multiple_with_discriminator.yaml", generator))
     }
 
     @Test
     fun `test class with inner refs as fields and map`() {
-        verifyGeneratedClasses(generateAsStrings("test_refs.yaml", withInheritance))
+        verifyGeneratedClasses(generateAsStrings("test_refs.yaml", generator))
     }
-
 
     @Test
     fun `test mixed classes with oneOf and enums`() {
-        verifyGeneratedClasses(generateAsStrings("test_mixed.yaml", withInheritance))
+        verifyGeneratedClasses(generateAsStrings("test_mixed.yaml", generator))
     }
 
     @Test
     fun `test oneOf used as field of another class`() {
-        verifyGeneratedClasses(generateAsStrings("test_oneof_as_field.yaml", withoutInheritance))
+        verifyGeneratedClasses(generateAsStrings("test_oneof_as_field.yaml", generator))
     }
 
     @Test
     fun `test oneOf with inner oneOf`() {
-        verifyGeneratedClasses(generateAsStrings("test_inner_oneof.yaml", withInheritance))
+        verifyGeneratedClasses(generateAsStrings("test_inner_oneof.yaml", generator))
     }
 
     private fun verifyGeneratedClasses(classes: Map<String, String>) {
@@ -109,10 +101,9 @@ internal class KotlinGeneratorTest {
         generator.generate(ymlPath, outPath)
     }
 
-    private fun createDefaultGenerator(withInheritance: Boolean): Generator {
+    private fun createDefaultGenerator(): Generator {
         val factory = KotlinGeneratorFactory(
-            "com.rarible.test",
-            withInheritance
+            "com.rarible.test"
         )
 
         return factory.getGenerator(primitiveReader, providedReader, OpenApiTypeMapperFactory())

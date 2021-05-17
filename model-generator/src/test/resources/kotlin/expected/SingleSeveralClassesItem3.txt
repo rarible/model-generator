@@ -5,13 +5,13 @@ import kotlin.collections.List
 
 data class SingleSeveralClassesItem3Dto (
     val id : String,
-    val modes : List<Modes>,
+    val modes : List<Modes>
 ) {
 
     enum class Modes {
         ONE,
         TWO,
-        THREE,
+        THREE
     }
 
 }

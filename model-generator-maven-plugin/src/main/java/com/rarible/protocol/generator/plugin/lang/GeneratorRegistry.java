@@ -25,9 +25,8 @@ public class GeneratorRegistry {
         if (packageName == null) {
             throw new MojoExecutionException("Property '" + PROPERTY_PACKAGE_NAME + "' not specified for Kotlin generator");
         }
-        Boolean withInheritance = Boolean.valueOf(properties.getProperty(PROPERTY_WITH_INHERITANCE, "false"));
 
-        return new KotlinGeneratorFactory(packageName, withInheritance);
+        return new KotlinGeneratorFactory(packageName);
     }
 
 }

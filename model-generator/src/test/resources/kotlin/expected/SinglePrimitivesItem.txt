@@ -19,29 +19,29 @@ data class SinglePrimitivesItemDto (
     val type : Type,
     val dataType : DataType?,
     val features : List<Features>?,
-    val modes : List<Modes>,
+    val modes : List<Modes>
 ) {
 
     enum class Type {
         ERC721,
-        ERC1155,
+        ERC1155
     }
 
     enum class DataType {
         LEGACY,
-        MODERN,
+        MODERN
     }
 
     enum class Features {
         APPROVE,
         BURN,
-        MINT,
+        MINT
     }
 
     enum class Modes {
         ONE,
         TWO,
-        THREE,
+        THREE
     }
 
 }

@@ -23,6 +23,13 @@ components:
           type: string
 
     MixedOneOfItem:
+      required:
+        - parts
+      properties:
+        parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/MixedPart'
       oneOf:
         - $ref: '#/components/schemas/MixedSubItem1'
         - $ref: '#/components/schemas/MixedSubItem2'
@@ -31,7 +38,6 @@ components:
       required:
         - '@type'
         - name
-        - parts
         - modes
       type: object
       properties:
@@ -39,10 +45,6 @@ components:
           type: string
           enum:
             - SUB_ITEM_1
-        parts:
-          type: array
-          items:
-            $ref: '#/components/schemas/MixedPart'
         modes:
           type: array
           items:
@@ -66,17 +68,12 @@ components:
       required:
         - '@type'
         - id
-        - parts
       type: object
       properties:
         '@type':
           type: string
           enum:
             - SUB_ITEM_2
-        parts:
-          type: array
-          items:
-            $ref: '#/components/schemas/MixedPart'
         dataType:
           type: string
           enum:
