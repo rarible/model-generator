@@ -20,6 +20,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
+        <kotlin.version>1.4.32</kotlin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <dir.src.generated>${basedir}/target/generated-sources/rarible</dir.src.generated>
@@ -33,16 +34,9 @@
         <dir.src.java.test>${project.basedir}/src/test/java</dir.src.java.test>
 
         <!-- ============== Plugin versions ============== -->
-        <version.plugin.clean>3.1.0</version.plugin.clean>
-        <version.plugin.source>3.2.1</version.plugin.source>
         <version.plugin.compiler>3.5.1</version.plugin.compiler>
-        <version.plugin.resources>3.2.0</version.plugin.resources>
-        <version.plugin.surefire>2.22.2</version.plugin.surefire>
-        <version.plugin.assembly>3.3.0</version.plugin.assembly>
-        <version.plugin.install>2.5.2</version.plugin.install>
         <version.plugin.jar>3.2.0</version.plugin.jar>
         <version.plugin.plugin>3.6.1</version.plugin.plugin>
-        <version.plugin.build.helper>3.2.0</version.plugin.build.helper>
 
         <!-- ========= Internal Dependencies ========== -->
         <version.model.generator>${project.version}</version.model.generator>
@@ -50,13 +44,14 @@
         <!-- ========= External Dependencies ========== -->
         <version.openapi.parser>4.0.4</version.openapi.parser>
         <version.maven.core>3.8.1</version.maven.core>
+        <version.logback>6.6</version.logback>
         <version.maven.plugin.annotations>3.4</version.maven.plugin.annotations>
     </properties>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>2.4.5</version>
+        <groupId>com.rarible</groupId>
+        <artifactId>rarible-parent-pom</artifactId>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <repositories>
@@ -79,6 +74,11 @@
                 <artifactId>openapi-parser</artifactId>
                 <version>${version.openapi.parser}</version>
             </dependency>
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${version.logback}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.apache.maven</groupId>
@@ -96,26 +96,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>${version.plugin.clean}</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>${version.plugin.source}</version>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>jar-no-fork</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -200,28 +180,6 @@
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>${version.plugin.resources}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${version.plugin.surefire}</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>${version.plugin.assembly}</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>${version.plugin.install}</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-plugin-plugin</artifactId>
                     <version>${version.plugin.plugin}</version>
                 </plugin>
@@ -233,34 +191,11 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <!--version>${spring-boot-plugin.version}</version-->
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>repackage</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <classifier>boot</classifier>
-                        <finalName>${project.artifactId}</finalName>
-                        <outputDirectory>target/${project.artifactId}/lib</outputDirectory>
-                    </configuration>
-                </plugin>
-
-                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${version.plugin.jar}</version>
                 </plugin>
 
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>${version.plugin.build.helper}</version>
-                </plugin>
             </plugins>
         </pluginManagement>
 

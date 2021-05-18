@@ -13,6 +13,11 @@ components:
       properties:
         id:
           type: string
+        size:
+          type: string
+          enum:
+            - BIG
+            - SMALL
       oneOf:
         - $ref: '#/components/schemas/OrderActivity'
         - $ref: '#/components/schemas/NftActivity'

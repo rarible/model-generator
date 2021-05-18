@@ -21,14 +21,14 @@ class OpenApiComponent(
 
     fun getField(fieldName: String): OpenApiField {
         val fieldSchema = schema.properties[fieldName]
-            ?: throw IllegalOperationException("Field '$fieldName' not found in component '${name}'")
+            ?: throw IllegalOperationException("Field '$name: $fieldName' not found")
 
-        return OpenApiField(fieldName, fieldSchema, requiredFields.contains(fieldSchema.name))
+        return OpenApiField(fieldName, this, fieldSchema, requiredFields.contains(fieldSchema.name))
     }
 
     fun getFields(): List<OpenApiField> {
         return schema.properties.map {
-            OpenApiField(it.key, it.value, requiredFields.contains(it.key))
+            OpenApiField(it.key, this, it.value, requiredFields.contains(it.key))
         }
     }
 
@@ -45,7 +45,11 @@ class OpenApiComponent(
 
     private fun assertOneOf() {
         if (!isOneOf()) {
-            throw IllegalOperationException("Component '$name' is not a OneOf component")
+            throw IllegalOperationException("Component '$name' is not an oneOf component")
         }
+    }
+
+    override fun toString(): String {
+        return name
     }
 }

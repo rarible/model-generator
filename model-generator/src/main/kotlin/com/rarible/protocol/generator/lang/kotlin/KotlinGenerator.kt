@@ -95,7 +95,6 @@ class KotlinGenerator(
             OutputStreamWriter(out).use { writer ->
                 val model = HashMap<String, Any>()
                 fillKotlinClassModel(model, kotlinClass)
-                model["enums"] = kotlinClass.enums
                 generate(writer, SINGLE_TEMPLATE, model)
                 writer.flush()
             }
@@ -126,6 +125,7 @@ class KotlinGenerator(
 
     private fun fillKotlinClassModel(model: HashMap<String, Any>, kotlinClass: KotlinClass) {
         model["name"] = kotlinClass.name
+        model["enums"] = kotlinClass.enums
         model["simpleClassName"] = kotlinClass.simpleClassName
         model["package"] = kotlinClass.packageName
         model["imports"] = kotlinClass.imports

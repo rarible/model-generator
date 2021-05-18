@@ -1,9 +1,25 @@
 package com.rarible.protocol.generator.component
 
+import org.apache.commons.lang3.StringUtils
+
 data class ComponentField(
     var name: String,
     var type: AbstractComponent,
     var genericTypes: List<AbstractComponent>,
     val enumValues: List<String>,
     var isRequired: Boolean
-)
+) {
+    override fun toString(): String {
+        var text = "$name -> ${type.name}(${type.qualifier})"
+        if (genericTypes.isNotEmpty()) {
+            text = "$text<${StringUtils.join(genericTypes.map { it.name }, ", ")}>"
+        }
+        if (enumValues.isNotEmpty()) {
+            text = "$text[${StringUtils.join(enumValues, ",")}]"
+        }
+        if (!isRequired) {
+            text = "$text?"
+        }
+        return text
+    }
+}

@@ -1,4 +1,7 @@
 {
   "BigInteger": "java.math.BigInteger",
-  "BigDecimal": "java.math.BigDecimal"
+  "BigDecimal": "java.math.BigDecimal",
+  "Address": "scalether.domain.Address",
+  "Word": "io.daonomic.rpc.domain.Word",
+  "Binary": "io.daonomic.rpc.domain.Binary"
 }

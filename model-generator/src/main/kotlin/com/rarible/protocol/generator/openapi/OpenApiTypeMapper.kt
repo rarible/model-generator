@@ -9,6 +9,7 @@ import com.rarible.protocol.generator.component.GeneratedComponent
 import com.rarible.protocol.generator.exception.SchemaValidationException
 import com.reprezen.kaizen.oasparser.OpenApi3Parser
 import com.reprezen.kaizen.oasparser.model3.OpenApi3
+import org.slf4j.LoggerFactory
 import java.nio.file.Path
 import java.util.*
 
@@ -18,6 +19,7 @@ class OpenApiTypeMapper(
     private val providedTypeMapper: OpenApiProvidedTypeMapper
 ) : TypeMapper {
 
+    private val log = LoggerFactory.getLogger(OpenApiTypeMapper::class.java)
     private val generatedComponents: MutableMap<String, GeneratedComponent> = LinkedHashMap()
 
     override fun readGeneratedComponents(path: Path): List<GeneratedComponent> {
@@ -26,6 +28,7 @@ class OpenApiTypeMapper(
     }
 
     private fun readGeneratedComponents(openApi: OpenApi3): List<GeneratedComponent> {
+        log.debug("Starting to read OpenAPI schema...")
         generatedComponents.clear()
         for (schema in openApi.schemas.values) {
             getOrCreateDefinition(OpenApiComponent(schema))
@@ -34,20 +37,28 @@ class OpenApiTypeMapper(
     }
 
     private fun getOrCreateDefinition(component: OpenApiComponent): AbstractComponent {
+        log.debug("Reading component: ${component.name}")
         val isProvided = providedTypeMapper.has(component.name)
         if (!component.isObject() && !component.isOneOf() && !isProvided) {
             throw SchemaValidationException("There is no provided type for custom component '${component.name}'")
         }
 
         // Checking provided first, then - generated
-        return if (isProvided)
-            providedTypeMapper.getDefinition(component.name)
-        else
-            getOrCreateGeneratedDefinition(component)
+        if (isProvided) {
+            log.debug("Component ${component.name} is provided type, skipping generation")
+            return providedTypeMapper.getDefinition(component.name)
+        } else {
+            return getOrCreateGeneratedDefinition(component)
+        }
     }
 
     private fun getOrCreateGeneratedDefinition(component: OpenApiComponent): GeneratedComponent {
-        return generatedComponents[component.name] ?: createDefinition(component)
+        val result = generatedComponents[component.name]
+        if (result != null) {
+            log.debug("Component ${component.name} already generated, using existing reference")
+            return result
+        }
+        return createDefinition(component)
     }
 
     private fun createDefinition(component: OpenApiComponent): GeneratedComponent {
@@ -62,6 +73,9 @@ class OpenApiTypeMapper(
             getDiscriminator(component)
         )
 
+        log.debug("-------------- Component ${component.name} read --------------\n$generatedComponentDefinition")
+        log.debug("--------------------------------------------------------------")
+
         generatedComponents[component.name] = generatedComponentDefinition
         return generatedComponentDefinition
     }
@@ -72,9 +86,12 @@ class OpenApiTypeMapper(
             return null
         }
 
+        log.debug("Reading discriminator: ${component.name}")
+
         val discriminatorField = component.getDiscriminatorField()
+        log.debug("Discriminator field: $discriminatorField")
+
         val componentMapping = LinkedHashMap<String, GeneratedComponent>()
-        val discriminatorMapping = LinkedHashMap<String, GeneratedComponent>()
         for (oneOfComponent in component.getOneOf()) {
             val generatedComponent = getOrCreateGeneratedDefinition(oneOfComponent)
             if (oneOfComponent.isOneOf()) {
@@ -86,13 +103,15 @@ class OpenApiTypeMapper(
             }
         }
 
-        return Discriminator(discriminatorField, componentMapping, discriminatorMapping)
+        val result = Discriminator(discriminatorField, componentMapping)
+        log.debug("Discriminator: $result")
+        return result
     }
 
     private fun createFieldDefinition(
         field: OpenApiField
     ): ComponentField {
-
+        log.debug("Reading field: ${field.fullName}")
         var fieldTypeDefinition: AbstractComponent
         var fieldGenericTypes: List<AbstractComponent> = Collections.emptyList()
         var fieldEnumValues = field.enumValues
@@ -101,35 +120,48 @@ class OpenApiTypeMapper(
             fieldTypeDefinition = primitiveTypeMapper.getDefinition(field.type)
             if (field.isArrayOfPrimitives()) {
                 val (type, format) = field.getArrayPrimitiveType()
-                val primitiveType = primitiveTypeMapper.getDefinition(type, format)
                 fieldEnumValues = field.getArrayEnums()
+                log.debug("${field.fullName} -> array of primitives (type = $type, format = $format, enums = $fieldEnumValues")
+                val primitiveType = primitiveTypeMapper.getDefinition(type, format)
                 fieldGenericTypes = listOf(primitiveType)
             } else {
+                val component = field.getArrayComponent()
+                log.debug("${field.fullName} -> array of references ($component)")
                 fieldGenericTypes = listOf(getOrCreateDefinition(field.getArrayComponent()))
             }
         } else if (field.isCreatingReference() || generatedComponents.containsKey(field.getReferencedSchemaName())) {
-            fieldTypeDefinition = getOrCreateDefinition(field.getComponent())
+            val component = field.getComponent()
+            log.debug("${field.fullName} -> reference ($component)")
+            fieldTypeDefinition = getOrCreateDefinition(component)
         } else if (field.isMap()) {
             fieldTypeDefinition = primitiveTypeMapper.getDefinition("map")
             val stringType = primitiveTypeMapper.getDefinition("string")
             if (field.isMapOfPrimitives()) {
                 val (type, format) = field.getMapPrimitiveType()
+                log.debug("${field.fullName} -> map of primitives (type = $type, format = $format)")
                 val primitiveType = primitiveTypeMapper.getDefinition(type, format)
                 fieldGenericTypes = listOf(stringType, primitiveType)
             } else {
-                fieldGenericTypes = listOf(stringType, getOrCreateDefinition(field.getMapComponent()))
+                val component = field.getMapComponent()
+                log.debug("${field.fullName} -> array of references ($component)")
+                fieldGenericTypes = listOf(stringType, getOrCreateDefinition(component))
             }
         } else {
+            log.debug("${field.fullName} -> primitive (type = ${field.type}, format = ${field.format})")
             // Otherwise, this is one of primitive types like String or Integer
             fieldTypeDefinition = primitiveTypeMapper.getDefinition(field.type, field.format)
         }
 
-        return ComponentField(
+        val result = ComponentField(
             field.name,
             fieldTypeDefinition,
             fieldGenericTypes,
             fieldEnumValues,
             field.required
         )
+
+        log.debug("Field read: $result")
+
+        return result
     }
 }

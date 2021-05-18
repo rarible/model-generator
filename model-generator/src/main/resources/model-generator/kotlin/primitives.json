@@ -3,8 +3,13 @@
   "array": "kotlin.collections.List",
   "boolean": "java.lang.Boolean",
   "string": "kotlin.String",
+  "byte": "kotlin.Byte",
   "integer": "kotlin.Int",
   "integer:int32": "kotlin.Int",
   "integer:int64": "kotlin.Long",
-  "string:date-time": "java.time.Instant"
+  "number:float": "kotlin.Float",
+  "number:double": "kotlin.Double",
+  "string:byte": "kotlin.Byte",
+  "string:date-time": "java.time.Instant",
+  "string:password": "kotlin.String"
 }

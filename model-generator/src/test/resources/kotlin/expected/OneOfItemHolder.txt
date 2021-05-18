@@ -2,8 +2,10 @@ package com.rarible.test
 
 import com.rarible.test.OneOfFieldItemDto
 import kotlin.Int
+import kotlin.collections.List
 
 data class OneOfItemHolderDto (
     val id : Int,
-    val oneof : OneOfFieldItemDto?
+    val oneof : OneOfFieldItemDto?,
+    val oneofarray : List<OneOfFieldItemDto>?
 )

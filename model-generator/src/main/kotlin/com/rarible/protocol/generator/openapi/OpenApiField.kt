@@ -1,26 +1,35 @@
 package com.rarible.protocol.generator.openapi
 
 import com.rarible.protocol.generator.exception.IllegalOperationException
+import com.rarible.protocol.generator.exception.SchemaValidationException
 import com.reprezen.kaizen.oasparser.model3.Schema
 import com.reprezen.kaizen.oasparser.ovl3.SchemaImpl
 
 class OpenApiField(
     val name: String,
+    val owner: OpenApiComponent,
     private val fieldSchema: Schema,
     val required: Boolean
 ) {
 
-
     val enumValues: List<String> = fieldSchema.enums.map { it.toString() }
     val type: String
     val format: String? = fieldSchema.format
+    val fullName = "${owner.name}:$name"
 
     init {
         // Case when reference is OneOf
-        if (isCreatingReference() && fieldSchema.type == null) {
-            type = "object"
+        if (fieldSchema.type == null) {
+            if (fieldSchema.oneOfSchemas.isNotEmpty()) {
+                type = "object"
+            } else {
+                throw SchemaValidationException("Type not specified for field '$fullName'")
+            }
         } else {
             type = fieldSchema.type
+        }
+        if (fieldSchema.name == null) {
+            throw SchemaValidationException("There is no schema name for field '$fullName'")
         }
     }
 
@@ -34,7 +43,7 @@ class OpenApiField(
 
     fun getOneOfEnumValue(): String {
         if (enumValues.isEmpty()) {
-            throw IllegalOperationException("Field '$name' has no oneOf enum maping")
+            throw IllegalOperationException("Field '$fullName' has no oneOf enum mapping")
         }
         return enumValues[0]
     }
@@ -78,10 +87,14 @@ class OpenApiField(
         assertIsArray()
         val type = fieldSchema.itemsSchema.type
         val format = fieldSchema.itemsSchema.format
+        if (type == null) {
+            throw SchemaValidationException("Item type for array field '${fullName}' is not defined")
+        }
         return Pair(type, format)
     }
 
     fun getArrayEnums(): List<String> {
+        assertIsArray()
         return fieldSchema.itemsSchema.enums.map { it.toString() }
     }
 
@@ -92,13 +105,13 @@ class OpenApiField(
 
     private fun assertIsArray() {
         if (!isArray()) {
-            throw IllegalOperationException("Field '$name' if not an array type")
+            throw IllegalOperationException("Field '$fullName' if not an array type")
         }
     }
 
     private fun assertIsMap() {
         if (!isMap()) {
-            throw IllegalOperationException("Field '$name' if not a map type")
+            throw IllegalOperationException("Field '$fullName' if not a map type")
         }
     }
 

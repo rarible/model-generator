@@ -10,17 +10,6 @@ paths:
 components:
   schemas:
 
-    OneOfItemHolder:
-      required:
-        - id
-      type: object
-      properties:
-        id:
-          type: integer
-        oneof:
-          $ref: '#/components/schemas/OneOfFieldItem'
-
-
     OneOfFieldItem:
       oneOf:
         - $ref: '#/components/schemas/OneOfFieldSubItem1'
@@ -53,4 +42,18 @@ components:
           enum:
             - SUB_ITEM_2
         id:
-          type: integer    
+          type: integer
+
+    OneOfItemHolder:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+        oneof:
+          $ref: '#/components/schemas/OneOfFieldItem'
+        oneofarray:
+          type: array
+          items:
+            $ref: '#/components/schemas/OneOfFieldItem'

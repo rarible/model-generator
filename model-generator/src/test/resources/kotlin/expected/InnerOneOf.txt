@@ -17,6 +17,13 @@ import kotlin.String
 )
 sealed class InnerOneOfDto {
     abstract val id : String
+    abstract val size : Size?
+
+    enum class Size {
+        BIG,
+        SMALL
+    }
+
 }
 
 //--------------- OrderActivityDto ---------------//
@@ -42,6 +49,7 @@ class OrderActivitySellDto (
     override val mode : Mode,
     override val orderType : OrderType?,
     override val id : String,
+    override val size : Size?,
     val date : Instant?,
     val address : BigInteger?,
     val transactionHash : String?
@@ -51,6 +59,7 @@ class OrderActivityListDto (
     override val mode : Mode,
     override val orderType : OrderType?,
     override val id : String,
+    override val size : Size?,
     val date : Instant?,
     val address : BigInteger?,
     val price : BigInteger?
@@ -60,6 +69,7 @@ class OrderActivityBidDto (
     override val mode : Mode,
     override val orderType : OrderType?,
     override val id : String,
+    override val size : Size?,
     val date : Instant?,
     val address : BigInteger?,
     val price : BigInteger?
@@ -74,6 +84,7 @@ sealed class NftActivityDto : InnerOneOfDto() {
 class NftActivityBurnDto (
     override val transactionHash : String,
     override val id : String,
+    override val size : Size?,
     val date : Instant?,
     val address : BigInteger?,
     val tokenId : BigInteger?,
@@ -93,6 +104,7 @@ class NftActivityBurnDto (
 class NftActivityTransferDto (
     override val transactionHash : String,
     override val id : String,
+    override val size : Size?,
     val date : Instant?,
     val address : BigInteger?,
     val tokenId : BigInteger?,
@@ -103,6 +115,7 @@ class NftActivityTransferDto (
 class NftActivityMintDto (
     override val transactionHash : String,
     override val id : String,
+    override val size : Size?,
     val date : Instant?,
     val address : BigInteger?,
     val tokenId : BigInteger?,
