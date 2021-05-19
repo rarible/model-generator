@@ -7,7 +7,7 @@ import com.reprezen.kaizen.oasparser.ovl3.SchemaImpl
 
 class OpenApiField(
     val name: String,
-    val owner: OpenApiComponent,
+    owner: OpenApiComponent,
     private val fieldSchema: Schema,
     val required: Boolean
 ) {

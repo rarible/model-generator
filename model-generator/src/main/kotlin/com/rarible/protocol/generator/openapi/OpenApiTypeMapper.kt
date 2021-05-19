@@ -121,35 +121,38 @@ class OpenApiTypeMapper(
             if (field.isArrayOfPrimitives()) {
                 val (type, format) = field.getArrayPrimitiveType()
                 fieldEnumValues = field.getArrayEnums()
-                log.debug("${field.fullName} -> array of primitives (type = $type, format = $format, enums = $fieldEnumValues")
+                log.debug("--- ${field.fullName} -> array of primitives (type = $type, format = $format, enums = $fieldEnumValues")
                 val primitiveType = primitiveTypeMapper.getDefinition(type, format)
+                log.debug("--- ${field.fullName} -> array primitive definition found: $primitiveType")
                 fieldGenericTypes = listOf(primitiveType)
             } else {
                 val component = field.getArrayComponent()
-                log.debug("${field.fullName} -> array of references ($component)")
+                log.debug("--- ${field.fullName} -> array of references ($component)")
                 fieldGenericTypes = listOf(getOrCreateDefinition(field.getArrayComponent()))
             }
         } else if (field.isCreatingReference() || generatedComponents.containsKey(field.getReferencedSchemaName())) {
             val component = field.getComponent()
-            log.debug("${field.fullName} -> reference ($component)")
+            log.debug("--- ${field.fullName} -> reference ($component)")
             fieldTypeDefinition = getOrCreateDefinition(component)
         } else if (field.isMap()) {
             fieldTypeDefinition = primitiveTypeMapper.getDefinition("map")
             val stringType = primitiveTypeMapper.getDefinition("string")
             if (field.isMapOfPrimitives()) {
                 val (type, format) = field.getMapPrimitiveType()
-                log.debug("${field.fullName} -> map of primitives (type = $type, format = $format)")
+                log.debug("--- ${field.fullName} -> map of primitives (type = $type, format = $format)")
                 val primitiveType = primitiveTypeMapper.getDefinition(type, format)
+                log.debug("--- ${field.fullName} -> map primitive definition found: $primitiveType")
                 fieldGenericTypes = listOf(stringType, primitiveType)
             } else {
                 val component = field.getMapComponent()
-                log.debug("${field.fullName} -> array of references ($component)")
+                log.debug("--- ${field.fullName} -> array of references ($component)")
                 fieldGenericTypes = listOf(stringType, getOrCreateDefinition(component))
             }
         } else {
-            log.debug("${field.fullName} -> primitive (type = ${field.type}, format = ${field.format})")
+            log.debug("--- ${field.fullName} -> primitive (type = ${field.type}, format = ${field.format})")
             // Otherwise, this is one of primitive types like String or Integer
             fieldTypeDefinition = primitiveTypeMapper.getDefinition(field.type, field.format)
+            log.debug("--- ${field.fullName} -> primitive definition found: $fieldTypeDefinition")
         }
 
         val result = ComponentField(

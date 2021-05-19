@@ -37,6 +37,7 @@
         <version.plugin.compiler>3.5.1</version.plugin.compiler>
         <version.plugin.jar>3.2.0</version.plugin.jar>
         <version.plugin.plugin>3.6.1</version.plugin.plugin>
+        <version.plugin.jacoco>0.8.6</version.plugin.jacoco>
 
         <!-- ========= Internal Dependencies ========== -->
         <version.model.generator>${project.version}</version.model.generator>
@@ -194,6 +195,32 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${version.plugin.jar}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${version.plugin.jacoco}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>**/*Exception.*</exclude>
+                            <exclude>com/rarible/test/*</exclude>
+                        </excludes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
 
             </plugins>

@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+servers:
+paths:
+
+components:
+  schemas:
+
+    Item:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          $ref: '#/components/schemas/Word'

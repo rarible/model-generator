@@ -5,7 +5,7 @@ import java.io.InputStream
 
 
 open class ProvidedTypeStreamReader(
-    val inputStream: InputStream
+    inputStream: InputStream
 ) : ProvidedTypeReader {
 
     private val mapper: ObjectMapper = ObjectMapper()

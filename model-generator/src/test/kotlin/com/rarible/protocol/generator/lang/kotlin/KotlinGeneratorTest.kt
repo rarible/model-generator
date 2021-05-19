@@ -1,8 +1,10 @@
 import com.rarible.protocol.generator.Generator
+import com.rarible.protocol.generator.lang.kotlin.KotlinGenerator
 import com.rarible.protocol.generator.lang.kotlin.KotlinGeneratorFactory
 import com.rarible.protocol.generator.openapi.OpenApiTypeMapperFactory
 import com.rarible.protocol.generator.type.ProvidedTypeConstantReader
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -14,12 +16,12 @@ internal class KotlinGeneratorTest {
     private val primitiveReader = ProvidedTypeConstantReader(mapOf())
     private val providedReader = ProvidedTypeConstantReader(mapOf())
 
-    private val testSchemasFolder = Paths.get("src/test/resources/schemas")
+    private val testSchemasFolder = Paths.get("src/test/resources/kotlin/schemas")
     private val expectedClassesFolder = Paths.get("src/test/resources/kotlin/expected")
 
     private val outPath = Paths.get("target/generated-sources")
 
-    private val generator: Generator = createDefaultGenerator()
+    private val generator: KotlinGenerator = createDefaultGenerator()
 
     // For manual testing only
     //@Test
@@ -32,6 +34,11 @@ internal class KotlinGeneratorTest {
         generateAsFiles("test_mixed.yaml", generator)
         generateAsFiles("test_oneof_as_field.yaml", generator)
         generateAsFiles("test_inner_oneof.yaml", generator)
+    }
+
+    @Test
+    fun `test lang`() {
+        assertEquals("kotlin", generator.lang)
     }
 
     @Test
@@ -101,11 +108,11 @@ internal class KotlinGeneratorTest {
         generator.generate(ymlPath, outPath)
     }
 
-    private fun createDefaultGenerator(): Generator {
+    private fun createDefaultGenerator(): KotlinGenerator {
         val factory = KotlinGeneratorFactory(
             "com.rarible.test"
         )
 
-        return factory.getGenerator(primitiveReader, providedReader, OpenApiTypeMapperFactory())
+        return factory.getGenerator(primitiveReader, providedReader, OpenApiTypeMapperFactory()) as KotlinGenerator
     }
 }

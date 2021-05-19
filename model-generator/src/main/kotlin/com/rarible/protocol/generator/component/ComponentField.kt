@@ -3,11 +3,11 @@ package com.rarible.protocol.generator.component
 import org.apache.commons.lang3.StringUtils
 
 data class ComponentField(
-    var name: String,
-    var type: AbstractComponent,
-    var genericTypes: List<AbstractComponent>,
+    val name: String,
+    val type: AbstractComponent,
+    val genericTypes: List<AbstractComponent>,
     val enumValues: List<String>,
-    var isRequired: Boolean
+    val isRequired: Boolean
 ) {
     override fun toString(): String {
         var text = "$name -> ${type.name}(${type.qualifier})"
