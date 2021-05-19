@@ -10,7 +10,6 @@ import com.rarible.protocol.generator.plugin.config.DependencyConfig;
 import com.rarible.protocol.generator.plugin.mapper.TypeMapperSettings;
 import com.rarible.protocol.generator.type.ProvidedTypeStreamReader;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.logging.Log;
 
@@ -38,10 +37,13 @@ public class ModelDependencyProvider {
     private final TypeMapperFactory typeMapperFactory;
     private final GeneratorFactory generatorFactory;
 
+    private final SchemaDependencyManager schemaDependencyManager;
+
     public ModelDependencyProvider(Log log,
                                    DependencyConfig dependency,
                                    GeneratorFactory generatorFactory,
-                                   TypeMapperSettings typeMapperSettings
+                                   TypeMapperSettings typeMapperSettings,
+                                   SchemaDependencyManager schemaDependencyManager
     ) {
         this.log = log;
         this.jarFile = dependency.getJarFile();
@@ -50,6 +52,7 @@ public class ModelDependencyProvider {
         this.qualifierGenerator = generatorFactory.getQualifierGenerator();
         this.generatorFactory = generatorFactory;
         this.typeMapperFactory = typeMapperSettings.getTypeMapperFactory();
+        this.schemaDependencyManager = schemaDependencyManager;
     }
 
     public ModelDependency getDependency() throws IOException {
@@ -57,7 +60,6 @@ public class ModelDependencyProvider {
         try (JarFile jar = new JarFile(jarFile)) {
             ModelDependency result = new ModelDependency();
             result.setJarFile(jarFile);
-            result.setText(readSchemaText(jar));
 
             Map<String, String> defaultPrimitiveTypes = generatorFactory.getDefaultPrimitiveTypesReader().getMapping();
             Map<String, String> defaultProvidedTypes = generatorFactory.getDefaultProvidedTypesReader().getMapping();
@@ -80,7 +82,10 @@ public class ModelDependencyProvider {
                     result.getProvidedTypes()
             );
 
-            List<GeneratedComponent> providedComponents = readComponents(mapper, result.getText(), defaultSchemaFile);
+            List<GeneratedComponent> providedComponents = readComponents(mapper,
+                    schemaDependencyManager.getSchemaText(jarFile),
+                    defaultSchemaFile
+            );
 
             Map<String, String> generatedProvidedTypes = providedComponents.stream().collect(Collectors.toMap(
                     GeneratedComponent::getName,
@@ -95,37 +100,13 @@ public class ModelDependencyProvider {
     private List<GeneratedComponent> readComponents(TypeMapper mapper, String text, String fileName) throws IOException {
         String extension = StringUtils.substringAfterLast(fileName, ".");
         File file = File.createTempFile(fileName, "." + extension);
-        log.debug("Writing components from schema to the temp file: " + file.toString());
+        log.debug("Writing components from schema to the temp file: " + file);
         try {
             FileUtils.write(file, text, StandardCharsets.UTF_8);
             return mapper.readGeneratedComponents(Paths.get(file.toURI()));
         } finally {
             log.debug("Removing temp file " + file);
             file.delete();
-        }
-    }
-
-    private String readSchemaText(JarFile jar) throws IOException {
-        ZipEntry zipEntry;
-        if (StringUtils.isNotBlank(schemaFile)) {
-            log.debug("Trying to read schema file " + jar.getName() + " -> " + schemaFile);
-            zipEntry = jar.getEntry(schemaFile);
-            if (zipEntry == null) {
-                throw new IOException("Schema file '" + schemaFile + "'" +
-                        " not found in jar '" + jar.getName() + "'");
-            }
-        } else {
-            log.debug("Custom schema path not specified, trying to read default schema file: "
-                    + jar.getName() + " -> " + defaultSchemaFile);
-
-            zipEntry = jar.getEntry(defaultSchemaFile);
-            if (zipEntry == null) {
-                throw new IOException("Default schema file '" + defaultSchemaFile + "' not found" +
-                        " in jar '" + jar.getName() + "' and no custom path for schema specified");
-            }
-        }
-        try (InputStream stream = jar.getInputStream(zipEntry)) {
-            return IOUtils.toString(stream, StandardCharsets.UTF_8);
         }
     }
 

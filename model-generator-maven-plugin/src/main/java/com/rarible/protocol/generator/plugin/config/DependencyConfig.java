@@ -2,20 +2,17 @@ package com.rarible.protocol.generator.plugin.config;
 
 import org.apache.maven.plugins.annotations.Parameter;
 
-import java.util.Properties;
-
 public class DependencyConfig {
 
     @Parameter
     private String name;
+    @Parameter
+    private String packageName;
 
     private String jarFile;
 
     @Parameter
     private String schemaFile;
-
-    @Parameter
-    private Properties properties = new Properties();
 
     public String getName() {
         return name;
@@ -41,11 +38,7 @@ public class DependencyConfig {
         this.schemaFile = schemaFile;
     }
 
-    public Properties getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Properties properties) {
-        this.properties = properties;
+    public String getPackageName() {
+        return packageName;
     }
 }

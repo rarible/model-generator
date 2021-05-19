@@ -1,11 +1,19 @@
 package com.rarible.protocol.generator.plugin.config;
 
-import java.util.Properties;
+import org.apache.maven.plugins.annotations.Parameter;
 
 public class GeneratorConfig {
 
+    @Parameter
     private String lang;
-    private Properties properties = new Properties();
+    @Parameter
+    private String packageName;
+    @Parameter
+    private String primitiveTypesFile;
+    @Parameter
+    private String providedTypesFile;
+    @Parameter
+    private String modelOutputDirectory;
 
     public String getLang() {
         return lang;
@@ -15,11 +23,35 @@ public class GeneratorConfig {
         this.lang = lang;
     }
 
-    public Properties getProperties() {
-        return properties;
+    public String getPackageName() {
+        return packageName;
     }
 
-    public void setProperties(Properties properties) {
-        this.properties = properties;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public String getPrimitiveTypesFile() {
+        return primitiveTypesFile;
+    }
+
+    public void setPrimitiveTypesFile(String primitiveTypesFile) {
+        this.primitiveTypesFile = primitiveTypesFile;
+    }
+
+    public String getProvidedTypesFile() {
+        return providedTypesFile;
+    }
+
+    public void setProvidedTypesFile(String providedTypesFile) {
+        this.providedTypesFile = providedTypesFile;
+    }
+
+    public String getModelOutputDirectory() {
+        return modelOutputDirectory;
+    }
+
+    public void setModelOutputDirectory(String modelOutputDirectory) {
+        this.modelOutputDirectory = modelOutputDirectory;
     }
 }

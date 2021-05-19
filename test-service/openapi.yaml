@@ -5,14 +5,14 @@ info:
 servers:
   - url: 'https'
 paths:
-  /test-model-endpoint:
+  /v0.1/test-service-endpoint:
     post:
-      operationId: testModelEndpoint
+      operationId: testServiceEndpoint
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Model'
+              $ref: '#/components/schemas/ServiceModel'
         required: true
 
       responses:
@@ -24,22 +24,19 @@ paths:
 components:
   schemas:
 
-    Model:
+    ServiceModel:
       required:
         - id
-        - name
+        - model
         - items
       type: object
       properties:
         id:
           type: integer
           format: int32
-        name:
-          type: string
+        model:
+          $ref: '#/components/schemas/Model'
         items:
           type: array
           items:
             $ref: '#/components/schemas/ModelItem'
-
-    ModelItem:
-      type: string

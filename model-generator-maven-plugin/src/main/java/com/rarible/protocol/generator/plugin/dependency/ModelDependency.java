@@ -5,7 +5,6 @@ import java.util.Map;
 public class ModelDependency {
 
     private String jarFile;
-    private String text;
     private Map<String, String> primitiveTypes;
     private Map<String, String> providedTypes;
     private Map<String, String> generatedProvidedTypes;
@@ -16,14 +15,6 @@ public class ModelDependency {
 
     public void setJarFile(String jarFile) {
         this.jarFile = jarFile;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     public Map<String, String> getPrimitiveTypes() {

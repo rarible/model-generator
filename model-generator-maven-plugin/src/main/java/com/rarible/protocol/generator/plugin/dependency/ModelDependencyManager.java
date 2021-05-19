@@ -12,7 +12,6 @@ import org.apache.maven.plugin.logging.Log;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ModelDependencyManager {
 
@@ -21,6 +20,7 @@ public class ModelDependencyManager {
     private final String lang;
     private final List<DependencyConfig> dependencies;
     private final TypeMapperSettings typeMapperSettings;
+    private final SchemaDependencyManager schemaDependencyManager;
 
     private List<ModelDependency> modelDependencies = new ArrayList<>();
 
@@ -29,13 +29,13 @@ public class ModelDependencyManager {
 
     public ModelDependencyManager(Log log,
                                   String lang,
-                                  List<DependencyConfig> dependencies,
-                                  TypeMapperSettings typeMapperSettings
+                                  SchemaDependencyManager schemaDependencyManager
     ) throws MojoExecutionException, IOException {
         this.log = log;
         this.lang = lang;
-        this.dependencies = dependencies;
-        this.typeMapperSettings = typeMapperSettings;
+        this.dependencies = schemaDependencyManager.getDependencies();
+        this.typeMapperSettings = schemaDependencyManager.getTypeMapperSettings();
+        this.schemaDependencyManager = schemaDependencyManager;
         readDependencies();
     }
 
@@ -59,14 +59,15 @@ public class ModelDependencyManager {
             log.info("Reading schema from jar: " + dependencyConfig.getName());
             GeneratorFactory dependencyGeneratorFactory = GeneratorRegistry.getGeneratorFactory(
                     lang,
-                    dependencyConfig.getProperties()
+                    dependencyConfig.getPackageName()
             );
 
             ModelDependencyProvider dependencyProvider = new ModelDependencyProvider(
                     log,
                     dependencyConfig,
                     dependencyGeneratorFactory,
-                    typeMapperSettings
+                    typeMapperSettings,
+                    schemaDependencyManager
             );
             dependencyProviders.add(dependencyProvider);
         }
@@ -81,7 +82,4 @@ public class ModelDependencyManager {
         return providedTypeReaders;
     }
 
-    public List<String> getSchemaTexts() {
-        return modelDependencies.stream().map(ModelDependency::getText).collect(Collectors.toList());
-    }
 }

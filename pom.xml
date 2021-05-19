@@ -17,11 +17,16 @@
     </distributionManagement>
 
     <properties>
+        <nexus.maven.public>http://10.7.3.6:8083/repository/maven-public/</nexus.maven.public>
+
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <kotlin.version>1.4.32</kotlin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <generator.kotlin>kotlin</generator.kotlin>
+        <generator.package>com.rarible.protocol.dto</generator.package>
 
         <dir.src.generated>${basedir}/target/generated-sources/rarible</dir.src.generated>
         <dir.src.generated.kotlin>${dir.src.generated}/src/main/kotlin</dir.src.generated.kotlin>
@@ -67,6 +72,11 @@
             <dependency>
                 <groupId>com.rarible.protocol</groupId>
                 <artifactId>model-generator</artifactId>
+                <version>${version.model.generator}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rarible.protocol</groupId>
+                <artifactId>schema-merger</artifactId>
                 <version>${version.model.generator}</version>
             </dependency>
 
@@ -189,6 +199,24 @@
                     <groupId>com.rarible.protocol</groupId>
                     <artifactId>model-generator-maven-plugin</artifactId>
                     <version>${version.model.generator}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <schema>
+                            <type>openapi</type>
+                        </schema>
+                        <generators>
+                            <generator>
+                                <lang>${generator.kotlin}</lang>
+                                <packageName>${generator.package}</packageName>
+                            </generator>
+                        </generators>
+                    </configuration>
                 </plugin>
 
                 <plugin>
@@ -282,5 +310,6 @@
         <module>model-generator-maven-plugin</module>
         <module>test-model</module>
         <module>test-service</module>
+        <module>schema-merger</module>
     </modules>
 </project>

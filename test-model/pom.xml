@@ -17,9 +17,6 @@
 
         <generator.kotlin>kotlin</generator.kotlin>
         <generator.package>com.rarible.protocol.dto</generator.package>
-
-        <openapi.input.file>${dir.resources}/openapi.yaml</openapi.input.file>
-        <openapi.output.file>${dir.src.generated.kotlin}/openapi.yaml</openapi.output.file>
     </properties>
 
     <build>
@@ -37,40 +34,6 @@
             <plugin>
                 <groupId>com.rarible.protocol</groupId>
                 <artifactId>model-generator-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
-                <configuration>
-                    <tasks>
-                        <task>
-                            <schema>
-                                <type>openapi</type>
-                                <fileName>${openapi.input.file}</fileName>
-                            </schema>
-
-                            <providedTypesFile>${dir.generator.resources.kotlin}/provided.json</providedTypesFile>
-
-                            <generator>
-                                <lang>${generator.kotlin}</lang>
-                                <properties>
-                                    <property>
-                                        <name>withInheritance</name>
-                                        <value>true</value>
-                                    </property>
-                                    <property>
-                                        <name>packageName</name>
-                                        <value>${generator.package}</value>
-                                    </property>
-                                </properties>
-                            </generator>
-                        </task>
-                    </tasks>
-                </configuration>
             </plugin>
 
         </plugins>
