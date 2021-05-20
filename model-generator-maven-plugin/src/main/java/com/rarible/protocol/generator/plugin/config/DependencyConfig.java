@@ -14,6 +14,8 @@ public class DependencyConfig {
     @Parameter
     private String schemaFile;
 
+    private FieldProcessorConfig pathProcessor;
+
     public String getName() {
         return name;
     }
@@ -40,5 +42,17 @@ public class DependencyConfig {
 
     public String getPackageName() {
         return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public FieldProcessorConfig getPathProcessor() {
+        return pathProcessor;
+    }
+
+    public void setPathProcessor(FieldProcessorConfig pathProcessor) {
+        this.pathProcessor = pathProcessor;
     }
 }

@@ -3,7 +3,7 @@ package com.rarible.protocol.generator.plugin.dependency;
 public class SchemaDependency {
 
     private String jarFile;
-    private String text;
+    private String processedText;
 
     public String getJarFile() {
         return jarFile;
@@ -13,11 +13,11 @@ public class SchemaDependency {
         this.jarFile = jarFile;
     }
 
-    public String getText() {
-        return text;
+    public String getProcessedText() {
+        return processedText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setProcessedText(String processedText) {
+        this.processedText = processedText;
     }
 }

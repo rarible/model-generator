@@ -1,14 +1,17 @@
 package com.rarible.protocol.generator.plugin;
 
 import com.rarible.protocol.generator.plugin.config.DependencyConfig;
+import com.rarible.protocol.generator.plugin.config.FieldProcessorConfig;
 import com.rarible.protocol.generator.plugin.config.GeneratorConfig;
 import com.rarible.protocol.generator.plugin.config.SchemaConfig;
+import com.rarible.protocol.generator.plugin.dependency.FieldNameProcessorFactory;
 import com.rarible.protocol.generator.plugin.dependency.SchemaDependencyManager;
 import com.rarible.protocol.generator.plugin.mapper.TypeMapperRegistry;
 import com.rarible.protocol.generator.plugin.mapper.TypeMapperSettings;
-import com.rarible.protocol.merger.RegexFieldNameProcessor;
 import com.rarible.protocol.merger.SchemaFieldNameProcessor;
 import com.rarible.protocol.merger.SchemaMerger;
+import com.rarible.protocol.merger.SchemaProcessor;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
@@ -20,8 +23,10 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +49,7 @@ public class ModelGeneratorMojo extends AbstractMojo {
     private List<GeneratorConfig> generators;
 
     @Parameter
-    private String apiPathReplacement;
-
-    @Parameter
-    private String apiPathReplacementRegex;
+    private FieldProcessorConfig pathProcessor;
 
     private Log log;
     private TypeMapperSettings typeMapperSettings;
@@ -59,7 +61,9 @@ public class ModelGeneratorMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException {
         log = getLog();
-        typeMapperSettings = TypeMapperRegistry.getTypeMapperSettings(schema.getType(), getFieldNameProcessor());
+
+        typeMapperSettings = TypeMapperRegistry.getTypeMapperSettings(schema.getType());
+
         try {
             initDependencies();
             initSchemaFiles();
@@ -68,18 +72,6 @@ public class ModelGeneratorMojo extends AbstractMojo {
         } catch (IOException e) {
             throw new MojoExecutionException("Model generation failed: " + e.getMessage(), e);
         }
-    }
-
-    private SchemaFieldNameProcessor getFieldNameProcessor() {
-        if (StringUtils.isBlank(apiPathReplacementRegex)) {
-            return SchemaFieldNameProcessor.Companion.getNO_OP();
-        }
-
-        String replacement = apiPathReplacement == null ? "" : apiPathReplacement;
-        log.info("API paths will be replaced by regex '" + apiPathReplacementRegex +
-                "' with '" + replacement + "'");
-
-        return new RegexFieldNameProcessor(apiPathReplacementRegex, replacement);
     }
 
     private void initDependencies() throws MojoExecutionException {
@@ -159,15 +151,25 @@ public class ModelGeneratorMojo extends AbstractMojo {
 
         schemaOutputFile.getParentFile().mkdirs();
 
-        List<String> depSchemaTexts = schemaDependencyManager.getSchemaTexts();
+        List<String> depSchemaTexts = schemaDependencyManager.getProcessedSchemaTexts();
         log.info("Merging " + depSchemaTexts.size() + " schemas into file: " + schemaOutputFile);
         for (String text : depSchemaTexts) {
             log.debug("-----------------------------------");
             log.debug(text);
         }
+
+        FieldNameProcessorFactory fieldNameProcessorFactory = new FieldNameProcessorFactory();
+        SchemaFieldNameProcessor processor = fieldNameProcessorFactory.create(pathProcessor);
+        SchemaProcessor schemaProcessor = typeMapperSettings.getSchemaProcessor(processor);
+
+        String schemaText = "";
+        if (schemaInputFile.exists()) {
+            schemaText = IOUtils.toString(new FileInputStream(schemaInputFile), StandardCharsets.UTF_8);
+            schemaText = schemaProcessor.process(schemaText);
+        }
+
         SchemaMerger schemaMerger = typeMapperSettings.getSchemaMerger();
         log.debug("Using merger: " + schemaMerger.getClass().getName());
-        schemaMerger.mergeSchemas(schemaInputFile, schemaOutputFile, depSchemaTexts);
+        schemaMerger.mergeSchemas(schemaText, depSchemaTexts, schemaOutputFile);
     }
-
 }

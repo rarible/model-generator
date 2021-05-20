@@ -63,11 +63,13 @@ public class SchemaDependencyManager {
     }
 
     public String getSchemaText(String jarName) {
-        return schemaDependencies.get(jarName).getText();
+        return schemaDependencies.get(jarName).getProcessedText();
     }
 
-    public List<String> getSchemaTexts() {
-        return schemaDependencies.values().stream().map(SchemaDependency::getText).collect(Collectors.toList());
+    public List<String> getProcessedSchemaTexts() {
+        return schemaDependencies.values().stream()
+                .map(SchemaDependency::getProcessedText)
+                .collect(Collectors.toList());
     }
 
 }

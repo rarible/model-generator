@@ -25,12 +25,23 @@
                 <groupId>com.rarible.protocol</groupId>
                 <artifactId>model-generator-maven-plugin</artifactId>
                 <configuration>
-                    <apiPathReplacement>/test</apiPathReplacement>
-                    <apiPathReplacementRegex>/v0.1</apiPathReplacementRegex>
+                    <pathProcessor>
+                        <apiPathReplacement>/test</apiPathReplacement>
+                        <apiPathReplacementRegex>/v0.1</apiPathReplacementRegex>
+                        <template>/protocol/ETHEREUM/v0.1/client{originalPath}</template>
+                    </pathProcessor>
                     <dependencies>
                         <dependency>
                             <name>test-model</name>
                             <packageName>${generator.package}</packageName>
+                            <pathProcessor>
+                                <apiPathReplacement>/test</apiPathReplacement>
+                                <apiPathReplacementRegex>/v0.1</apiPathReplacementRegex>
+                                <template>/protocol/{blockchain}/v0.1/client/dep{originalPath}</template>
+                                <placeholders>
+                                    <blockchain>ETHEREUM</blockchain>
+                                </placeholders>
+                            </pathProcessor>
                         </dependency>
                     </dependencies>
                 </configuration>

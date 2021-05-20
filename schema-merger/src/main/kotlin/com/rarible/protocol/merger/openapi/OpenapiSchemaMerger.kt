@@ -4,48 +4,28 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
-import com.rarible.protocol.merger.SchemaFieldNameProcessor
 import com.rarible.protocol.merger.SchemaMerger
 import com.reprezen.jsonoverlay.JsonLoader
+import org.apache.commons.lang3.StringUtils
 import java.io.File
-import java.net.URL
 
 
 class OpenapiSchemaMerger(
-    private val fieldNameProcessor: SchemaFieldNameProcessor
 ) : SchemaMerger {
 
-    constructor() : this(SchemaFieldNameProcessor.NO_OP)
-
-    override fun mergeSchemas(origin: File, dest: File, schemaTexts: List<String>) {
+    override fun mergeSchemas(originalText: String, dependenciesTexts: List<String>, dest: File) {
         val loader = JsonLoader()
-        var originUrl: URL
-        if (origin.exists()) {
-            originUrl = origin.toURI().toURL()
+        var root: ObjectNode
+        if (StringUtils.isBlank(originalText)) {
+            root = loader.load(javaClass.getResource("/openapi.yaml")) as ObjectNode
         } else {
-            originUrl = javaClass.getResource("/openapi.yaml")
+            root = loader.loadString(null, originalText) as ObjectNode
         }
-        val root = loader.load(originUrl) as ObjectNode
 
-        for (text in schemaTexts) {
+        for (text in dependenciesTexts) {
             val json = loader.loadString(null, text) as ObjectNode
             mergeOrSet(root, json, "components")
             mergeOrSet(root, json, "paths")
-        }
-
-        val mergedPaths = root.get("paths")
-        if (mergedPaths != null && mergedPaths.isObject) {
-            val paths = mergedPaths as ObjectNode
-            val iter = paths.fields()
-            val mapping = LinkedHashMap<String, String>()
-            while (iter.hasNext()) {
-                val field = iter.next()
-                mapping.put(field.key, fieldNameProcessor.process(field.key))
-            }
-            for ((oldName, newName) in mapping) {
-                val field = paths.remove(oldName) as ObjectNode
-                paths.set<JsonNode>(newName, field)
-            }
         }
 
         YAMLMapper().writeValue(dest, root)

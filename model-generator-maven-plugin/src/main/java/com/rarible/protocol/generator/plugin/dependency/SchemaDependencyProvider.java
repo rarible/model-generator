@@ -2,6 +2,8 @@ package com.rarible.protocol.generator.plugin.dependency;
 
 import com.rarible.protocol.generator.plugin.config.DependencyConfig;
 import com.rarible.protocol.generator.plugin.mapper.TypeMapperSettings;
+import com.rarible.protocol.merger.SchemaFieldNameProcessor;
+import com.rarible.protocol.merger.SchemaProcessor;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.logging.Log;
@@ -18,6 +20,7 @@ public class SchemaDependencyProvider {
     private String jarFile;
     private String schemaFile;
     private String defaultSchemaFile;
+    private SchemaProcessor pathProcessor;
 
     public SchemaDependencyProvider(Log log,
                                     DependencyConfig dependency,
@@ -27,6 +30,10 @@ public class SchemaDependencyProvider {
         this.jarFile = dependency.getJarFile();
         this.schemaFile = dependency.getSchemaFile();
         this.defaultSchemaFile = typeMapperSettings.getDefaultSchemaPath();
+
+        FieldNameProcessorFactory fieldNameProcessorFactory = new FieldNameProcessorFactory();
+        SchemaFieldNameProcessor processor = fieldNameProcessorFactory.create(dependency.getPathProcessor());
+        this.pathProcessor = typeMapperSettings.getSchemaProcessor(processor);
     }
 
     public SchemaDependency getDependency() throws IOException {
@@ -34,7 +41,7 @@ public class SchemaDependencyProvider {
         try (JarFile jar = new JarFile(jarFile)) {
             SchemaDependency result = new SchemaDependency();
             result.setJarFile(jarFile);
-            result.setText(readSchemaText(jar));
+            result.setProcessedText(pathProcessor.process(readSchemaText(jar)));
             return result;
         }
     }

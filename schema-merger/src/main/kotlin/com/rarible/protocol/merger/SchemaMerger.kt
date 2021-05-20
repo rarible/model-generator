@@ -4,5 +4,5 @@ import java.io.File
 
 interface SchemaMerger {
 
-    fun mergeSchemas(origin: File, dest: File, schemaTexts: List<String>)
+    fun mergeSchemas(originalText: String, dependenciesTexts: List<String>, dest: File)
 }

@@ -1,35 +1,18 @@
 package com.rarible.protocol.generator.plugin.mapper;
 
 import com.rarible.protocol.generator.TypeMapperFactory;
+import com.rarible.protocol.merger.SchemaFieldNameProcessor;
 import com.rarible.protocol.merger.SchemaMerger;
+import com.rarible.protocol.merger.SchemaProcessor;
 
-public class TypeMapperSettings {
+public interface TypeMapperSettings {
 
-    private String defaultSchemaPath;
-    private TypeMapperFactory typeMapperFactory;
-    private SchemaMerger schemaMerger;
+    String getDefaultSchemaPath();
 
-    public String getDefaultSchemaPath() {
-        return defaultSchemaPath;
-    }
+    TypeMapperFactory getTypeMapperFactory();
 
-    public void setDefaultSchemaPath(String defaultSchemaPath) {
-        this.defaultSchemaPath = defaultSchemaPath;
-    }
+    SchemaMerger getSchemaMerger();
 
-    public TypeMapperFactory getTypeMapperFactory() {
-        return typeMapperFactory;
-    }
+    SchemaProcessor getSchemaProcessor(SchemaFieldNameProcessor fieldNameProcessor);
 
-    public void setTypeMapperFactory(TypeMapperFactory typeMapperFactory) {
-        this.typeMapperFactory = typeMapperFactory;
-    }
-
-    public SchemaMerger getSchemaMerger() {
-        return schemaMerger;
-    }
-
-    public void setSchemaMerger(SchemaMerger schemaMerger) {
-        this.schemaMerger = schemaMerger;
-    }
 }
