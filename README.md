@@ -9,6 +9,10 @@ The purpose of this plugin is to generate model (DTO) classes for various langua
 
 ## Usage
 
+Examples:
+* [test-model](https://github.com/rariblecom/model-generator/tree/master/test-model)
+* [test-service](https://github.com/rariblecom/model-generator/tree/master/test-service)
+
 ### Resources
 
 For sources generation plugin uses next files by default (specified relatively to project root folder):
