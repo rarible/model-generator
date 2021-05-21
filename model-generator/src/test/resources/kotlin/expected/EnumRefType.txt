@@ -1,0 +1,7 @@
+package com.rarible.test
+
+
+enum class EnumRefTypeDto {
+     ONE,
+     TWO
+}

@@ -39,7 +39,7 @@ class OpenApiTypeMapper(
     private fun getOrCreateDefinition(component: OpenApiComponent): AbstractComponent {
         log.debug("Reading component: ${component.name}")
         val isProvided = providedTypeMapper.has(component.name)
-        if (!component.isObject() && !component.isOneOf() && !isProvided) {
+        if (!component.isObject() && !component.isOneOf() && !component.isEnum() && !isProvided) {
             throw SchemaValidationException("There is no provided type for custom component '${component.name}'")
         }
 
@@ -66,9 +66,16 @@ class OpenApiTypeMapper(
             { it.name }, { createFieldDefinition(it) }
         )
 
+        val enums = component.getEnums()
+
+        if (enums.isNotEmpty() && fields.isNotEmpty()) {
+            throw SchemaValidationException("Component ${component.name} contains both enums and fields")
+        }
+
         val generatedComponentDefinition = GeneratedComponent(
             component.name,
             qualifierGenerator.getQualifier(component.name),
+            enums,
             fields,
             getDiscriminator(component)
         )
@@ -114,9 +121,10 @@ class OpenApiTypeMapper(
         log.debug("Reading field: ${field.fullName}")
         var fieldTypeDefinition: AbstractComponent
         var fieldGenericTypes: List<AbstractComponent> = Collections.emptyList()
-        var fieldEnumValues = field.enumValues
+        var fieldEnumValues = listOf<String>()
 
         if (field.isArray()) {
+            fieldEnumValues = field.enumValues
             fieldTypeDefinition = primitiveTypeMapper.getDefinition(field.type)
             if (field.isArrayOfPrimitives()) {
                 val (type, format) = field.getArrayPrimitiveType()
@@ -149,6 +157,7 @@ class OpenApiTypeMapper(
                 fieldGenericTypes = listOf(stringType, getOrCreateDefinition(component))
             }
         } else {
+            fieldEnumValues = field.enumValues
             log.debug("--- ${field.fullName} -> primitive (type = ${field.type}, format = ${field.format})")
             // Otherwise, this is one of primitive types like String or Integer
             fieldTypeDefinition = primitiveTypeMapper.getDefinition(field.type, field.format)

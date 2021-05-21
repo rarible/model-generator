@@ -8,6 +8,6 @@ class KotlinMultipleClass(
     val subclasses: List<KotlinClass>,
     val discriminatorField: String,
     val oneOfMapping: Map<String, String>,
-) : KotlinClass(name, qualifier, imports, fields) {
+) : KotlinClass(name, qualifier, imports, listOf<String>(), fields) {
 
 }

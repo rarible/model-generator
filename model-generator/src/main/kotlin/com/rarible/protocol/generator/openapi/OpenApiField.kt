@@ -12,10 +12,10 @@ class OpenApiField(
     val required: Boolean
 ) {
 
-    val enumValues: List<String> = fieldSchema.enums.map { it.toString() }
     val type: String
     val format: String? = fieldSchema.format
     val fullName = "${owner.name}:$name"
+    val enumValues: List<String> = fieldSchema.enums.filterNotNull().map { it.toString() }
 
     init {
         // Case when reference is OneOf

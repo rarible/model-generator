@@ -14,13 +14,13 @@ sealed class OneOfFieldItemDto {
 }
 
 //--------------- OneOfFieldSubItem1Dto ---------------//
-class OneOfFieldSubItem1Dto (
+data class OneOfFieldSubItem1Dto (
     val id : Int,
     val name : String
 ) : OneOfFieldItemDto()
 
 //--------------- OneOfFieldSubItem2Dto ---------------//
-class OneOfFieldSubItem2Dto (
+data class OneOfFieldSubItem2Dto (
     val id : Int
 ) : OneOfFieldItemDto()
 

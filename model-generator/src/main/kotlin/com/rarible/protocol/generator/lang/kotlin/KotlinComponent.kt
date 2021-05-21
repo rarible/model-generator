@@ -38,6 +38,7 @@ class KotlinComponent(
             getName(),
             definition.qualifier,
             getImports(),
+            getEnumValues(),
             allFields
         )
     }
@@ -172,6 +173,10 @@ class KotlinComponent(
 
     private fun getName(): String {
         return definition.name
+    }
+
+    private fun getEnumValues(): List<String> {
+        return definition.enums
     }
 
 }

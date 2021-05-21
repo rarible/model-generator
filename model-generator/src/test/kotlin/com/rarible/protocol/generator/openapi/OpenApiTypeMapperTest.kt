@@ -33,4 +33,16 @@ internal class OpenApiTypeMapperTest {
         }
     }
 
+    @Test
+    fun `test enum contains fields`() {
+        val mapper = OpenApiTypeMapperFactory().getTypeDefinitionMapper(
+            { "test" },
+            mapOf("string" to "String"),
+            mapOf()
+        )
+        assertThrows(SchemaValidationException::class.java) {
+            mapper.readGeneratedComponents(testSchemasFolder.resolve("test_enum_with_fields.yaml"))
+        }
+    }
+
 }

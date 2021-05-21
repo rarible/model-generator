@@ -15,6 +15,10 @@ class OpenApiComponent(
         return "object" == schema.type
     }
 
+    fun isEnum(): Boolean {
+        return schema.enums.isNotEmpty()
+    }
+
     fun isOneOf(): Boolean {
         return schema.oneOfSchemas.isNotEmpty()
     }
@@ -30,6 +34,10 @@ class OpenApiComponent(
         return schema.properties.map {
             OpenApiField(it.key, this, it.value, requiredFields.contains(it.key))
         }
+    }
+
+    fun getEnums(): List<String> {
+        return schema.enums.map { it.toString() }
     }
 
     fun getOneOf(): List<OpenApiComponent> {

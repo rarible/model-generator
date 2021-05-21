@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+servers:
+paths:
+
+components:
+  schemas:
+
+    Word:
+      properties:
+        id:
+          type: string
+      type: string
+      enum:
+        - ONE
+

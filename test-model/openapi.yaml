@@ -1,25 +1,6 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0.1
-servers:
-  - url: 'https'
 paths:
-  /v0.1/test-model-endpoint:
-    post:
-      operationId: testModelEndpoint
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Model'
-        required: true
-
-      responses:
-        '200':
-          description: OK
-        '500':
-          description: Internal Server Error
 
 components:
   schemas:
@@ -28,7 +9,6 @@ components:
       required:
         - id
         - name
-        - items
       type: object
       properties:
         id:

@@ -14,12 +14,12 @@ sealed class MultipleWithDiscriminatorItemDto {
 }
 
 //--------------- MultipleWithDiscriminatorSubItem1Dto ---------------//
-class MultipleWithDiscriminatorSubItem1Dto (
+data class MultipleWithDiscriminatorSubItem1Dto (
     val name : String
 ) : MultipleWithDiscriminatorItemDto()
 
 //--------------- MultipleWithDiscriminatorSubItem2Dto ---------------//
-class MultipleWithDiscriminatorSubItem2Dto (
+data class MultipleWithDiscriminatorSubItem2Dto (
     val id : Int
 ) : MultipleWithDiscriminatorItemDto()
 

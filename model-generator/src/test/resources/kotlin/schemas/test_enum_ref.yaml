@@ -1,0 +1,26 @@
+openapi: 3.0.3
+info:
+servers:
+paths:
+
+components:
+  schemas:
+
+    EnumRefItem1:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/EnumRefType'
+
+    EnumRefItem2:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/EnumRefType'
+
+    EnumRefType:
+      type: string
+      enum:
+        - ONE
+        - TWO
+

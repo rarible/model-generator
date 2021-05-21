@@ -4,6 +4,7 @@ open class KotlinClass(
     val name: String,
     val qualifier: String,
     val imports: Set<String>,
+    val enumValues: List<String>,
     val fields: List<KotlinField>
 ) {
     val enums: List<KotlinEnum> = fields.mapNotNull { it.enum }

@@ -126,6 +126,7 @@ class KotlinGenerator(
     private fun fillKotlinClassModel(model: HashMap<String, Any>, kotlinClass: KotlinClass) {
         model["name"] = kotlinClass.name
         model["enums"] = kotlinClass.enums
+        model["enumValues"] = kotlinClass.enumValues
         model["simpleClassName"] = kotlinClass.simpleClassName
         model["package"] = kotlinClass.packageName
         model["imports"] = kotlinClass.imports

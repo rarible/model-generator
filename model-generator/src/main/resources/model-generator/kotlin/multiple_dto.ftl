@@ -30,8 +30,8 @@ sealed class ${simpleClassName} {
 
 </#list>
 }
-
 <#list subclasses![] as subclass>
+
     <#lt>//--------------- ${subclass.simpleClassName} ---------------//
     <#if subclass.subclasses?has_content>
         <#lt>sealed class ${subclass.simpleClassName} : ${simpleClassName}() {
@@ -50,7 +50,7 @@ sealed class ${simpleClassName} {
         <#lt>}
 
         <#list subclass.subclasses![] as subsubclass>
-            <#lt>class ${subsubclass.simpleClassName} (
+            <#lt>data class ${subsubclass.simpleClassName} (
             <#list subsubclass.fields![] as field>
                 <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if><#if field?has_next>,</#if>
             </#list>
@@ -72,7 +72,7 @@ sealed class ${simpleClassName} {
         </#if>
         </#list>
     <#else>
-        <#lt>class ${subclass.simpleClassName} (
+        <#lt>data class ${subclass.simpleClassName} (
         <#list subclass.fields![] as field>
             <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if><#if field?has_next>,</#if>
         </#list>

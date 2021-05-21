@@ -34,11 +34,17 @@ internal class KotlinGeneratorTest {
         generateAsFiles("test_mixed.yaml", generator)
         generateAsFiles("test_oneof_as_field.yaml", generator)
         generateAsFiles("test_inner_oneof.yaml", generator)
+        generateAsFiles("test_enum_ref.yaml", generator)
     }
 
     @Test
     fun `test lang`() {
         assertEquals("kotlin", generator.lang)
+    }
+
+    @Test
+    fun `test referenced enums`() {
+        verifyGeneratedClasses(generateAsStrings("test_enum_ref.yaml", generator))
     }
 
     @Test

@@ -45,7 +45,7 @@ sealed class OrderActivityDto : InnerOneOfDto() {
 
 }
 
-class OrderActivitySellDto (
+data class OrderActivitySellDto (
     override val mode : Mode,
     override val orderType : OrderType?,
     override val id : String,
@@ -55,7 +55,7 @@ class OrderActivitySellDto (
     val transactionHash : String?
 ) : OrderActivityDto()
 
-class OrderActivityListDto (
+data class OrderActivityListDto (
     override val mode : Mode,
     override val orderType : OrderType?,
     override val id : String,
@@ -65,7 +65,7 @@ class OrderActivityListDto (
     val price : BigInteger?
 ) : OrderActivityDto()
 
-class OrderActivityBidDto (
+data class OrderActivityBidDto (
     override val mode : Mode,
     override val orderType : OrderType?,
     override val id : String,
@@ -81,7 +81,7 @@ sealed class NftActivityDto : InnerOneOfDto() {
     abstract val transactionHash : String
 }
 
-class NftActivityBurnDto (
+data class NftActivityBurnDto (
     override val transactionHash : String,
     override val id : String,
     override val size : Size?,
@@ -101,7 +101,7 @@ class NftActivityBurnDto (
 
 }
 
-class NftActivityTransferDto (
+data class NftActivityTransferDto (
     override val transactionHash : String,
     override val id : String,
     override val size : Size?,
@@ -112,7 +112,7 @@ class NftActivityTransferDto (
     val from : String?
 ) : NftActivityDto()
 
-class NftActivityMintDto (
+data class NftActivityMintDto (
     override val transactionHash : String,
     override val id : String,
     override val size : Size?,

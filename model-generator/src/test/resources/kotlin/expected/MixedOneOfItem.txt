@@ -16,7 +16,7 @@ sealed class MixedOneOfItemDto {
 }
 
 //--------------- MixedSubItem1Dto ---------------//
-class MixedSubItem1Dto (
+data class MixedSubItem1Dto (
     override val parts : List<MixedPartDto>,
     val modes : List<Modes>,
     val features : List<Features>?
@@ -39,7 +39,7 @@ class MixedSubItem1Dto (
 }
 
 //--------------- MixedSubItem2Dto ---------------//
-class MixedSubItem2Dto (
+data class MixedSubItem2Dto (
     override val parts : List<MixedPartDto>,
     val dataType : DataType?
 ) : MixedOneOfItemDto() {
