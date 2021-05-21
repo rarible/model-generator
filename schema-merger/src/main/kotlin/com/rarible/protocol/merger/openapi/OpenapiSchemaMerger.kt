@@ -1,7 +1,6 @@
 package com.rarible.protocol.merger.openapi
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.rarible.protocol.merger.SchemaMerger
@@ -15,72 +14,51 @@ class OpenapiSchemaMerger(
 
     override fun mergeSchemas(originalText: String, dependenciesTexts: List<String>, dest: File) {
         val loader = JsonLoader()
-        var root: ObjectNode
+        var main: ObjectNode
         if (StringUtils.isBlank(originalText)) {
-            root = loader.load(javaClass.getResource("/openapi.yaml")) as ObjectNode
+            main = loader.load(javaClass.getResource("/openapi.yaml")) as ObjectNode
         } else {
-            root = loader.loadString(null, originalText) as ObjectNode
+            main = loader.loadString(null, originalText) as ObjectNode
         }
 
         for (text in dependenciesTexts) {
-            val json = loader.loadString(null, text) as ObjectNode
-            mergeOrSet(root, json, "components")
-            mergeOrSet(root, json, "paths")
-        }
+            val dep = loader.loadString(null, text) as ObjectNode
+            val mainComponents = main.get("components")
+            val depComponents = dep.get("components")
 
-        YAMLMapper().writeValue(dest, root)
-    }
-
-    private fun mergeOrSet(root: ObjectNode, ext: ObjectNode, fieldName: String) {
-        val mainField = root.get(fieldName)
-        val extField = ext.get(fieldName)
-        if (mainField != null && !mainField.isNull) {
-            mergeObjectFields(mainField, extField)
-        } else if (extField != null) {
-            root.set<JsonNode>(fieldName, extField)
-        }
-
-    }
-
-    private fun mergeObjectFields(main: JsonNode, ext: JsonNode?) {
-        if (main == null || ext == null || !main.isObject || !ext.isObject) {
-            return
-        }
-        val mainObject = main as ObjectNode
-        val extObject = ext as ObjectNode
-
-        val iter = main.fields()
-        while (iter.hasNext()) {
-            val (name, mainField) = iter.next()
-            val extField = ext[name]
-            if (extField != null && !extField.isNull) {
-                when {
-                    mainField.isArray -> {
-                        mergeArrayFields(mainField, extField);
-                    }
-                    mainField.isObject -> {
-                        mergeObjectFields(mainField, extField)
-                    }
-                    else -> {
-                        mainObject.set<JsonNode>(name, extField)
-                    }
+            if (depComponents != null && depComponents.isObject) {
+                if (mainComponents == null || mainComponents.isNull) {
+                    main.set<JsonNode>("components", depComponents)
+                } else {
+                    mergeOrSet(mainComponents, depComponents, "schemas")
                 }
             }
-            extObject.remove(name)
+            mergeOrSet(main, dep, "paths")
         }
 
-        val extIterator = ext.fields()
-        while (extIterator.hasNext()) {
-            val (key, value) = extIterator.next()
-            mainObject.set<JsonNode>(key, value)
-        }
+        YAMLMapper().writeValue(dest, main)
     }
 
-    private fun mergeArrayFields(main: JsonNode, ext: JsonNode?) {
-        if (main == null || ext == null || !main.isArray || !ext.isArray) {
+    private fun mergeOrSet(main: JsonNode, dep: JsonNode, fieldName: String) {
+        if (main == null || dep == null) {
             return
         }
-        (main as ArrayNode).addAll(ext as ArrayNode)
-    }
+        val mainField = main.get(fieldName)
+        val extField = dep.get(fieldName)
+        if (extField == null || !extField.isObject) {
+            return;
+        }
+        if (mainField != null && mainField.isObject) {
+            val main = mainField as ObjectNode
+            val ext = extField as ObjectNode
 
+            val iter = ext.fields()
+            while (iter.hasNext()) {
+                val (name, depField) = iter.next()
+                main.set<JsonNode>(name, depField)
+            }
+        } else {
+            (main as ObjectNode).set<JsonNode>(fieldName, extField)
+        }
+    }
 }
