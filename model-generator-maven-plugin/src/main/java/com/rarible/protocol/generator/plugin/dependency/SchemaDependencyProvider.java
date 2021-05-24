@@ -11,8 +11,6 @@ import org.apache.maven.plugin.logging.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
 
 public class SchemaDependencyProvider {
 
@@ -38,35 +36,35 @@ public class SchemaDependencyProvider {
 
     public SchemaDependency getDependency() throws IOException {
         log.debug("Opening jar file: " + jarFile);
-        try (JarFile jar = new JarFile(jarFile)) {
+        try (DependencyReader reader = DependencyReaderFactory.getReader(jarFile)) {
             SchemaDependency result = new SchemaDependency();
             result.setJarFile(jarFile);
-            result.setProcessedText(pathProcessor.process(readSchemaText(jar)));
+            result.setProcessedText(pathProcessor.process(readSchemaText(reader)));
             return result;
         }
     }
 
-    private String readSchemaText(JarFile jar) throws IOException {
-        ZipEntry zipEntry;
+    private String readSchemaText(DependencyReader reader) throws IOException {
+        InputStream stream;
         if (StringUtils.isNotBlank(schemaFile)) {
-            log.debug("Trying to read schema file " + jar.getName() + " -> " + schemaFile);
-            zipEntry = jar.getEntry(schemaFile);
-            if (zipEntry == null) {
+            log.debug("Trying to read schema file " + reader.getPath() + " -> " + schemaFile);
+            stream = reader.getInputStream(schemaFile);
+            if (stream == null) {
                 throw new IOException("Schema file '" + schemaFile + "'" +
-                        " not found in jar '" + jar.getName() + "'");
+                        " not found in jar '" + reader.getPath() + "'");
             }
         } else {
             log.debug("Custom schema path not specified, trying to read default schema file: "
-                    + jar.getName() + " -> " + defaultSchemaFile);
+                    + reader.getPath() + " -> " + defaultSchemaFile);
 
-            zipEntry = jar.getEntry(defaultSchemaFile);
-            if (zipEntry == null) {
+            stream = reader.getInputStream(defaultSchemaFile);
+            if (stream == null) {
                 throw new IOException("Default schema file '" + defaultSchemaFile + "' not found" +
-                        " in jar '" + jar.getName() + "' and no custom path for schema specified");
+                        " in jar '" + reader.getPath() + "' and no custom path for schema specified");
             }
         }
-        try (InputStream stream = jar.getInputStream(zipEntry)) {
-            return IOUtils.toString(stream, StandardCharsets.UTF_8);
+        try (InputStream in = stream) {
+            return IOUtils.toString(in, StandardCharsets.UTF_8);
         }
     }
 

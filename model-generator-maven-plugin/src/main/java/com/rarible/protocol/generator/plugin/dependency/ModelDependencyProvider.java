@@ -21,16 +21,13 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.JarFile;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
 
 public class ModelDependencyProvider {
 
     private Log log;
 
     private final String jarFile;
-    private final String schemaFile;
     private final String defaultSchemaFile;
 
     private final QualifierGenerator qualifierGenerator;
@@ -47,7 +44,6 @@ public class ModelDependencyProvider {
     ) {
         this.log = log;
         this.jarFile = dependency.getJarFile();
-        this.schemaFile = dependency.getSchemaFile();
         this.defaultSchemaFile = typeMapperSettings.getDefaultSchemaPath();
         this.qualifierGenerator = generatorFactory.getQualifierGenerator();
         this.generatorFactory = generatorFactory;
@@ -56,8 +52,9 @@ public class ModelDependencyProvider {
     }
 
     public ModelDependency getDependency() throws IOException {
-        log.debug("Opening jar file: " + jarFile);
-        try (JarFile jar = new JarFile(jarFile)) {
+        log.debug("Reading dependency: " + jarFile);
+
+        try (DependencyReader reader = DependencyReaderFactory.getReader(jarFile)) {
             ModelDependency result = new ModelDependency();
             result.setJarFile(jarFile);
 
@@ -68,8 +65,8 @@ public class ModelDependencyProvider {
             String primitiveTypesFile = Folders.getMergedPrimitiveTypesFileRelativePath(lang);
             String providedTypesFile = Folders.getMergedProvidedTypesFileRelativePath(lang);
 
-            defaultPrimitiveTypes.putAll(readTypes(jar, primitiveTypesFile));
-            defaultProvidedTypes.putAll(readTypes(jar, providedTypesFile));
+            defaultPrimitiveTypes.putAll(readTypes(reader, primitiveTypesFile));
+            defaultProvidedTypes.putAll(readTypes(reader, providedTypesFile));
             log.debug("Primitive types (default included): " + defaultPrimitiveTypes);
             log.debug("Provided types (default included): " + defaultProvidedTypes);
 
@@ -110,19 +107,13 @@ public class ModelDependencyProvider {
         }
     }
 
-    private Map<String, String> readTypes(JarFile jar, String defaultFilePath) throws IOException {
-        log.debug("Reading type mapping from: " + jar.getName() + " -> " + defaultFilePath);
-        ZipEntry zipEntry = jar.getEntry(defaultFilePath);
-        if (zipEntry == null) {
-            log.debug("No type mapping found in " + jar.getName() + " -> " + defaultFilePath);
+    private Map<String, String> readTypes(DependencyReader reader, String defaultFilePath) throws IOException {
+        log.debug("Reading type mapping from: " + reader.getPath() + " -> " + defaultFilePath);
+        InputStream stream = reader.getInputStream(defaultFilePath);
+        if (stream == null) {
+            log.debug("No type mapping found in " + reader.getPath() + " -> " + defaultFilePath);
             return new HashMap<>();
         }
-        return readTypes(jar, zipEntry);
-    }
-
-    private Map<String, String> readTypes(JarFile jar, ZipEntry zipEntry) throws IOException {
-        InputStream stream = jar.getInputStream(zipEntry);
-        ProvidedTypeStreamReader reader = new ProvidedTypeStreamReader(stream);
-        return reader.getMapping();
+        return new ProvidedTypeStreamReader(stream).getMapping();
     }
 }
