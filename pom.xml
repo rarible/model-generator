@@ -8,6 +8,19 @@
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
+    <parent>
+        <groupId>com.rarible</groupId>
+        <artifactId>rarible-parent-pom</artifactId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+
+    <repositories>
+        <repository>
+            <id>nexus-maven-public</id>
+            <url>http://nexus.rarible.int/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
     <distributionManagement>
         <repository>
             <id>github</id>
@@ -53,19 +66,6 @@
         <version.logback>6.6</version.logback>
         <version.maven.plugin.annotations>3.4</version.maven.plugin.annotations>
     </properties>
-
-    <parent>
-        <groupId>com.rarible</groupId>
-        <artifactId>rarible-parent-pom</artifactId>
-        <version>1.1-SNAPSHOT</version>
-    </parent>
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
 
     <dependencyManagement>
         <dependencies>
