@@ -1,7 +1,7 @@
 {
   "map": "kotlin.collections.Map",
   "array": "kotlin.collections.List",
-  "boolean": "java.lang.Boolean",
+  "boolean": "kotlin.Boolean",
   "string": "kotlin.String",
   "byte": "kotlin.Byte",
   "integer": "kotlin.Int",
