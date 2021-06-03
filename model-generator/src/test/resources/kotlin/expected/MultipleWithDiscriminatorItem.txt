@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 import kotlin.Int
 import kotlin.String
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "assetClass", visible=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "assetClass")
 @JsonSubTypes(
     JsonSubTypes.Type(name = "SUB_ITEM_1", value = MultipleWithDiscriminatorSubItem1Dto::class),
     JsonSubTypes.Type(name = "SUB_ITEM_2", value = MultipleWithDiscriminatorSubItem2Dto::class)

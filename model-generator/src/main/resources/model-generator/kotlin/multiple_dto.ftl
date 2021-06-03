@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 <#if discriminatorField = "@type">
     <#lt>@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 <#else>
-    <#lt>@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.PROPERTY, property = "${discriminatorField}", visible=true)
+    <#lt>@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "${discriminatorField}")
 </#if>
 @JsonSubTypes(
 <#list oneOf![] as type, enum>

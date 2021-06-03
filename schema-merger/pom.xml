@@ -5,13 +5,13 @@
     <parent>
         <artifactId>model-generator-parent</artifactId>
         <groupId>com.rarible.protocol</groupId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>schema-merger</artifactId>
     <packaging>jar</packaging>
-    <version>${parent.version}</version>
+    <version>${project.parent.version}</version>
 
     <dependencies>
         <dependency>
