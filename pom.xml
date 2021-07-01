@@ -6,7 +6,7 @@
     <artifactId>model-generator-parent</artifactId>
     <groupId>com.rarible.protocol</groupId>
     <packaging>pom</packaging>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <parent>
         <groupId>com.rarible</groupId>

@@ -11,14 +11,6 @@ class OpenApiComponent(
 
     private val requiredFields = HashSet(schema.requiredFields)
 
-    fun isObject(): Boolean {
-        return "object" == schema.type
-    }
-
-    fun isEnum(): Boolean {
-        return schema.enums.isNotEmpty()
-    }
-
     fun isOneOf(): Boolean {
         return schema.oneOfSchemas.isNotEmpty()
     }
