@@ -21,7 +21,7 @@ pipeline {
 			}
 			steps {
 				sh 'mvn clean install'
-				deployToMaven('jenkins-rarible-ci')
+				deployToMaven('nexus-ci')
 			}
 		}
 	}
