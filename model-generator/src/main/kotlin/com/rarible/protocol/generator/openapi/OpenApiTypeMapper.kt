@@ -39,6 +39,9 @@ class OpenApiTypeMapper(
     private fun getOrCreateDefinition(component: OpenApiComponent): AbstractComponent {
         log.debug("Reading component: ${component.name}")
         val isProvided = providedTypeMapper.has(component.name)
+        if (!component.isObject() && !component.isOneOf() && !component.isEnum() && !isProvided) {
+            throw SchemaValidationException("There is no provided type for custom component '${component.name}'")
+        }
 
         // Checking provided first, then - generated
         if (isProvided) {
