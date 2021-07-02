@@ -9,7 +9,10 @@
   "integer:int64": "kotlin.Long",
   "number:float": "kotlin.Float",
   "number:double": "kotlin.Double",
+  "number:bigdecimal": "java.math.BigDecimal",
+  "number:biginteger": "java.math.BigInteger",
   "string:byte": "kotlin.Byte",
   "string:date-time": "java.time.Instant",
-  "string:password": "kotlin.String"
+  "string:password": "kotlin.String",
+  "string:uri": "kotlin.String"
 }
