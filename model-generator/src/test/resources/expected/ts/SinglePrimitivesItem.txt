@@ -1,4 +1,4 @@
-type SinglePrimitivesItemDto = {
+export type SinglePrimitivesItemDto = {
 	id: number
 	name: string
 	index: number
@@ -13,7 +13,7 @@ type SinglePrimitivesItemDto = {
 	modes: Array<Modes>
 }
 
-type Type = "ERC721" | "ERC1155"
-type DataType = "LEGACY" | "MODERN"
-type Features = "APPROVE" | "BURN" | "MINT"
-type Modes = "ONE" | "TWO" | "THREE"
+export type Type = "ERC721" | "ERC1155"
+export type DataType = "LEGACY" | "MODERN"
+export type Features = "APPROVE" | "BURN" | "MINT"
+export type Modes = "ONE" | "TWO" | "THREE"

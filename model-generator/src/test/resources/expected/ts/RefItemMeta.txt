@@ -1,4 +1,4 @@
-type RefItemMetaDto = {
+export type RefItemMetaDto = {
 	type: string
 	width?: number
 	height?: number

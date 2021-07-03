@@ -1,11 +1,11 @@
 <#macro field_name name><#if name?starts_with("@")>"${name}"<#else>${name}</#if></#macro>
 <#macro subclass class>
 <#if class.subclasses?has_content>
-	<#lt>type ${class.simpleClassName} = <#list class.subclasses![] as class>${class.name}<#if class?has_next> | </#if></#list>
+	<#lt>export type ${class.simpleClassName} = <#list class.subclasses![] as class>${class.name}<#if class?has_next> | </#if></#list>
 
 	<#list class.subclasses![] as class><@subclass class/></#list>
 <#else>
-	<#lt>type ${class.simpleClassName} = {
+	<#lt>export type ${class.simpleClassName} = {
 		<#lt>	<@field_name discriminatorField/>: "${oneOf[class.simpleClassName]}"
 	<#list class.fields![] as field><#if discriminatorField != field.name>
 		<#lt>	<@field_name field.name/><#if !field.required>?</#if>: ${field.type}
@@ -13,12 +13,12 @@
 	<#lt>}
 </#if>
 </#macro>
-type ${simpleClassName} = <#list subclasses![] as class>${class.name}<#if class?has_next> | </#if></#list>
+export type ${simpleClassName} = <#list subclasses![] as class>${class.name}<#if class?has_next> | </#if></#list>
 
 <#list subclasses![] as class><@subclass class/></#list>
 
 <#if enums?has_content>
   <#list enums![] as enum>
-type ${enum.name} = <#list enum.values![] as value>"${value}"<#if value?has_next> | </#if></#list>
+		<#lt>export type ${enum.name} = <#list enum.values![] as value>"${value}"<#if value?has_next> | </#if></#list>
   </#list>
 </#if>

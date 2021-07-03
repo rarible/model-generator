@@ -1,4 +1,4 @@
-type RefItemRootDto = {
+export type RefItemRootDto = {
 	name: string
 	description?: string
 	image?: RefItemDto

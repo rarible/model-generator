@@ -1,4 +1,4 @@
-type RefItemDto = {
+export type RefItemDto = {
 	url: Map<string, string>
 	meta: Map<string, RefItemMetaDto>
 }

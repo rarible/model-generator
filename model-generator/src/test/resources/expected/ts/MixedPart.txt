@@ -1,4 +1,4 @@
-type MixedPartDto = {
+export type MixedPartDto = {
 	partId: string
 	partValue: number
 }

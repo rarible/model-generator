@@ -1,4 +1,4 @@
-type MixedSingleItemDto = {
+export type MixedSingleItemDto = {
 	id: number
 	name: string
 }

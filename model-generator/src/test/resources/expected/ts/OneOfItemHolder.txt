@@ -1,4 +1,4 @@
-type OneOfItemHolderDto = {
+export type OneOfItemHolderDto = {
 	id: number
 	oneof?: OneOfFieldItemDto
 	oneofarray?: Array<OneOfFieldItemDto>
