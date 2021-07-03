@@ -1,0 +1,4 @@
+type SingleSeveralClassesItem1Dto = {
+	id: number
+	name: string
+}

@@ -1,0 +1,10 @@
+type MultipleWithDiscriminatorItemDto = MultipleWithDiscriminatorSubItem1 | MultipleWithDiscriminatorSubItem2
+
+type MultipleWithDiscriminatorSubItem1Dto = {
+	assetClass: "SUB_ITEM_1"
+	name: string
+}
+type MultipleWithDiscriminatorSubItem2Dto = {
+	assetClass: "SUB_ITEM_2"
+	id: number
+}

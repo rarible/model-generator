@@ -1,0 +1,6 @@
+type SingleSeveralClassesItem3Dto = {
+	id: string
+	modes: Array<Modes>
+}
+
+type Modes = "ONE" | "TWO" | "THREE"

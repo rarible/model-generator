@@ -1,0 +1,5 @@
+type RefItemMetaDto = {
+	type: string
+	width?: number
+	height?: number
+}

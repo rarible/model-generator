@@ -1,0 +1,13 @@
+type MixedOneOfItemDto = MixedSubItem1 | MixedSubItem2
+
+type MixedSubItem1Dto = {
+	"@type": "SUB_ITEM_1"
+	parts: Array<MixedPartDto>
+	modes: Array<Modes>
+	features?: Array<Features>
+}
+type MixedSubItem2Dto = {
+	"@type": "SUB_ITEM_2"
+	parts: Array<MixedPartDto>
+	dataType?: DataType
+}

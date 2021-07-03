@@ -1,0 +1,3 @@
+type EnumRefTypeDto =
+			"ONE" |
+			"TWO"

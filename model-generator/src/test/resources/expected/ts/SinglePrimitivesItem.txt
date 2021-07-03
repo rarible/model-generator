@@ -1,0 +1,19 @@
+type SinglePrimitivesItemDto = {
+	id: number
+	name: string
+	index: number
+	count: number
+	date?: Date
+	strings?: Array<string>
+	longs?: Array<number>
+	map?: Map<string, Date>
+	type: Type
+	dataType?: DataType
+	features?: Array<Features>
+	modes: Array<Modes>
+}
+
+type Type = "ERC721" | "ERC1155"
+type DataType = "LEGACY" | "MODERN"
+type Features = "APPROVE" | "BURN" | "MINT"
+type Modes = "ONE" | "TWO" | "THREE"

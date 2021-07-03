@@ -1,0 +1,11 @@
+type OneOfFieldItemDto = OneOfFieldSubItem1 | OneOfFieldSubItem2
+
+type OneOfFieldSubItem1Dto = {
+	"@type": "SUB_ITEM_1"
+	id: number
+	name: string
+}
+type OneOfFieldSubItem2Dto = {
+	"@type": "SUB_ITEM_2"
+	id: number
+}
