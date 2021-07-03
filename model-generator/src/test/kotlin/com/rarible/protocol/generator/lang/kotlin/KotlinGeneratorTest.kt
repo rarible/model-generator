@@ -6,11 +6,13 @@ import com.rarible.protocol.generator.type.ProvidedTypeConstantReader
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.math.max
 
 internal class KotlinGeneratorTest {
+    private val logger = LoggerFactory.getLogger(KotlinGeneratorTest::class.java)
 
     // No additional mappings provided, only default used
     private val primitiveReader = ProvidedTypeConstantReader(mapOf())
@@ -88,6 +90,9 @@ internal class KotlinGeneratorTest {
     }
 
     private fun verifyGeneratedClasses(classes: Map<String, String>) {
+        for ((_, text) in classes) {
+            logger.info("generated: $text")
+        }
         for ((name, text) in classes) {
             val expected = readExpectedClassText(name).filter { it.trim().isNotEmpty() }
             val original = text.split("\n").filter { it.trim().isNotEmpty() }

@@ -1,11 +1,15 @@
 package com.rarible.test
 
 import com.rarible.test.OneOfFieldItemDto
+import com.rarible.test.OneOfFieldSubItem1Dto
+import com.rarible.test.OneOfFieldSubItem2Dto
 import kotlin.Int
 import kotlin.collections.List
 
 data class OneOfItemHolderDto (
     val id : Int,
     val oneof : OneOfFieldItemDto?,
+    val item1 : OneOfFieldSubItem1Dto?,
+    val item2 : OneOfFieldSubItem2Dto?,
     val oneofarray : List<OneOfFieldItemDto>?
 )

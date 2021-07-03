@@ -53,6 +53,10 @@ components:
           type: integer
         oneof:
           $ref: '#/components/schemas/OneOfFieldItem'
+        item1:
+          $ref: '#/components/schemas/OneOfFieldSubItem1'
+        item2:
+          $ref: '#/components/schemas/OneOfFieldSubItem2'
         oneofarray:
           type: array
           items:

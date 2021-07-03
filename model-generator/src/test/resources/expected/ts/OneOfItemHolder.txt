@@ -1,5 +1,7 @@
 export type OneOfItemHolderDto = {
 	id: number
 	oneof?: OneOfFieldItemDto
+	item1?: OneOfFieldSubItem1Dto
+	item2?: OneOfFieldSubItem2Dto
 	oneofarray?: Array<OneOfFieldItemDto>
 }
