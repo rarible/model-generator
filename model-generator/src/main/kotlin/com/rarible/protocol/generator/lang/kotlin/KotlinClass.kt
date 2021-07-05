@@ -2,7 +2,7 @@ package com.rarible.protocol.generator.lang.kotlin
 
 open class KotlinClass(
     val name: String,
-    val qualifier: String,
+    qualifier: String,
     val imports: Set<String>,
     val enumValues: List<String>,
     val fields: List<KotlinField>

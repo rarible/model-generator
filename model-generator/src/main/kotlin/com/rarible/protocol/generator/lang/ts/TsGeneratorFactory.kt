@@ -1,4 +1,4 @@
-package com.rarible.protocol.generator.lang.kotlin
+package com.rarible.protocol.generator.lang.ts
 
 import com.rarible.protocol.generator.AbstractGeneratorFactory
 import com.rarible.protocol.generator.Generator
@@ -6,7 +6,7 @@ import com.rarible.protocol.generator.QualifierGenerator
 import com.rarible.protocol.generator.TypeMapperFactory
 import com.rarible.protocol.generator.type.ProvidedTypeReader
 
-class KotlinGeneratorFactory(
+class TsGeneratorFactory(
     private val packageName: String
 ) : AbstractGeneratorFactory() {
 
@@ -17,7 +17,7 @@ class KotlinGeneratorFactory(
         providedTypeFileReader: ProvidedTypeReader,
         typeMapperFactory: TypeMapperFactory
     ): Generator {
-        return KotlinGenerator(
+        return TsGenerator(
             getLang(),
             primitiveTypeFileReader,
             providedTypeFileReader,
@@ -27,7 +27,7 @@ class KotlinGeneratorFactory(
     }
 
     override fun getLang(): String {
-        return "kotlin"
+        return "ts"
     }
 
     override fun getQualifierGenerator(): QualifierGenerator {

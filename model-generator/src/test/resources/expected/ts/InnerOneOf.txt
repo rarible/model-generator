@@ -1,0 +1,71 @@
+export type InnerOneOfDto = OrderActivity | NftActivity
+
+export type OrderActivityDto = OrderActivitySell | OrderActivityList | OrderActivityBid
+
+export type OrderActivitySellDto = {
+	"@type": "sell"
+	mode: Mode
+	orderType?: OrderType
+	id: string
+	size?: Size
+	date?: Date
+	address?: string
+	transactionHash?: string
+}
+export type OrderActivityListDto = {
+	"@type": "list"
+	mode: Mode
+	orderType?: OrderType
+	id: string
+	size?: Size
+	date?: Date
+	address?: string
+	price?: string
+}
+export type OrderActivityBidDto = {
+	"@type": "bid"
+	mode: Mode
+	orderType?: OrderType
+	id: string
+	size?: Size
+	date?: Date
+	address?: string
+	price?: string
+}
+export type NftActivityDto = NftActivityBurn | NftActivityTransfer | NftActivityMint
+
+export type NftActivityBurnDto = {
+	"@type": "burn"
+	transactionHash: string
+	id: string
+	size?: Size
+	date?: Date
+	address?: string
+	tokenId?: string
+	value?: string
+	burn?: string
+	mode?: Mode
+}
+export type NftActivityTransferDto = {
+	"@type": "transfer"
+	transactionHash: string
+	id: string
+	size?: Size
+	date?: Date
+	address?: string
+	tokenId?: string
+	value?: string
+	from?: string
+}
+export type NftActivityMintDto = {
+	"@type": "mint"
+	transactionHash: string
+	id: string
+	size?: Size
+	date?: Date
+	address?: string
+	tokenId?: string
+	value?: string
+}
+
+export type Size = "BIG" | "SMALL"

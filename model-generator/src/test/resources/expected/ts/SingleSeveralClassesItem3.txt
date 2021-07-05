@@ -1,0 +1,6 @@
+export type SingleSeveralClassesItem3Dto = {
+	id: string
+	modes: Array<Modes>
+}
+
+export type Modes = "ONE" | "TWO" | "THREE"

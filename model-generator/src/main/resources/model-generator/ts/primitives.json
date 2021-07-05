@@ -1,5 +1,5 @@
 {
-  "map": "kotlin.collections.Map",
+  "map": "Map",
   "array": "Array",
   "string": "string",
   "integer": "number",

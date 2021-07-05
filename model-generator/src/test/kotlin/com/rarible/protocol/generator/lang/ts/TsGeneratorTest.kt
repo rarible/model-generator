@@ -1,9 +1,8 @@
 import com.rarible.protocol.generator.Generator
-import com.rarible.protocol.generator.lang.kotlin.KotlinGenerator
-import com.rarible.protocol.generator.lang.kotlin.KotlinGeneratorFactory
+import com.rarible.protocol.generator.lang.ts.TsGenerator
+import com.rarible.protocol.generator.lang.ts.TsGeneratorFactory
 import com.rarible.protocol.generator.openapi.OpenApiTypeMapperFactory
 import com.rarible.protocol.generator.type.ProvidedTypeConstantReader
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
@@ -11,19 +10,19 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.math.max
 
-internal class KotlinGeneratorTest {
-    private val logger = LoggerFactory.getLogger(KotlinGeneratorTest::class.java)
+internal class TsGeneratorTest {
+    private val logger = LoggerFactory.getLogger(TsGeneratorTest::class.java)
 
     // No additional mappings provided, only default used
     private val primitiveReader = ProvidedTypeConstantReader(mapOf())
     private val providedReader = ProvidedTypeConstantReader(mapOf())
 
     private val testSchemasFolder = Paths.get("src/test/resources/schemas")
-    private val expectedClassesFolder = Paths.get("src/test/resources/expected/kotlin")
+    private val expectedClassesFolder = Paths.get("src/test/resources/expected/ts")
 
     private val outPath = Paths.get("target/generated-sources")
 
-    private val generator: KotlinGenerator = createDefaultGenerator()
+    private val generator: TsGenerator = createDefaultGenerator()
 
     // For manual testing only
     //@Test
@@ -41,7 +40,7 @@ internal class KotlinGeneratorTest {
 
     @Test
     fun `test lang`() {
-        assertEquals("kotlin", generator.lang)
+        assertEquals("ts", generator.lang)
     }
 
     @Test
@@ -100,7 +99,7 @@ internal class KotlinGeneratorTest {
             for (i in 0..max(expected.size, original.size)) {
                 val expectedLine = if (i < expected.size) expected[i].trim() else ""
                 val originalLine = if (i < original.size) original[i].trim() else ""
-                Assertions.assertEquals(expectedLine, originalLine, "Validation of class '$name' failed at line $i:")
+                assertEquals(expectedLine, originalLine, "Validation of class '$name' failed at line $i:")
             }
         }
     }
@@ -119,11 +118,11 @@ internal class KotlinGeneratorTest {
         generator.generate(ymlPath, outPath)
     }
 
-    private fun createDefaultGenerator(): KotlinGenerator {
-        val factory = KotlinGeneratorFactory(
+    private fun createDefaultGenerator(): TsGenerator {
+        val factory = TsGeneratorFactory(
             "com.rarible.test"
         )
 
-        return factory.getGenerator(primitiveReader, providedReader, OpenApiTypeMapperFactory()) as KotlinGenerator
+        return factory.getGenerator(primitiveReader, providedReader, OpenApiTypeMapperFactory()) as TsGenerator
     }
 }

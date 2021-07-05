@@ -1,0 +1,3 @@
+export type EnumRefItem1Dto = {
+	type?: EnumRefTypeDto
+}
