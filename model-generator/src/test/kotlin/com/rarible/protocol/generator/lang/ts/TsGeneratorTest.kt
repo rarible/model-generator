@@ -120,7 +120,7 @@ internal class TsGeneratorTest {
 
     private fun createDefaultGenerator(): TsGenerator {
         val factory = TsGeneratorFactory(
-            "com.rarible.test"
+            "com.rarible.test.ts"
         )
 
         return factory.getGenerator(primitiveReader, providedReader, OpenApiTypeMapperFactory()) as TsGenerator

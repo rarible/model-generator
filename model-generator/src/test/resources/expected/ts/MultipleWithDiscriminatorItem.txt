@@ -1,10 +1,11 @@
-export type MultipleWithDiscriminatorItemDto = MultipleWithDiscriminatorSubItem1 | MultipleWithDiscriminatorSubItem2
+export type MultipleWithDiscriminatorItem = MultipleWithDiscriminatorSubItem1 | MultipleWithDiscriminatorSubItem2
 
-export type MultipleWithDiscriminatorSubItem1Dto = {
+export type MultipleWithDiscriminatorSubItem1 = {
 	assetClass: "SUB_ITEM_1"
 	name: string
 }
-export type MultipleWithDiscriminatorSubItem2Dto = {
+
+export type MultipleWithDiscriminatorSubItem2 = {
 	assetClass: "SUB_ITEM_2"
 	id: number
 }

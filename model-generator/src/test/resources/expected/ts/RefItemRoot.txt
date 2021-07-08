@@ -1,6 +1,8 @@
-export type RefItemRootDto = {
-	name: string
-	description?: string
-	image?: RefItemDto
-	animation?: RefItemDto
+import {RefItem} from "./RefItem";
+
+export type RefItemRoot = {
+    name: string
+    description?: string
+    image?: RefItem
+    animation?: RefItem
 }

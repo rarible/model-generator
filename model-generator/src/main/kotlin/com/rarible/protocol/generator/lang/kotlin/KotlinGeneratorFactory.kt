@@ -1,9 +1,9 @@
 package com.rarible.protocol.generator.lang.kotlin
 
-import com.rarible.protocol.generator.AbstractGeneratorFactory
 import com.rarible.protocol.generator.Generator
 import com.rarible.protocol.generator.QualifierGenerator
 import com.rarible.protocol.generator.TypeMapperFactory
+import com.rarible.protocol.generator.lang.AbstractGeneratorFactory
 import com.rarible.protocol.generator.type.ProvidedTypeReader
 
 class KotlinGeneratorFactory(
@@ -19,6 +19,7 @@ class KotlinGeneratorFactory(
     ): Generator {
         return KotlinGenerator(
             getLang(),
+            packageName,
             primitiveTypeFileReader,
             providedTypeFileReader,
             typeMapperFactory,

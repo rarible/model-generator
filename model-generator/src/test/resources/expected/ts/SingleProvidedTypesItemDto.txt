@@ -1,4 +1,0 @@
-export type SingleProvidedTypesItemDto = {
-	id: string
-	name: string
-}

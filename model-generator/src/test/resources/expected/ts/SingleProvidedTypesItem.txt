@@ -1,4 +1,4 @@
-export type SingleProvidedTypesItemDto = {
-	id: string
-	name: string
+export type SingleProvidedTypesItem = {
+    id: string
+    name: string
 }

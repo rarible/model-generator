@@ -1,5 +1,6 @@
-export type RefItemMetaDto = {
-	type: string
-	width?: number
-	height?: number
+export type RefItemMeta = {
+    type: string
+    width?: number
+    height?: number
 }
+

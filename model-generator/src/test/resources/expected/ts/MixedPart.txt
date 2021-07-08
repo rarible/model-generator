@@ -1,4 +1,4 @@
-export type MixedPartDto = {
-	partId: string
-	partValue: number
+export type MixedPart = {
+    partId: string
+    partValue: number
 }

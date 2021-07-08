@@ -1,6 +1,6 @@
-package com.rarible.test
+package com.rarible.test.kotlin
 
-import com.rarible.test.RefItemDto
+import com.rarible.test.kotlin.RefItemDto
 import kotlin.String
 
 data class RefItemRootDto (

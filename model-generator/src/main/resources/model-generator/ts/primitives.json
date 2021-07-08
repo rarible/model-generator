@@ -1,9 +1,16 @@
 {
-  "map": "Map",
+  "map": "Record",
   "array": "Array",
   "string": "string",
   "integer": "number",
   "integer:int32": "number",
   "integer:int64": "number",
-  "string:date-time": "Date"
+  "number:float": "number",
+  "number:double": "number",
+  "number:bigdecimal": "string",
+  "number:biginteger": "string",
+  "string:date-time": "Date",
+  "string:byte": "number",
+  "string:password": "string",
+  "string:uri": "string"
 }

@@ -1,4 +1,4 @@
-package com.rarible.test
+package com.rarible.test.kotlin
 
 import kotlin.String
 import kotlin.collections.List

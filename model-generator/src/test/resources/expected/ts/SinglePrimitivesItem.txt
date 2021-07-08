@@ -1,19 +1,19 @@
-export type SinglePrimitivesItemDto = {
-	id: number
-	name: string
-	index: number
-	count: number
-	date?: Date
-	strings?: Array<string>
-	longs?: Array<number>
-	map?: Map<string, Date>
-	type: Type
-	dataType?: DataType
-	features?: Array<Features>
-	modes: Array<Modes>
+export type SinglePrimitivesItem = {
+    id: number
+    name: string
+    index: number
+    count: number
+    date?: Date
+    strings?: Array<string>
+    longs?: Array<number>
+    map?: Record<string, Date>
+    type: SinglePrimitivesItem_Type
+    dataType?: SinglePrimitivesItem_DataType
+    features?: Array<SinglePrimitivesItem_Features>
+    modes: Array<SinglePrimitivesItem_Modes>
 }
 
-export type Type = "ERC721" | "ERC1155"
-export type DataType = "LEGACY" | "MODERN"
-export type Features = "APPROVE" | "BURN" | "MINT"
-export type Modes = "ONE" | "TWO" | "THREE"
+export type SinglePrimitivesItem_Type = "ERC721" | "ERC1155"
+export type SinglePrimitivesItem_DataType = "LEGACY" | "MODERN"
+export type SinglePrimitivesItem_Features = "APPROVE" | "BURN" | "MINT"
+export type SinglePrimitivesItem_Modes = "ONE" | "TWO" | "THREE"

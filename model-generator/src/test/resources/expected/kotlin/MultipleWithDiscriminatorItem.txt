@@ -1,4 +1,4 @@
-package com.rarible.test
+package com.rarible.test.kotlin
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo

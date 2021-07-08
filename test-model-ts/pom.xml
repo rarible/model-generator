@@ -9,16 +9,16 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>test-model</artifactId>
+    <artifactId>test-model-ts</artifactId>
     <version>${project.parent.version}</version>
     <packaging>jar</packaging>
 
     <properties>
         <dir.resources>${basedir}/src/main/resources</dir.resources>
         <dir.generator.resources>${dir.resources}/model-generator</dir.generator.resources>
-        <dir.generator.resources.kotlin>${dir.generator.resources}/${generator.kotlin}</dir.generator.resources.kotlin>
+        <dir.generator.resources.kotlin>${dir.generator.resources}/${generator.ts}</dir.generator.resources.kotlin>
 
-        <generator.kotlin>kotlin</generator.kotlin>
+        <generator.ts>ts</generator.ts>
         <generator.package>com.rarible.protocol.dto</generator.package>
     </properties>
 
@@ -37,6 +37,14 @@
             <plugin>
                 <groupId>com.rarible.protocol</groupId>
                 <artifactId>model-generator-maven-plugin</artifactId>
+                <configuration>
+                    <generators>
+                        <generator>
+                            <lang>${generator.ts}</lang>
+                            <packageName>${generator.package}</packageName>
+                        </generator>
+                    </generators>
+                </configuration>
             </plugin>
 
         </plugins>
