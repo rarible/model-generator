@@ -8,7 +8,9 @@ import com.rarible.protocol.generator.lang.ClassWriter
 import com.rarible.protocol.generator.lang.LangClass
 import com.rarible.protocol.generator.lang.LangOneOfClass
 import com.rarible.protocol.generator.type.ProvidedTypeReader
+import java.nio.file.Files
 import java.nio.file.Path
+import java.util.*
 
 
 class TsGenerator(
@@ -28,6 +30,7 @@ class TsGenerator(
 ) {
 
     val primitiveTypes = HashSet(primitiveTypesFileReader.getMapping().values)
+    val providedTypes = HashSet(providedTypesFileReader.getMapping().values)
     val childParents = HashMap<String, String>()
 
     override fun generate(apiFilePath: Path, outputFolder: Path, writer: ClassWriter) {
@@ -62,7 +65,18 @@ class TsGenerator(
             }
         }
 
+        writeIndex(outputFolder)
         childParents.clear()
+    }
+
+    private fun writeIndex(outputFolder: Path) {
+        val outputFolder = outputFolder.resolve(packageName.replace('.', '/') + "/")
+        val exports = outputFolder.toFile().listFiles().filter {
+            it.name != "index.ts"
+        }.map {
+            "export * from \"./" + it.name.substringBeforeLast(".") + "\";"
+        }
+        Files.write(outputFolder.resolve("index.ts"), exports)
     }
 
     override fun getClassFileName(classData: LangClass): String {
@@ -94,10 +108,22 @@ class TsGenerator(
     }
 
     private fun prepareImports(rawImports: Set<String>): Map<String, String> {
-        return rawImports.filter {
-            !primitiveTypes.contains(it)
-        }.associateWith {
-            childParents.getOrDefault(it, it)
+
+        val result = TreeMap<String, String>()
+        for (import in rawImports) {
+            // filtering primitive type imports
+            if (primitiveTypes.contains(import)) {
+                continue
+            }
+            val fileAndName = import.split(":")
+            // provided type with specified file
+            if (fileAndName.size == 2) {
+                result[fileAndName[1]] = fileAndName[0]
+                continue
+            }
+            // generated type, taking parent file as import or, if there is no parent, name of class itself
+            result[import] = "./" + childParents.getOrDefault(import, import)
         }
+        return result
     }
 }

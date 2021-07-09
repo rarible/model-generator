@@ -21,7 +21,8 @@ class TsComponent(
     }
 
     override fun getSimpleClassName(qualifier: String): String {
-        return qualifier
+        val fileAndName = qualifier.split(":")
+        return if (fileAndName.size == 1) fileAndName[0] else fileAndName[1]
     }
 
     override fun fromComponent(parent: LangComponent, definition: GeneratedComponent): LangComponent {

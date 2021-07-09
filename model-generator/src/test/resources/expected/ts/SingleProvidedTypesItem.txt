@@ -1,4 +1,6 @@
+import {BigInteger} from "/lang/Math";
+
 export type SingleProvidedTypesItem = {
-    id: string
+    id: BigInteger
     name: string
 }
