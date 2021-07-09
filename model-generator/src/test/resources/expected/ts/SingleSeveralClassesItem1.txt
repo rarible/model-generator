@@ -1,4 +1,4 @@
-export type SingleSeveralClassesItem1Dto = {
-	id: number
-	name: string
+export type SingleSeveralClassesItem1 = {
+    id: number
+    name: string
 }

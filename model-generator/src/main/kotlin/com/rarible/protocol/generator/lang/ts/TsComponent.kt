@@ -1,29 +1,31 @@
-package com.rarible.protocol.generator.lang.kotlin
+package com.rarible.protocol.generator.lang.ts
 
 import com.rarible.protocol.generator.component.ComponentField
 import com.rarible.protocol.generator.component.GeneratedComponent
 import com.rarible.protocol.generator.lang.LangComponent
 import com.rarible.protocol.generator.lang.LangEnum
 
-class KotlinComponent(
+class TsComponent(
     parent: LangComponent?,
     definition: GeneratedComponent
 ) : LangComponent(
     parent,
     definition
 ) {
+
     override fun createFieldEnum(field: ComponentField): LangEnum {
         return LangEnum(
-            field.name.capitalize(),
+            getSimpleClassName(getQualifier()) + "_" + field.name.capitalize(),
             field.enumValues
         )
     }
 
     override fun getSimpleClassName(qualifier: String): String {
-        return qualifier.substringAfterLast('.')
+        val fileAndName = qualifier.split(":")
+        return if (fileAndName.size == 1) fileAndName[0] else fileAndName[1]
     }
 
     override fun fromComponent(parent: LangComponent, definition: GeneratedComponent): LangComponent {
-        return KotlinComponent(parent, definition)
+        return TsComponent(parent, definition)
     }
 }

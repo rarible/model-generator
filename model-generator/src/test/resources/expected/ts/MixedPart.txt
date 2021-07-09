@@ -1,4 +1,6 @@
-export type MixedPartDto = {
-	partId: string
-	partValue: number
+import {BigInteger} from "/lang/Math";
+
+export type MixedPart = {
+    partId: BigInteger
+    partValue: number
 }

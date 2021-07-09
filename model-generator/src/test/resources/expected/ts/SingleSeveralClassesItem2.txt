@@ -1,6 +1,6 @@
-export type SingleSeveralClassesItem2Dto = {
-	id: number
-	type?: Type
+export type SingleSeveralClassesItem2 = {
+    id: number
+    type?: SingleSeveralClassesItem2_Type
 }
 
-export type Type = "ERC721" | "ERC1155"
+export type SingleSeveralClassesItem2_Type = "ERC721" | "ERC1155"

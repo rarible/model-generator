@@ -1,15 +1,16 @@
-package com.rarible.protocol.generator.lang.kotlin
+package com.rarible.protocol.generator.lang
 
-open class KotlinClass(
+open class LangClass(
     val name: String,
-    qualifier: String,
+    val qualifier: String,
     val imports: Set<String>,
     val enumValues: List<String>,
-    val fields: List<KotlinField>
+    val fields: List<LangField>
 ) {
-    val enums: List<KotlinEnum> = fields.mapNotNull { it.enum }
+    val enums: List<LangEnum> = fields.mapNotNull { it.enum }
     val simpleClassName = qualifier.substringAfterLast(".")
     val packageName = qualifier.substringBeforeLast(".")
-
 }
+
+
 

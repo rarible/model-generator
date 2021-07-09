@@ -1,4 +1,4 @@
-package com.rarible.test
+package com.rarible.test.kotlin
 
 
 enum class EnumRefTypeDto {

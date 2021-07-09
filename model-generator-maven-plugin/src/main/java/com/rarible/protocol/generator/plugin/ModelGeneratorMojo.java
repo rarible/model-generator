@@ -24,8 +24,10 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,9 +110,13 @@ public class ModelGeneratorMojo extends AbstractMojo {
 
     private void initSchemaFiles() throws MojoExecutionException {
         if (StringUtils.isNotBlank(schema.getInputFile())) {
-            schemaInputFile = new File(schema.getInputFile());
-            if (!schemaInputFile.exists()) {
-                throw new MojoExecutionException("Input schema file not found: " + schemaInputFile);
+            if (schema.isRemote()) {
+                schemaInputFile = downloadSchema(schema.getInputFile());
+            } else {
+                schemaInputFile = new File(schema.getInputFile());
+                if (!schemaInputFile.exists()) {
+                    throw new MojoExecutionException("Input schema file not found: " + schemaInputFile);
+                }
             }
         } else {
             schemaInputFile = new File(project.getBasedir(), typeMapperSettings.getDefaultSchemaPath());
@@ -122,6 +128,17 @@ public class ModelGeneratorMojo extends AbstractMojo {
             schemaOutputFile = new File(Folders.getDefaultClassesFolder(project.getBasedir()), schemaInputFile.getName());
         }
         log.debug("Output schema file: " + schemaOutputFile);
+    }
+
+    private File downloadSchema(String url) throws MojoExecutionException {
+        try {
+            File tempSchema = File.createTempFile("openapi", "yaml");
+            tempSchema.deleteOnExit();
+            IOUtils.copy(new URL(url).openStream(), new FileOutputStream(tempSchema));
+            return tempSchema;
+        } catch (IOException e) {
+            throw new MojoExecutionException("Unable to download openapi.yaml from url: " + url, e);
+        }
     }
 
     private void executeTasks() throws MojoExecutionException {

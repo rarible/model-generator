@@ -1,4 +1,6 @@
-export type RefItemDto = {
-	url: Map<string, string>
-	meta: Map<string, RefItemMetaDto>
+import {RefItemMeta} from "./RefItemMeta";
+
+export type RefItem = {
+    url: Record<string, string>
+    meta: Record<string, RefItemMeta>
 }

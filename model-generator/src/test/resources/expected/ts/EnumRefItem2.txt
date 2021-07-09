@@ -1,3 +1,5 @@
-export type EnumRefItem2Dto = {
-	type?: EnumRefTypeDto
+import {EnumRefType} from "./EnumRefType";
+
+export type EnumRefItem2 = {
+    type?: EnumRefType
 }

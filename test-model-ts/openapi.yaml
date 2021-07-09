@@ -1,0 +1,37 @@
+openapi: 3.0.1
+info:
+paths:
+
+components:
+  schemas:
+
+    Model:
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelItem'
+
+    ModelItem:
+      type: object
+      required:
+        - id
+        - count
+      properties:
+        id:
+          type: integer
+          format: int32
+        count:
+          $ref: '#/components/schemas/BigInteger'
+
+    BigInteger:
+      type: string

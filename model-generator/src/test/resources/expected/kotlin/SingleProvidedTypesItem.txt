@@ -1,4 +1,4 @@
-package com.rarible.test
+package com.rarible.test.kotlin
 
 import java.math.BigInteger
 import kotlin.String

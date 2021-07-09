@@ -121,7 +121,7 @@ internal class KotlinGeneratorTest {
 
     private fun createDefaultGenerator(): KotlinGenerator {
         val factory = KotlinGeneratorFactory(
-            "com.rarible.test"
+            "com.rarible.test.kotlin"
         )
 
         return factory.getGenerator(primitiveReader, providedReader, OpenApiTypeMapperFactory()) as KotlinGenerator

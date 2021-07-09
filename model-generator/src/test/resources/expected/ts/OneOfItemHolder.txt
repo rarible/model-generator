@@ -1,7 +1,11 @@
-export type OneOfItemHolderDto = {
-	id: number
-	oneof?: OneOfFieldItemDto
-	item1?: OneOfFieldSubItem1Dto
-	item2?: OneOfFieldSubItem2Dto
-	oneofarray?: Array<OneOfFieldItemDto>
+import {OneOfFieldItem} from "./OneOfFieldItem";
+import {OneOfFieldSubItem1} from "./OneOfFieldItem";
+import {OneOfFieldSubItem2} from "./OneOfFieldItem";
+
+export type OneOfItemHolder = {
+    id: number
+    oneof?: OneOfFieldItem
+    item1?: OneOfFieldSubItem1
+    item2?: OneOfFieldSubItem2
+    oneofarray?: Array<OneOfFieldItem>
 }

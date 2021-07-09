@@ -1,11 +1,12 @@
-export type OneOfFieldItemDto = OneOfFieldSubItem1 | OneOfFieldSubItem2
+export type OneOfFieldItem = OneOfFieldSubItem1 | OneOfFieldSubItem2
 
-export type OneOfFieldSubItem1Dto = {
+export type OneOfFieldSubItem1 = {
 	"@type": "SUB_ITEM_1"
 	id: number
 	name: string
 }
-export type OneOfFieldSubItem2Dto = {
+
+export type OneOfFieldSubItem2 = {
 	"@type": "SUB_ITEM_2"
 	id: number
 }

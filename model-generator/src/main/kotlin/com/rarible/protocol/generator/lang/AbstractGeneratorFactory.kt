@@ -1,5 +1,8 @@
-package com.rarible.protocol.generator
+package com.rarible.protocol.generator.lang
 
+import com.rarible.protocol.generator.Generator
+import com.rarible.protocol.generator.GeneratorFactory
+import com.rarible.protocol.generator.TypeMapperFactory
 import com.rarible.protocol.generator.type.ProvidedTypeCascadeReader
 import com.rarible.protocol.generator.type.ProvidedTypeReader
 import com.rarible.protocol.generator.type.ProvidedTypeResourceReader
