@@ -1,4 +1,4 @@
-import {BigInteger} from "/lang/Math";
+import {BigInteger} from "./BigInteger";
 
 export type SingleProvidedTypesItem = {
     id: BigInteger

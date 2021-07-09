@@ -12,7 +12,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
 
-
 class TsGenerator(
     lang: String,
     packageName: String,
@@ -30,7 +29,9 @@ class TsGenerator(
 ) {
 
     val primitiveTypes = HashSet(primitiveTypesFileReader.getMapping().values)
-    val providedTypes = HashSet(providedTypesFileReader.getMapping().values)
+    val providedTypes = providedTypesFileReader.getMapping().values.associate {
+        Pair(it.substringAfter(":"), it.substringBefore(":"))
+    }
     val childParents = HashMap<String, String>()
 
     override fun generate(apiFilePath: Path, outputFolder: Path, writer: ClassWriter) {
@@ -74,10 +75,14 @@ class TsGenerator(
         val files = outputFolder.toFile().listFiles()
         // for in-memory writer it is null
         if (files != null) {
-            val exports = outputFolder.toFile().listFiles().filter {
+            val exports = files.filter {
                 it.name != "index.ts"
             }.map {
                 "export * from \"./" + it.name.substringBeforeLast(".") + "\";"
+            }.toMutableList()
+
+            for ((className, classFile) in providedTypes) {
+                exports.add("export {$className} from \"$classFile\";")
             }
             Files.write(outputFolder.resolve("index.ts"), exports)
         }

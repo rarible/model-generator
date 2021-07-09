@@ -25,7 +25,7 @@ internal class TsGeneratorTest {
     private val generator: TsGenerator = createDefaultGenerator()
 
     // For manual testing only
-    //@Test
+    @Test
     fun generateFiles() {
         generateAsFiles("test_single_primitives.yaml", generator)
         generateAsFiles("test_single_several_classes.yaml", generator)
