@@ -71,12 +71,17 @@ class TsGenerator(
 
     private fun writeIndex(outputFolder: Path) {
         val outputFolder = outputFolder.resolve(packageName.replace('.', '/') + "/")
-        val exports = outputFolder.toFile().listFiles().filter {
-            it.name != "index.ts"
-        }.map {
-            "export * from \"./" + it.name.substringBeforeLast(".") + "\";"
+        val files = outputFolder.toFile().listFiles()
+        // for in-memory writer it is null
+        if (files != null) {
+            val exports = outputFolder.toFile().listFiles().filter {
+                it.name != "index.ts"
+            }.map {
+                "export * from \"./" + it.name.substringBeforeLast(".") + "\";"
+            }
+            Files.write(outputFolder.resolve("index.ts"), exports)
         }
-        Files.write(outputFolder.resolve("index.ts"), exports)
+
     }
 
     override fun getClassFileName(classData: LangClass): String {

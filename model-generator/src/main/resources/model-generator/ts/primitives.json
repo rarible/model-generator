@@ -1,5 +1,6 @@
 {
   "map": "Record",
+  "boolean": "boolean",
   "array": "Array",
   "string": "string",
   "integer": "number",

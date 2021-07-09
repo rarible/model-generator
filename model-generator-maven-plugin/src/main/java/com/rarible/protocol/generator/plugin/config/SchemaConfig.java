@@ -18,6 +18,10 @@ public class SchemaConfig {
         return inputFile;
     }
 
+    public boolean isRemote() {
+        return inputFile != null && inputFile.startsWith("http");
+    }
+
     public void setInputFile(String inputFile) {
         this.inputFile = inputFile;
     }
