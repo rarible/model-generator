@@ -10,7 +10,7 @@
   "number:double": "number",
   "number:bigdecimal": "string",
   "number:biginteger": "string",
-  "string:date-time": "Date",
+  "string:date-time": "string",
   "string:byte": "number",
   "string:password": "string",
   "string:uri": "string"

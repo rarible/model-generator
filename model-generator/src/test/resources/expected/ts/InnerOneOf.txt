@@ -14,7 +14,7 @@ export type OrderActivitySell = {
     orderType?: OrderActivity_OrderType
     id: string
     size?: InnerOneOf_Size
-    date?: Date
+    date?: string
     address?: BigInteger
     transactionHash?: string
 }
@@ -25,7 +25,7 @@ export type OrderActivityList = {
     orderType?: OrderActivity_OrderType
     id: string
     size?: InnerOneOf_Size
-    date?: Date
+    date?: string
     address?: BigInteger
     price?: BigInteger
 }
@@ -36,7 +36,7 @@ export type OrderActivityBid = {
     orderType?: OrderActivity_OrderType
     id: string
     size?: InnerOneOf_Size
-    date?: Date
+    date?: string
     address?: BigInteger
     price?: BigInteger
 }
@@ -51,7 +51,7 @@ export type NftActivityBurn = {
     transactionHash: string
     id: string
     size?: InnerOneOf_Size
-    date?: Date
+    date?: string
     address?: BigInteger
     tokenId?: BigInteger
     value?: BigInteger
@@ -64,7 +64,7 @@ export type NftActivityTransfer = {
     transactionHash: string
     id: string
     size?: InnerOneOf_Size
-    date?: Date
+    date?: string
     address?: BigInteger
     tokenId?: BigInteger
     value?: BigInteger
@@ -76,7 +76,7 @@ export type NftActivityMint = {
     transactionHash: string
     id: string
     size?: InnerOneOf_Size
-    date?: Date
+    date?: string
     address?: BigInteger
     tokenId?: BigInteger
     value?: BigInteger
