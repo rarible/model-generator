@@ -31,7 +31,5 @@ components:
           type: integer
           format: int32
         count:
-          $ref: '#/components/schemas/BigInteger'
-
-    BigInteger:
-      type: string
+          type: integer
+          format: int32
