@@ -16,6 +16,10 @@ abstract class LangComponent(
         return definition.discriminator != null
     }
 
+    fun isFieldRequired(fieldName: String): Boolean {
+        return definition.required.contains(fieldName) || (parent != null && parent.isFieldRequired(fieldName))
+    }
+
     fun getAllOneOfComponents(): Collection<LangComponent> {
         val result = HashSet<LangComponent>()
         val subcomponents = getOneOfComponents()
@@ -33,7 +37,8 @@ abstract class LangComponent(
     }
 
     private fun getLangSingleClass(oneOfEnum: String?, parentFields: Collection<LangField>): LangClass {
-        val allFields = ArrayList(parentFields.map { LangField(it.name, it.type, null, it.required) })
+        val allFields =
+            ArrayList(parentFields.map { LangField(it.name, it.type, null, isFieldRequired(it.name) || it.required) })
         allFields.addAll(getFields(oneOfEnum))
         return LangClass(
             getName(),
@@ -143,7 +148,7 @@ abstract class LangComponent(
                     field.name,
                     filedType,
                     langEnum,
-                    field.isRequired
+                    this.isFieldRequired(field.name)
                 )
                 result.add(kotlinField)
             }

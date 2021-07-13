@@ -6,8 +6,7 @@ data class ComponentField(
     val name: String,
     val type: AbstractComponent,
     val genericTypes: List<AbstractComponent>,
-    val enumValues: List<String>,
-    val isRequired: Boolean
+    val enumValues: List<String>
 ) {
     override fun toString(): String {
         var text = "$name -> ${type.name}(${type.qualifier})"
@@ -16,9 +15,6 @@ data class ComponentField(
         }
         if (enumValues.isNotEmpty()) {
             text = "$text[${StringUtils.join(enumValues, ",")}]"
-        }
-        if (!isRequired) {
-            text = "$text?"
         }
         return text
     }

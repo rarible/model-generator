@@ -25,7 +25,7 @@ internal class TsGeneratorTest {
     private val generator: TsGenerator = createDefaultGenerator()
 
     // For manual testing only
-    @Test
+    //@Test
     fun generateFiles() {
         generateAsFiles("test_single_primitives.yaml", generator)
         generateAsFiles("test_single_several_classes.yaml", generator)
@@ -36,6 +36,7 @@ internal class TsGeneratorTest {
         generateAsFiles("test_oneof_as_field.yaml", generator)
         generateAsFiles("test_inner_oneof.yaml", generator)
         generateAsFiles("test_enum_ref.yaml", generator)
+        generateAsFiles("test_oneof_required_overriden.yaml", generator)
     }
 
     @Test
@@ -86,6 +87,11 @@ internal class TsGeneratorTest {
     @Test
     fun `test oneOf with inner oneOf`() {
         verifyGeneratedClasses(generateAsStrings("test_inner_oneof.yaml", generator))
+    }
+
+    @Test
+    fun `test test oneof required overriden`() {
+        verifyGeneratedClasses(generateAsStrings("test_oneof_required_overriden.yaml", generator))
     }
 
     private fun verifyGeneratedClasses(classes: Map<String, String>) {
