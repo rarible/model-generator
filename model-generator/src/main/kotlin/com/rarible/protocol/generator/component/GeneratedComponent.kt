@@ -7,6 +7,7 @@ data class GeneratedComponent(
     override val qualifier: String,
     val enums: List<String>,
     val fields: Map<String, ComponentField>,
+    val required: Set<String>,
     val discriminator: Discriminator?
 ) : AbstractComponent() {
 

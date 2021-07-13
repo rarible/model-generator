@@ -1,0 +1,18 @@
+export type RequiredFieldRoot = RequiredFieldChild1 | RequiredFieldChild2
+
+export type RequiredFieldChild1 = {
+    "@type": "T1"
+    id: string
+    size?: string
+    name: string
+    count?: number
+}
+
+export type RequiredFieldChild2 = {
+    "@type": "T2"
+    id: string
+    size: string
+    name?: string
+    enabled: boolean
+}
+

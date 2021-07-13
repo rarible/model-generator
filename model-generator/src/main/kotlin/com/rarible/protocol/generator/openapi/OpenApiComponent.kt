@@ -9,7 +9,7 @@ class OpenApiComponent(
 
     val name: String = schema.name
 
-    private val requiredFields = HashSet(schema.requiredFields)
+    val requiredFields = HashSet(schema.requiredFields)
 
     fun isObject(): Boolean {
         return "object" == schema.type || schema.type == null

@@ -77,6 +77,7 @@ class OpenApiTypeMapper(
             qualifierGenerator.getQualifier(component.name),
             enums,
             fields,
+            component.requiredFields,
             getDiscriminator(component)
         )
 
@@ -168,8 +169,7 @@ class OpenApiTypeMapper(
             field.name,
             fieldTypeDefinition,
             fieldGenericTypes,
-            fieldEnumValues,
-            field.required
+            fieldEnumValues
         )
 
         log.debug("Field read: $result")
