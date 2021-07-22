@@ -13,7 +13,21 @@ export type SinglePrimitivesItem = {
     modes: Array<SinglePrimitivesItem_Modes>
 }
 
-export type SinglePrimitivesItem_Type = "ERC721" | "ERC1155"
-export type SinglePrimitivesItem_DataType = "LEGACY" | "MODERN"
-export type SinglePrimitivesItem_Features = "APPROVE" | "BURN" | "MINT"
-export type SinglePrimitivesItem_Modes = "ONE" | "TWO" | "THREE"
+export enum SinglePrimitivesItem_Type {
+    ERC721 = "ERC721",
+    ERC1155 = "ERC1155"
+}
+export enum SinglePrimitivesItem_DataType {
+    LEGACY = "LEGACY",
+    MODERN = "MODERN"
+}
+export enum SinglePrimitivesItem_Features {
+    APPROVE = "APPROVE",
+    BURN = "BURN",
+    MINT = "MINT"
+}
+export enum SinglePrimitivesItem_Modes {
+    ONE = "ONE",
+    TWO = "TWO",
+    THREE = "THREE"
+}

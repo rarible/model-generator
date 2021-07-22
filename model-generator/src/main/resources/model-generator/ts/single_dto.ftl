@@ -5,10 +5,11 @@
 
 </#if>
 <#if enumValues?has_content>
-    <#lt>export type ${simpleClassName} =
-    <#list enumValues![] as enumValue>
-        <#lt>    "${enumValue}"<#if enumValue?has_next> |</#if>
+    <#lt>export enum ${simpleClassName} {
+    <#list enumValues![] as value>
+        <#lt>    ${value} = "${value}"<#if value?has_next>,</#if>
     </#list>
+    }
 <#else>
     <#lt>export type ${simpleClassName} = {
     <#list fields![] as field>
@@ -18,7 +19,11 @@
 
     <#if enums?has_content>
         <#list enums![] as enum>
-            <#lt>export type ${enum.name} = <#list enum.values![] as value>"${value}"<#if value?has_next> | </#if></#list>
+            <#lt>export enum ${enum.name} {
+            <#list enum.values![] as value>
+                <#lt>    ${value} = "${value}"<#if value?has_next>,</#if>
+            </#list>
+            <#lt>}
         </#list>
     </#if>
 </#if>

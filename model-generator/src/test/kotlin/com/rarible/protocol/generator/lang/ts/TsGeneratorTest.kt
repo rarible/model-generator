@@ -4,7 +4,6 @@ import com.rarible.protocol.generator.lang.ts.TsGeneratorFactory
 import com.rarible.protocol.generator.openapi.OpenApiTypeMapperFactory
 import com.rarible.protocol.generator.type.ProvidedTypeConstantReader
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
@@ -29,7 +28,7 @@ internal class TsGeneratorTest {
 
     // For manual testing only
     @Test
-    @Disabled
+    //@Disabled
     fun generateFiles() {
         generateAsFiles("test_single_primitives.yaml", generator)
         generateAsFiles("test_single_several_classes.yaml", generator)

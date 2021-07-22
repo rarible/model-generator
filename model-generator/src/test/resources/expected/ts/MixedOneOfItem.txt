@@ -2,20 +2,35 @@ import {MixedPart} from "./MixedPart";
 
 export type MixedOneOfItem = MixedSubItem1 | MixedSubItem2
 
-export type MixedSubItem1_Modes = "ONE" | "TWO" | "THREE"
-export type MixedSubItem1_Features = "APPROVE_FOR_ALL" | "SET_URI_PREFIX" | "BURN" | "MINT_WITH_ADDRESS" | "SECONDARY_SALE_FEES"
+export enum MixedSubItem1_Modes {
+    ONE = "ONE",
+    TWO = "TWO",
+    THREE = "THREE"
+}
+
+export enum MixedSubItem1_Features {
+    APPROVE_FOR_ALL = "APPROVE_FOR_ALL",
+    SET_URI_PREFIX = "SET_URI_PREFIX",
+    BURN = "BURN",
+    MINT_WITH_ADDRESS = "MINT_WITH_ADDRESS",
+    SECONDARY_SALE_FEES = "SECONDARY_SALE_FEES"
+}
 
 export type MixedSubItem1 = {
-	"@type": "SUB_ITEM_1"
-	parts: Array<MixedPart>
-	modes: Array<MixedSubItem1_Modes>
-	features?: Array<MixedSubItem1_Features>
+    "@type": "SUB_ITEM_1"
+    parts: Array<MixedPart>
+    modes: Array<MixedSubItem1_Modes>
+    features?: Array<MixedSubItem1_Features>
 }
 
-export type MixedSubItem2_DataType = "LEGACY" | "MODERN"
+export enum MixedSubItem2_DataType {
+    LEGACY = "LEGACY",
+    MODERN = "MODERN"
+}
 
 export type MixedSubItem2 = {
-	"@type": "SUB_ITEM_2"
-	parts: Array<MixedPart>
-	dataType?: MixedSubItem2_DataType
+    "@type": "SUB_ITEM_2"
+    parts: Array<MixedPart>
+    dataType?: MixedSubItem2_DataType
 }
+

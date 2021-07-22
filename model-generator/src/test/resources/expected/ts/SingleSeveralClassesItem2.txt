@@ -3,4 +3,7 @@ export type SingleSeveralClassesItem2 = {
     type?: SingleSeveralClassesItem2_Type
 }
 
-export type SingleSeveralClassesItem2_Type = "ERC721" | "ERC1155"
+export enum SingleSeveralClassesItem2_Type {
+    ERC721 = "ERC721",
+    ERC1155 = "ERC1155"
+}

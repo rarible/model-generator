@@ -3,4 +3,8 @@ export type SingleSeveralClassesItem3 = {
     modes: Array<SingleSeveralClassesItem3_Modes>
 }
 
-export type SingleSeveralClassesItem3_Modes = "ONE" | "TWO" | "THREE"
+export enum SingleSeveralClassesItem3_Modes {
+    ONE = "ONE",
+    TWO = "TWO",
+    THREE = "THREE"
+}
