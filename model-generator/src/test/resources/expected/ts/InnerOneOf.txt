@@ -2,10 +2,18 @@ import {BigInteger} from "./BigInteger";
 
 export type InnerOneOf = OrderActivity | NftActivity
 
-export type OrderActivity_Mode = "FIRST" | "SECOND" | "THIRD"
-export type OrderActivity_OrderType = "O1" | "O2"
+export enum OrderActivity_Mode {
+    FIRST = "FIRST",
+    SECOND = "SECOND",
+    THIRD = "THIRD"
+}
 
-		//-------------------- OrderActivity ---------------------//
+export enum OrderActivity_OrderType {
+    O1 = "O1",
+    O2 = "O2"
+}
+
+//-------------------- OrderActivity ---------------------//
 export type OrderActivity = OrderActivitySell | OrderActivityList | OrderActivityBid
 
 export type OrderActivitySell = {
@@ -41,10 +49,14 @@ export type OrderActivityBid = {
     price?: BigInteger
 }
 
-		//-------------------- NftActivity ---------------------//
+//-------------------- NftActivity ---------------------//
 export type NftActivity = NftActivityBurn | NftActivityTransfer | NftActivityMint
 
-export type NftActivityBurn_Mode = "FIRST" | "SECOND" | "THIRD"
+export enum NftActivityBurn_Mode {
+    FIRST = "FIRST",
+    SECOND = "SECOND",
+    THIRD = "THIRD"
+}
 
 export type NftActivityBurn = {
     "@type": "burn"
@@ -82,4 +94,8 @@ export type NftActivityMint = {
     value?: BigInteger
 }
 
-export type InnerOneOf_Size = "BIG" | "SMALL"
+export enum InnerOneOf_Size {
+    BIG = "BIG",
+    SMALL = "SMALL"
+}
+
