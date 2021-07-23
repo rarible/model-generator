@@ -2,13 +2,13 @@ import {BigInteger} from "./BigInteger";
 
 export type InnerOneOf = OrderActivity | NftActivity
 
-export enum OrderActivity_Mode {
+export enum OrderActivityModeEnum {
     FIRST = "FIRST",
     SECOND = "SECOND",
     THIRD = "THIRD"
 }
 
-export enum OrderActivity_OrderType {
+export enum OrderActivityOrderTypeEnum {
     O1 = "O1",
     O2 = "O2"
 }
@@ -18,10 +18,10 @@ export type OrderActivity = OrderActivitySell | OrderActivityList | OrderActivit
 
 export type OrderActivitySell = {
     "@type": "sell"
-    mode: OrderActivity_Mode
-    orderType?: OrderActivity_OrderType
+    mode: OrderActivityModeEnum
+    orderType?: OrderActivityOrderTypeEnum
     id: string
-    size?: InnerOneOf_Size
+    size?: InnerOneOfSizeEnum
     date?: string
     address?: BigInteger
     transactionHash?: string
@@ -29,10 +29,10 @@ export type OrderActivitySell = {
 
 export type OrderActivityList = {
     "@type": "list"
-    mode: OrderActivity_Mode
-    orderType?: OrderActivity_OrderType
+    mode: OrderActivityModeEnum
+    orderType?: OrderActivityOrderTypeEnum
     id: string
-    size?: InnerOneOf_Size
+    size?: InnerOneOfSizeEnum
     date?: string
     address?: BigInteger
     price?: BigInteger
@@ -40,10 +40,10 @@ export type OrderActivityList = {
 
 export type OrderActivityBid = {
     "@type": "bid"
-    mode: OrderActivity_Mode
-    orderType?: OrderActivity_OrderType
+    mode: OrderActivityModeEnum
+    orderType?: OrderActivityOrderTypeEnum
     id: string
-    size?: InnerOneOf_Size
+    size?: InnerOneOfSizeEnum
     date?: string
     address?: BigInteger
     price?: BigInteger
@@ -52,7 +52,7 @@ export type OrderActivityBid = {
 //-------------------- NftActivity ---------------------//
 export type NftActivity = NftActivityBurn | NftActivityTransfer | NftActivityMint
 
-export enum NftActivityBurn_Mode {
+export enum NftActivityBurnModeEnum {
     FIRST = "FIRST",
     SECOND = "SECOND",
     THIRD = "THIRD"
@@ -62,20 +62,20 @@ export type NftActivityBurn = {
     "@type": "burn"
     transactionHash: string
     id: string
-    size?: InnerOneOf_Size
+    size?: InnerOneOfSizeEnum
     date?: string
     address?: BigInteger
     tokenId?: BigInteger
     value?: BigInteger
     burn?: string
-    mode?: NftActivityBurn_Mode
+    mode?: NftActivityBurnModeEnum
 }
 
 export type NftActivityTransfer = {
     "@type": "transfer"
     transactionHash: string
     id: string
-    size?: InnerOneOf_Size
+    size?: InnerOneOfSizeEnum
     date?: string
     address?: BigInteger
     tokenId?: BigInteger
@@ -87,14 +87,14 @@ export type NftActivityMint = {
     "@type": "mint"
     transactionHash: string
     id: string
-    size?: InnerOneOf_Size
+    size?: InnerOneOfSizeEnum
     date?: string
     address?: BigInteger
     tokenId?: BigInteger
     value?: BigInteger
 }
 
-export enum InnerOneOf_Size {
+export enum InnerOneOfSizeEnum {
     BIG = "BIG",
     SMALL = "SMALL"
 }
