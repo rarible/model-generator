@@ -7,26 +7,26 @@ export type SinglePrimitivesItem = {
     strings?: Array<string>
     longs?: Array<number>
     map?: Record<string, string>
-    type: SinglePrimitivesItem_Type
-    dataType?: SinglePrimitivesItem_DataType
-    features?: Array<SinglePrimitivesItem_Features>
-    modes: Array<SinglePrimitivesItem_Modes>
+    type: SinglePrimitivesItemTypeEnum
+    dataType?: SinglePrimitivesItemDataTypeEnum
+    features?: Array<SinglePrimitivesItemFeaturesEnum>
+    modes: Array<SinglePrimitivesItemModesEnum>
 }
 
-export enum SinglePrimitivesItem_Type {
+export enum SinglePrimitivesItemTypeEnum {
     ERC721 = "ERC721",
     ERC1155 = "ERC1155"
 }
-export enum SinglePrimitivesItem_DataType {
+export enum SinglePrimitivesItemDataTypeEnum {
     LEGACY = "LEGACY",
     MODERN = "MODERN"
 }
-export enum SinglePrimitivesItem_Features {
+export enum SinglePrimitivesItemFeaturesEnum {
     APPROVE = "APPROVE",
     BURN = "BURN",
     MINT = "MINT"
 }
-export enum SinglePrimitivesItem_Modes {
+export enum SinglePrimitivesItemModesEnum {
     ONE = "ONE",
     TWO = "TWO",
     THREE = "THREE"

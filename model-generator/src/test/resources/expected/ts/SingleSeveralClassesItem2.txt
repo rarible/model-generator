@@ -1,9 +1,9 @@
 export type SingleSeveralClassesItem2 = {
     id: number
-    type?: SingleSeveralClassesItem2_Type
+    type?: SingleSeveralClassesItem2TypeEnum
 }
 
-export enum SingleSeveralClassesItem2_Type {
+export enum SingleSeveralClassesItem2TypeEnum {
     ERC721 = "ERC721",
     ERC1155 = "ERC1155"
 }
