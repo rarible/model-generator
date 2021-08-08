@@ -74,7 +74,7 @@ class OpenApiTypeMapper(
 
         val generatedComponentDefinition = GeneratedComponent(
             component.name,
-            qualifierGenerator.getQualifier(component.name),
+            qualifierGenerator.getQualifier(component.name, enums.isNotEmpty()),
             enums,
             fields,
             component.requiredFields,

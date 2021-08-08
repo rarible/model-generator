@@ -187,7 +187,7 @@ abstract class LangComponent(
         while (parent?.parent != null) {
             parent = parent.parent
         }
-        return parent?.definition?.qualifier
+        return parent?.getQualifier()
     }
 
     protected abstract fun createFieldEnum(field: ComponentField): LangEnum

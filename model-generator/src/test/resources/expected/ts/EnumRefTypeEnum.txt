@@ -1,4 +1,4 @@
-export enum EnumRefType {
+export enum EnumRefTypeEnum {
     ONE = "ONE",
     TWO = "TWO"
 }

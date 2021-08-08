@@ -10,7 +10,9 @@ class TsGeneratorFactory(
     private val packageName: String
 ) : AbstractGeneratorFactory() {
 
-    private val qualifierGenerator: QualifierGenerator = QualifierGenerator { it }
+    private val qualifierGenerator: QualifierGenerator = QualifierGenerator { name, isEnum ->
+        if (!isEnum) name else name + "Enum"
+    }
 
     override fun getGeneratorWithDefaultTypes(
         primitiveTypeFileReader: ProvidedTypeReader,
