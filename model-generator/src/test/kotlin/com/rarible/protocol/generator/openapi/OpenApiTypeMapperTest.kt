@@ -12,7 +12,7 @@ internal class OpenApiTypeMapperTest {
     @Test
     fun `test ref is missing`() {
         val mapper = OpenApiTypeMapperFactory().getTypeDefinitionMapper(
-            { "test" },
+            { name, isEnum -> "test" },
             mapOf("string" to "String"),
             mapOf()
         )
@@ -24,7 +24,7 @@ internal class OpenApiTypeMapperTest {
     @Test
     fun `test enum contains fields`() {
         val mapper = OpenApiTypeMapperFactory().getTypeDefinitionMapper(
-            { "test" },
+            { name, isEnum -> "test" },
             mapOf("string" to "String"),
             mapOf()
         )

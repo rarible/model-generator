@@ -1,5 +1,5 @@
-import {EnumRefType} from "./EnumRefType";
+import {EnumRefTypeEnum} from "./EnumRefTypeEnum";
 
 export type EnumRefItem2 = {
-    type?: EnumRefType
+    type?: EnumRefTypeEnum
 }

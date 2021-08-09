@@ -10,7 +10,9 @@ class KotlinGeneratorFactory(
     private val packageName: String
 ) : AbstractGeneratorFactory() {
 
-    private val qualifierGenerator: QualifierGenerator = QualifierGenerator { "$packageName.${it}Dto" }
+    private val qualifierGenerator: QualifierGenerator = QualifierGenerator { name, isEnum ->
+        "$packageName.${name}Dto"
+    }
 
     override fun getGeneratorWithDefaultTypes(
         primitiveTypeFileReader: ProvidedTypeReader,
