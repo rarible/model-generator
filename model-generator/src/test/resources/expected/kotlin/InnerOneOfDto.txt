@@ -46,34 +46,35 @@ sealed class OrderActivityDto : InnerOneOfDto() {
 }
 
 data class OrderActivitySellDto (
-    override val mode : Mode,
-    override val orderType : OrderType?,
+    override val mode : Mode = Mode.FIRST,
+    override val orderType : OrderType? = null,
     override val id : String,
-    override val size : Size?,
-    val date : Instant?,
-    val address : BigInteger?,
-    val transactionHash : String?
+    override val size : Size? = null,
+    val date : Instant? = null,
+    val address : BigInteger? = null,
+    val transactionHash : String? = null
 ) : OrderActivityDto()
 
 data class OrderActivityListDto (
-    override val mode : Mode,
-    override val orderType : OrderType?,
+    override val mode : Mode = Mode.FIRST,
+    override val orderType : OrderType? = null,
     override val id : String,
-    override val size : Size?,
-    val date : Instant?,
-    val address : BigInteger?,
-    val price : BigInteger?
+    override val size : Size? = null,
+    val date : Instant? = null,
+    val address : BigInteger? = null,
+    val price : BigInteger? = null
 ) : OrderActivityDto()
 
 data class OrderActivityBidDto (
-    override val mode : Mode,
-    override val orderType : OrderType?,
+    override val mode : Mode = Mode.FIRST,
+    override val orderType : OrderType? = null,
     override val id : String,
-    override val size : Size?,
-    val date : Instant?,
-    val address : BigInteger?,
-    val price : BigInteger?
+    override val size : Size? = null,
+    val date : Instant? = null,
+    val address : BigInteger? = null,
+    val price : BigInteger? = null
 ) : OrderActivityDto()
+
 
 
 //--------------- NftActivityDto ---------------//
@@ -84,13 +85,13 @@ sealed class NftActivityDto : InnerOneOfDto() {
 data class NftActivityBurnDto (
     override val transactionHash : String,
     override val id : String,
-    override val size : Size?,
-    val date : Instant?,
-    val address : BigInteger?,
-    val tokenId : BigInteger?,
-    val value : BigInteger?,
-    val burn : String?,
-    val mode : Mode?
+    override val size : Size? = null,
+    val date : Instant? = null,
+    val address : BigInteger? = null,
+    val tokenId : BigInteger? = null,
+    val value : BigInteger? = null,
+    val burn : String? = null,
+    val mode : Mode? = null
 ) : NftActivityDto()  {
 
     enum class Mode {
@@ -104,22 +105,22 @@ data class NftActivityBurnDto (
 data class NftActivityTransferDto (
     override val transactionHash : String,
     override val id : String,
-    override val size : Size?,
-    val date : Instant?,
-    val address : BigInteger?,
-    val tokenId : BigInteger?,
-    val value : BigInteger?,
-    val from : String?
+    override val size : Size? = null,
+    val date : Instant? = null,
+    val address : BigInteger? = null,
+    val tokenId : BigInteger? = null,
+    val value : BigInteger? = null,
+    val from : String? = null
 ) : NftActivityDto()
 
 data class NftActivityMintDto (
     override val transactionHash : String,
     override val id : String,
-    override val size : Size?,
-    val date : Instant?,
-    val address : BigInteger?,
-    val tokenId : BigInteger?,
-    val value : BigInteger?
+    override val size : Size? = null,
+    val date : Instant? = null,
+    val address : BigInteger? = null,
+    val tokenId : BigInteger? = null,
+    val value : BigInteger? = null
 ) : NftActivityDto()
 
 

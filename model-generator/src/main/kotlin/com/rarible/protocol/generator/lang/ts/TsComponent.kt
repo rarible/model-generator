@@ -4,6 +4,7 @@ import com.rarible.protocol.generator.component.ComponentField
 import com.rarible.protocol.generator.component.GeneratedComponent
 import com.rarible.protocol.generator.lang.LangComponent
 import com.rarible.protocol.generator.lang.LangEnum
+import com.rarible.protocol.generator.lang.LangField
 
 class TsComponent(
     parent: LangComponent?,
@@ -27,5 +28,9 @@ class TsComponent(
 
     override fun fromComponent(parent: LangComponent, definition: GeneratedComponent): LangComponent {
         return TsComponent(parent, definition)
+    }
+
+    override fun sanitizeDefaultValue(field: LangField): LangField {
+        return field
     }
 }

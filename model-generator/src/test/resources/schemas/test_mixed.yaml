@@ -47,6 +47,8 @@ components:
             - SUB_ITEM_1
         modes:
           type: array
+          default:
+            - ONE
           items:
             type: string
             enum:
@@ -90,6 +92,7 @@ components:
           $ref: '#/components/schemas/BigInteger'
         partValue:
           type: integer
+          default: 10
 
     BigInteger:
       type: string

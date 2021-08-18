@@ -8,8 +8,8 @@ import kotlin.collections.List
 
 data class OneOfItemHolderDto (
     val id : Int,
-    val oneof : OneOfFieldItemDto?,
-    val item1 : OneOfFieldSubItem1Dto?,
-    val item2 : OneOfFieldSubItem2Dto?,
-    val oneofarray : List<OneOfFieldItemDto>?
+    val oneof : OneOfFieldItemDto? = null,
+    val item1 : OneOfFieldSubItem1Dto? = null,
+    val item2 : OneOfFieldSubItem2Dto? = null,
+    val oneofarray : List<OneOfFieldItemDto>? = null
 )

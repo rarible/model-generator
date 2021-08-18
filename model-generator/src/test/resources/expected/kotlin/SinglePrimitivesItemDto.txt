@@ -1,5 +1,7 @@
 package com.rarible.test.kotlin
 
+import java.math.BigDecimal
+import java.math.BigInteger
 import java.time.Instant
 import kotlin.Int
 import kotlin.Long
@@ -8,18 +10,21 @@ import kotlin.collections.List
 import kotlin.collections.Map
 
 data class SinglePrimitivesItemDto (
-    val id : Long,
-    val name : String,
+    val id : Long = 12,
+    val name : String = "noname",
     val index : Int,
     val count : Int,
-    val date : Instant?,
-    val strings : List<String>?,
-    val longs : List<Long>?,
-    val map : Map<String, Instant>?,
+    val date : Instant? = null,
+    val strings : List<String>? = listOf("string1", "string2"),
+    val longs : List<Long>? = listOf(),
+    val map : Map<String, Instant>? = null,
     val type : Type,
-    val dataType : DataType?,
-    val features : List<Features>?,
-    val modes : List<Modes>
+    val dataType : DataType? = DataType.LEGACY,
+    val features : List<Features>? = listOf(Features.BURN, Features.MINT),
+    val modes : List<Modes>,
+    val bigint : BigInteger? = BigInteger("12327893642873439824234234234234"),
+    val bigdec : BigDecimal? = BigDecimal("1.232789364287344E12"),
+    val bigdecarray : List<BigDecimal>? = listOf(BigDecimal("1.1"), BigDecimal("2.2"))
 ) {
 
     enum class Type {

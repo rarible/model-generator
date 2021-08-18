@@ -5,7 +5,7 @@ import kotlin.String
 
 data class SingleSeveralClassesItem2Dto (
     val id : Int,
-    val type : Type?
+    val type : Type? = null
 ) {
 
     enum class Type {

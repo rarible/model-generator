@@ -16,6 +16,7 @@ class OpenApiField(
     val format: String? = fieldSchema.format
     val fullName = "${owner.name}:$name"
     val enumValues: List<String> = fieldSchema.enums.filterNotNull().map { it.toString() }
+    val defaultValue = fieldSchema.default
 
     init {
         // Case when reference is OneOf

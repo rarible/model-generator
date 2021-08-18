@@ -29,6 +29,7 @@ components:
       properties:
         mode:
           type: string
+          default: FIRST
           enum:
             - FIRST
             - SECOND

@@ -22,4 +22,3 @@ data class MultipleWithDiscriminatorSubItem1Dto (
 data class MultipleWithDiscriminatorSubItem2Dto (
     val id : Int
 ) : MultipleWithDiscriminatorItemDto()
-

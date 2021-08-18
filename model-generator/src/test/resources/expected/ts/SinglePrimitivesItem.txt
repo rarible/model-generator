@@ -11,6 +11,9 @@ export type SinglePrimitivesItem = {
     dataType?: SinglePrimitivesItemDataTypeEnum
     features?: Array<SinglePrimitivesItemFeaturesEnum>
     modes: Array<SinglePrimitivesItemModesEnum>
+    bigint?: string
+    bigdec?: string
+    bigdecarray?: Array<string>
 }
 
 export enum SinglePrimitivesItemTypeEnum {
