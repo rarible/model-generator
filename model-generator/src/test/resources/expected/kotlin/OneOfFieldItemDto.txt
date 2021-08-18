@@ -23,4 +23,3 @@ data class OneOfFieldSubItem1Dto (
 data class OneOfFieldSubItem2Dto (
     val id : Int
 ) : OneOfFieldItemDto()
-

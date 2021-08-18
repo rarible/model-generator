@@ -37,8 +37,15 @@ abstract class LangComponent(
     }
 
     private fun getLangSingleClass(oneOfEnum: String?, parentFields: Collection<LangField>): LangClass {
-        val allFields =
-            ArrayList(parentFields.map { LangField(it.name, it.type, null, isFieldRequired(it.name) || it.required) })
+        val allFields = ArrayList(parentFields.map {
+            LangField(
+                it.name,
+                it.type,
+                null,
+                isFieldRequired(it.name) || it.required,
+                it.defaultValue
+            )
+        })
         allFields.addAll(getFields(oneOfEnum))
         return LangClass(
             getName(),
@@ -148,9 +155,10 @@ abstract class LangComponent(
                     field.name,
                     filedType,
                     langEnum,
-                    this.isFieldRequired(field.name)
+                    this.isFieldRequired(field.name),
+                    field.defaultValue
                 )
-                result.add(kotlinField)
+                result.add(sanitizeDefaultValue(kotlinField))
             }
         }
         return result
@@ -195,5 +203,7 @@ abstract class LangComponent(
     protected abstract fun getSimpleClassName(qualifier: String): String
 
     protected abstract fun fromComponent(parent: LangComponent, definition: GeneratedComponent): LangComponent
+
+    protected abstract fun sanitizeDefaultValue(field: LangField): LangField
 
 }

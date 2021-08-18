@@ -22,8 +22,10 @@ components:
         id:
           type: integer
           format: int64
+          default: 12
         name:
           type: string
+          default: "noname"
         index:
           type: integer
         count:
@@ -34,10 +36,14 @@ components:
           format: date-time
         strings:
           type: array
+          default:
+            - string1
+            - string2
           items:
             type: string
         longs:
           type: array
+          default: [ ]
           items:
             type: integer
             format: int64
@@ -56,8 +62,12 @@ components:
           enum:
             - LEGACY
             - MODERN
+          default: LEGACY
         features:
           type: array
+          default:
+            - BURN
+            - MINT
           items:
             type: string
             enum:
@@ -72,3 +82,19 @@ components:
               - ONE
               - TWO
               - THREE
+        bigint:
+          type: number
+          format: biginteger
+          default: 12327893642873439824234234234234
+        bigdec:
+          type: number
+          format: bigdecimal
+          default: 1232789364287.3439824234234234234
+        bigdecarray:
+          type: array
+          default:
+            - 1.1
+            - 2.2
+          items:
+            type: number
+            format: bigdecimal

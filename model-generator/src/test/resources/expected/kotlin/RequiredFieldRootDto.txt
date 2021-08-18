@@ -19,15 +19,15 @@ sealed class RequiredFieldRootDto {
 //--------------- RequiredFieldChild1Dto ---------------//
 data class RequiredFieldChild1Dto (
     override val id : String,
-    override val size : String?,
+    override val size : String? = null,
     val name : String,
-    val count : Int?
+    val count : Int? = null
 ) : RequiredFieldRootDto()
 
 //--------------- RequiredFieldChild2Dto ---------------//
 data class RequiredFieldChild2Dto (
     override val id : String,
     override val size : String,
-    val name : String?,
+    val name : String? = null,
     val enabled : Boolean
 ) : RequiredFieldRootDto()

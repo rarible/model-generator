@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 )
 sealed class ${simpleClassName} {
 <#list fields![] as field>
-    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>
+    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if><#if !field.abstract><#if field.defaultValue?has_content> = ${field.defaultValue}</#if></#if>
 </#list>
 <#list enums![] as enum>
 
@@ -36,7 +36,7 @@ sealed class ${simpleClassName} {
     <#if subclass.subclasses?has_content>
         <#lt>sealed class ${subclass.simpleClassName} : ${simpleClassName}() {
         <#list subclass.fields![] as field>
-            <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if>
+            <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if><#if !field.abstract><#if field.defaultValue?has_content> = ${field.defaultValue}</#if></#if>
         </#list>
         <#list subclass.enums![] as enum>
 
@@ -52,7 +52,7 @@ sealed class ${simpleClassName} {
         <#list subclass.subclasses![] as subsubclass>
             <#lt><#if subsubclass.fields?has_content>data </#if>class ${subsubclass.simpleClassName} (
             <#list subsubclass.fields![] as field>
-                <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if><#if field?has_next>,</#if>
+                <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if><#if !field.abstract><#if field.defaultValue?has_content> = ${field.defaultValue}</#if></#if><#if field?has_next>,</#if>
             </#list>
             <#lt>) : ${subclass.simpleClassName}() <#if subsubclass.enums?has_content> {
 
@@ -74,7 +74,7 @@ sealed class ${simpleClassName} {
     <#else>
         <#lt><#if subclass.fields?has_content>data </#if>class ${subclass.simpleClassName} (
         <#list subclass.fields![] as field>
-            <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if><#if field?has_next>,</#if>
+            <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?<#if !field.abstract><#if field.defaultValue?has_content> = ${field.defaultValue}</#if></#if></#if><#if field?has_next>,</#if>
         </#list>
         <#lt>) : ${simpleClassName}()<#if subclass.enums?has_content> {
 

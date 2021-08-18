@@ -169,7 +169,8 @@ class OpenApiTypeMapper(
             field.name,
             fieldTypeDefinition,
             fieldGenericTypes,
-            fieldEnumValues
+            fieldEnumValues,
+            field.defaultValue
         )
 
         log.debug("Field read: $result")

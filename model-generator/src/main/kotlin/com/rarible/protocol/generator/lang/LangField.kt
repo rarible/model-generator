@@ -5,6 +5,7 @@ data class LangField(
     val type: String,
     val enum: LangEnum?,
     val required: Boolean,
+    val defaultValue: Any?,
     var overriden: Boolean = false,
     var abstract: Boolean = false
 )
