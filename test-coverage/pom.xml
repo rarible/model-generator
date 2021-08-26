@@ -42,7 +42,7 @@
                     </execution>
                     <execution>
                         <id>merge-results</id>
-                        <phase>verify</phase>
+                        <phase>test</phase>
                         <goals>
                             <goal>merge</goal>
                         </goals>
