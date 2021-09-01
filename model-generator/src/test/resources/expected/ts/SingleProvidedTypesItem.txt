@@ -1,6 +1,8 @@
+import {BigDecimal} from "./BigDecimal";
 import {BigInteger} from "./BigInteger";
 
 export type SingleProvidedTypesItem = {
     id: BigInteger
+    value?: BigDecimal
     name: string
 }

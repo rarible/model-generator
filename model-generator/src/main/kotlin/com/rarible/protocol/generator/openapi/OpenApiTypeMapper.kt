@@ -139,7 +139,10 @@ class OpenApiTypeMapper(
                 log.debug("--- ${field.fullName} -> array of references ($component)")
                 fieldGenericTypes = listOf(getOrCreateDefinition(field.getArrayComponent()))
             }
-        } else if (field.isCreatingReference() || generatedComponents.containsKey(field.getReferencedSchemaName())) {
+        } else if (field.isCreatingReference()
+            || providedTypeMapper.has(field.getReferencedSchemaName())
+            || generatedComponents.containsKey(field.getReferencedSchemaName())
+        ) {
             val component = field.getComponent()
             log.debug("--- ${field.fullName} -> reference ($component)")
             fieldTypeDefinition = getOrCreateDefinition(component)

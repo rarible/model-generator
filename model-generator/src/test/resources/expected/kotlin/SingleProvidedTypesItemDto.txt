@@ -1,9 +1,11 @@
 package com.rarible.test.kotlin
 
+import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.String
 
 data class SingleProvidedTypesItemDto (
     val id : BigInteger,
+    val value : BigDecimal? = null,
     val name : String
 )
