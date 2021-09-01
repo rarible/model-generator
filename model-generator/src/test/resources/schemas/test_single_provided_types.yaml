@@ -10,6 +10,9 @@ paths:
 components:
   schemas:
 
+    BigInteger:
+      type: string
+
     SingleProvidedTypesItem:
       required:
         - id
@@ -18,8 +21,10 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/BigInteger'
+        value:
+          $ref: '#/components/schemas/BigDecimal'
         name:
           type: string
 
-    BigInteger:
+    BigDecimal:
       type: string

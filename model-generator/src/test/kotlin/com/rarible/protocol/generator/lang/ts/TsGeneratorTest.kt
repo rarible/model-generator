@@ -16,7 +16,8 @@ internal class TsGeneratorTest {
     // No additional mappings provided, only default used
     private val primitiveReader = ProvidedTypeConstantReader(mapOf())
     private val providedReader = ProvidedTypeConstantReader(mapOf(
-        "BigInteger" to "./BigInteger:BigInteger"
+        "BigInteger" to "./BigInteger:BigInteger",
+        "BigDecimal" to "./BigDecimal:BigDecimal"
     ))
 
     private val testSchemasFolder = Paths.get("src/test/resources/schemas")
