@@ -31,6 +31,7 @@ class OpenapiSchemaMerger(
                     main.set<JsonNode>("components", depComponents)
                 } else {
                     mergeOrSet(mainComponents, depComponents, "schemas")
+                    mergeOrSet(mainComponents, depComponents, "responses")
                 }
             }
             mergeOrSet(main, dep, "paths")
