@@ -1,5 +1,13 @@
 openapi: 3.0.1
 info:
+  title: "test title"
+  version: "1.0"
+  description: "desc"
+  contact:
+    email: "test@mail.ru"
+  license:
+    name: "lic"
+    url: "http://localhost:8080"
 paths:
 
 components:
