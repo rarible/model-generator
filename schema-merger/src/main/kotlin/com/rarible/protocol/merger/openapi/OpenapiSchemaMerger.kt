@@ -35,15 +35,13 @@ class OpenapiSchemaMerger(
                 }
             }
             mergeOrSet(main, dep, "paths")
+            mergeOrSet(main, dep, "info")
         }
 
         YAMLMapper().writeValue(dest, main)
     }
 
     private fun mergeOrSet(main: JsonNode, dep: JsonNode, fieldName: String) {
-        if (main == null || dep == null) {
-            return
-        }
         val mainField = main.get(fieldName)
         val extField = dep.get(fieldName)
         if (extField == null || !extField.isObject) {
