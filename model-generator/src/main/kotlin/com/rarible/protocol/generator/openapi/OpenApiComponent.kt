@@ -47,8 +47,36 @@ class OpenApiComponent(
 
     fun getDiscriminatorField(): String {
         assertOneOf()
-        return if (schema.discriminator == null || schema.discriminator.propertyName == null) "@type"
-        else schema.discriminator.propertyName
+        return schema.findDiscriminatorField()
+    }
+
+    private fun Schema.findDiscriminatorField(): String {
+        assert(oneOfSchemas.isNotEmpty())
+        val specified = schema.discriminator?.propertyName
+        return if (specified != null) {
+            specified
+        } else {
+            val discriminators = oneOfSchemas.map {
+                if (it.oneOfSchemas.isNotEmpty()) {
+                    it.findDiscriminatorField()
+                } else {
+                    it.findSingleEnumField()
+                }
+            }
+            val set = discriminators.toSet()
+            if (set.size != 1) {
+                throw IllegalArgumentException("Found some possible discriminators for $schema: $set")
+            }
+            set.first()
+        }
+    }
+
+    private fun Schema.findSingleEnumField(): String {
+        val singleEnums = properties.values.filter { prop -> prop.hasEnums() && prop.enums.size == 1 }
+        if (singleEnums.size != 1) {
+            throw IllegalArgumentException("Unable to find out discriminator. not found single enum in $this")
+        }
+        return singleEnums.first().name
     }
 
     private fun assertOneOf() {

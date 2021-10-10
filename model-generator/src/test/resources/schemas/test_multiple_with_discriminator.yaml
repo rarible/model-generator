@@ -11,11 +11,6 @@ components:
   schemas:
 
     MultipleWithDiscriminatorItem:
-      discriminator:
-        propertyName: assetClass
-        mapping:
-          SUB_ITEM_1: '#/components/schemas/MultipleWithDiscriminatorSubItem1'
-          SUB_ITEM_2: '#/components/schemas/MultipleWithDiscriminatorSubItem2'
       oneOf:
         - $ref: '#/components/schemas/MultipleWithDiscriminatorSubItem1'
         - $ref: '#/components/schemas/MultipleWithDiscriminatorSubItem2'
