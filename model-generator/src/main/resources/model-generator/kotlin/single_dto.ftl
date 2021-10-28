@@ -1,5 +1,19 @@
+<#macro classFields data>
+    <#list data as field><#rt>
+        <#if field.minimum?has_content>
+            <#lt>   @field:Min(${field.minimum})
+        </#if><#if field.maximum?has_content>
+        <#lt>   @field:Max(${field.maximum})
+    </#if>
+        <#lt>   <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if><#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field?has_next>,</#if>
+    </#list>
+</#macro>
 package ${package}
 
+<#if hasConstraints>
+import javax.validation.constraints.Min
+import javax.validation.constraints.Max
+</#if><#rt>
 <#list imports![] as import>
     <#lt>import ${import}
 </#list>
@@ -12,9 +26,7 @@ package ${package}
     }
 <#else>
     <#lt>data class ${simpleClassName} (
-    <#list fields![] as field>
-        <#lt>    <#if field.abstract>abstract </#if><#if field.overriden>override </#if>val ${field.name} : ${field.type}<#if !field.required>?</#if><#if field.defaultValue?has_content> = ${field.defaultValue}</#if><#if field?has_next>,</#if>
-    </#list>
+        <@classFields data=fields />
     <#lt>) <#if enums?has_content>{
 
     <#list enums![] as enum>

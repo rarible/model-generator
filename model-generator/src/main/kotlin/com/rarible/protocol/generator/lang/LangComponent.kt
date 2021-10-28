@@ -5,7 +5,9 @@ import com.rarible.protocol.generator.component.Discriminator
 import com.rarible.protocol.generator.component.GeneratedComponent
 import com.rarible.protocol.generator.exception.IllegalOperationException
 import org.apache.commons.lang3.StringUtils
-import java.util.*
+import java.util.Collections
+import java.util.SortedSet
+import java.util.TreeSet
 
 abstract class LangComponent(
     val parent: LangComponent?,
@@ -39,11 +41,13 @@ abstract class LangComponent(
     private fun getLangSingleClass(oneOfEnum: String?, parentFields: Collection<LangField>): LangClass {
         val allFields = ArrayList(parentFields.map {
             LangField(
-                it.name,
-                it.type,
-                null,
-                isFieldRequired(it.name) || it.required,
-                it.defaultValue
+                name = it.name,
+                type = it.type,
+                enum = null,
+                required = isFieldRequired(it.name) || it.required,
+                defaultValue = it.defaultValue,
+                minimum = it.minimum,
+                maximum = it.maximum
             )
         })
         allFields.addAll(getFields(oneOfEnum))
@@ -152,11 +156,13 @@ abstract class LangComponent(
                 }
 
                 val kotlinField = LangField(
-                    field.name,
-                    filedType,
-                    langEnum,
-                    this.isFieldRequired(field.name),
-                    field.defaultValue
+                    name = field.name,
+                    type = filedType,
+                    enum = langEnum,
+                    required = this.isFieldRequired(field.name),
+                    defaultValue = field.defaultValue,
+                    minimum = field.minimum,
+                    maximum = field.maximum
                 )
                 result.add(sanitizeDefaultValue(kotlinField))
             }
@@ -205,5 +211,4 @@ abstract class LangComponent(
     protected abstract fun fromComponent(parent: LangComponent, definition: GeneratedComponent): LangComponent
 
     protected abstract fun sanitizeDefaultValue(field: LangField): LangField
-
 }

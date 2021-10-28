@@ -7,6 +7,7 @@ open class LangClass(
     val enumValues: List<String>,
     val fields: List<LangField>
 ) {
+    val hasConstraints: Boolean = fields.any { it.maximum != null || it.minimum != null }
     val enums: List<LangEnum> = fields.mapNotNull { it.enum }
     val simpleClassName = qualifier.substringAfterLast(".")
     val packageName = qualifier.substringBeforeLast(".")

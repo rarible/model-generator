@@ -17,6 +17,8 @@ class OpenApiField(
     val fullName = "${owner.name}:$name"
     val enumValues: List<String> = fieldSchema.enums.filterNotNull().map { it.toString() }
     val defaultValue = fieldSchema.default
+    val minimum: Number? = fieldSchema.minimum
+    val maximum: Number? = fieldSchema.maximum
 
     init {
         // Case when reference is OneOf

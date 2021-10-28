@@ -6,6 +6,8 @@ data class LangField(
     val enum: LangEnum?,
     val required: Boolean,
     val defaultValue: Any?,
+    val minimum: Number?,
+    val maximum: Number?,
     var overriden: Boolean = false,
     var abstract: Boolean = false
 )

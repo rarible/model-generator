@@ -169,11 +169,13 @@ class OpenApiTypeMapper(
         }
 
         val result = ComponentField(
-            field.name,
-            fieldTypeDefinition,
-            fieldGenericTypes,
-            fieldEnumValues,
-            field.defaultValue
+            name = field.name,
+            type = fieldTypeDefinition,
+            genericTypes = fieldGenericTypes,
+            enumValues = fieldEnumValues,
+            defaultValue = field.defaultValue,
+            minimum = field.minimum,
+            maximum = field.maximum
         )
 
         log.debug("Field read: $result")

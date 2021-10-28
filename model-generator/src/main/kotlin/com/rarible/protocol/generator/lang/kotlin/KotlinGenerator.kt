@@ -71,6 +71,7 @@ class KotlinGenerator(
         model["package"] = classData.packageName
         model["imports"] = classData.imports
         model["fields"] = classData.fields
+        model["hasConstraints"] = classData.hasConstraints
         return model
     }
 

@@ -7,7 +7,9 @@ data class ComponentField(
     val type: AbstractComponent,
     val genericTypes: List<AbstractComponent>,
     val enumValues: List<String>,
-    val defaultValue: Any?
+    val defaultValue: Any?,
+    val minimum: Number?,
+    val maximum: Number?
 ) {
     override fun toString(): String {
         var text = "$name -> ${type.name}(${type.qualifier})"
