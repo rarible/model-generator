@@ -10,8 +10,8 @@ package ${package}
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 <#if hasConstraints>
-    import javax.validation.constraints.Min
-    import javax.validation.constraints.Max
+import javax.validation.constraints.Min
+import javax.validation.constraints.Max
 </#if><#rt>
 
 <#list imports![] as import>

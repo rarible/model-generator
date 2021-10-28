@@ -1,0 +1,104 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+components:
+  schemas:
+    ConstraintSinglePrimitivesItem:
+      required:
+        - id
+        - name
+        - index
+        - count
+        - type
+        - modes
+      type: object
+      properties:
+        id:
+          minimum: 1
+          maximum: 111
+          type: integer
+          format: int64
+          default: 12
+        name:
+          type: string
+          default: "noname"
+        index:
+          maximum: 100
+          type: integer
+        count:
+          minimum: 1
+          type: integer
+          format: int32
+        date:
+          type: string
+          format: date-time
+        strings:
+          type: array
+          default:
+            - string1
+            - string2
+          items:
+            type: string
+        longs:
+          type: array
+          default: [ ]
+          items:
+            type: integer
+            format: int64
+        map:
+          type: object
+          additionalProperties:
+            type: string
+            format: date-time
+        type:
+          type: string
+          enum:
+            - ERC721
+            - ERC1155
+        dataType:
+          type: string
+          enum:
+            - LEGACY
+            - MODERN
+          default: LEGACY
+        features:
+          type: array
+          default:
+            - BURN
+            - MINT
+          items:
+            type: string
+            enum:
+              - APPROVE
+              - BURN
+              - MINT
+        modes:
+          type: array
+          items:
+            type: string
+            enum:
+              - ONE
+              - TWO
+              - THREE
+        bigint:
+          type: number
+          format: biginteger
+          default: 12327893642873439824234234234234
+        bigdec:
+          type: number
+          format: bigdecimal
+          default: 1232789364287.3439824234234234234
+        bigdecarray:
+          type: array
+          default:
+            - 1.1
+            - 2.2
+          items:
+            type: number
+            format: bigdecimal

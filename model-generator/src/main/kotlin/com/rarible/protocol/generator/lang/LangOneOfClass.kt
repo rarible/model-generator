@@ -8,4 +8,6 @@ open class LangOneOfClass(
     val subclasses: List<LangClass>,
     val discriminatorField: String,
     val oneOfMapping: Map<String, String>,
-) : LangClass(name, qualifier, imports, listOf(), fields)
+) : LangClass(name, qualifier, imports, listOf(), fields) {
+    override fun hasConstraints(): Boolean = super.hasConstraints() || subclasses.any { it.hasConstraints() }
+}
