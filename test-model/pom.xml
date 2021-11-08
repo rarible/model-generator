@@ -14,6 +14,7 @@
     <packaging>jar</packaging>
 
     <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
         <dir.resources>${basedir}/src/main/resources</dir.resources>
         <dir.generator.resources>${dir.resources}/model-generator</dir.generator.resources>
         <dir.generator.resources.kotlin>${dir.generator.resources}/${generator.kotlin}</dir.generator.resources.kotlin>
