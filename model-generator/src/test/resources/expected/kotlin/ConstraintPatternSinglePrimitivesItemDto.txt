@@ -10,14 +10,11 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 
-data class ConstraintSinglePrimitivesItemDto (
-    @field:Min(1)
-    @field:Max(111)
+data class ConstraintPatternSinglePrimitivesItemDto (
     val id : Long = 12,
+    @field:Pattern(regexp = "^\d{3}-\d{2}-\d{4}$")
     val name : String = "noname",
-    @field:Max(100)
     val index : Int,
-    @field:Min(1)
     val count : Int,
     val date : Instant? = null,
     val strings : List<String>? = listOf("string1", "string2"),

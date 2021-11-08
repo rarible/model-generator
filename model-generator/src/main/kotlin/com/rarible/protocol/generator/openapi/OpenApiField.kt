@@ -19,6 +19,7 @@ class OpenApiField(
     val defaultValue = fieldSchema.default
     val minimum: Number? = fieldSchema.minimum
     val maximum: Number? = fieldSchema.maximum
+    val pattern: String? = fieldSchema.pattern
 
     init {
         // Case when reference is OneOf

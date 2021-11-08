@@ -9,7 +9,8 @@ data class ComponentField(
     val enumValues: List<String>,
     val defaultValue: Any?,
     val minimum: Number?,
-    val maximum: Number?
+    val maximum: Number?,
+    val pattern: String?
 ) {
     override fun toString(): String {
         var text = "$name -> ${type.name}(${type.qualifier})"

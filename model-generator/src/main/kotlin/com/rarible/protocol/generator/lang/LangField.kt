@@ -8,6 +8,7 @@ data class LangField(
     val defaultValue: Any?,
     val minimum: Number?,
     val maximum: Number?,
+    val pattern: String?,
     var overriden: Boolean = false,
     var abstract: Boolean = false
 )

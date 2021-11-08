@@ -175,7 +175,8 @@ class OpenApiTypeMapper(
             enumValues = fieldEnumValues,
             defaultValue = field.defaultValue,
             minimum = field.minimum,
-            maximum = field.maximum
+            maximum = field.maximum,
+            pattern = field.pattern
         )
 
         log.debug("Field read: $result")
