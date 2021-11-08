@@ -3,6 +3,8 @@
         <#lt>   @field:Min(${field.minimum})
     </#if><#if field.maximum?has_content>
         <#lt>   @field:Max(${field.maximum})
+    </#if><#if field.pattern?has_content>
+        <#lt>   @field:Pattern(regexp = "${field.maximum}")
     </#if>
 </#macro>
 package ${package}
@@ -10,8 +12,7 @@ package ${package}
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 <#if hasConstraints>
-import javax.validation.constraints.Min
-import javax.validation.constraints.Max
+import javax.validation.constraints.*
 </#if><#rt>
 
 <#list imports![] as import>

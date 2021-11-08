@@ -105,6 +105,11 @@ internal class KotlinGeneratorTest {
         verifyGeneratedClasses(generateAsStrings("test_constraints_single_primitives.yaml", generator))
     }
 
+    @Test
+    fun `test test constraint pattern single primitives`() {
+        verifyGeneratedClasses(generateAsStrings("test_constraint_pattern_single_primitives.yaml", generator))
+    }
+    
     private fun verifyGeneratedClasses(classes: Map<String, String>) {
         for ((_, text) in classes) {
             logger.info("generated: $text")

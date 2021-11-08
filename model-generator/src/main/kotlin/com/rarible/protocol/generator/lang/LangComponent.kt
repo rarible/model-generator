@@ -47,7 +47,8 @@ abstract class LangComponent(
                 required = isFieldRequired(it.name) || it.required,
                 defaultValue = it.defaultValue,
                 minimum = it.minimum,
-                maximum = it.maximum
+                maximum = it.maximum,
+                pattern = it.pattern
             )
         })
         allFields.addAll(getFields(oneOfEnum))
@@ -162,7 +163,8 @@ abstract class LangComponent(
                     required = this.isFieldRequired(field.name),
                     defaultValue = field.defaultValue,
                     minimum = field.minimum,
-                    maximum = field.maximum
+                    maximum = field.maximum,
+                    pattern = field.pattern
                 )
                 result.add(sanitizeDefaultValue(kotlinField))
             }
