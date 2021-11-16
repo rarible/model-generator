@@ -2,35 +2,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>model-generator-parent</artifactId>
-    <groupId>com.rarible.protocol</groupId>
-    <packaging>pom</packaging>
-    <version>${revision}</version>
-
     <parent>
         <groupId>com.rarible</groupId>
         <artifactId>rarible-parent-pom</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.1.1</version>
     </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>rarible-model-generator</artifactId>
+    <groupId>com.rarible.codegen</groupId>
+    <packaging>pom</packaging>
+    <version>${revision}</version>
 
     <repositories>
         <repository>
-            <id>nexus-maven-public</id>
-            <url>http://nexus.rarible.int/repository/maven-public/</url>
+            <id>nexus-ext-maven-public</id>
+            <name>nexus-ext-maven-public</name>
+            <url>https://repo.rarible.org/repository/maven-public/</url>
         </repository>
     </repositories>
 
     <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>http://nexus-ext.rarible.int/repository/maven-snapshots/</url>
+        </snapshotRepository>
         <repository>
             <id>nexus-releases</id>
-            <url>http://nexus.rarible.int/repository/maven-releases/</url>
+            <url>http://nexus-ext.rarible.int/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 
     <properties>
-        <revision>1.2.7</revision>
-        <nexus.maven.public>http://nexus.rarible.int/repository/maven-public/</nexus.maven.public>
+        <revision>1.4.1</revision>
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -70,12 +74,12 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.rarible.protocol</groupId>
+                <groupId>com.rarible.codegen</groupId>
                 <artifactId>model-generator</artifactId>
                 <version>${version.model.generator}</version>
             </dependency>
             <dependency>
-                <groupId>com.rarible.protocol</groupId>
+                <groupId>com.rarible.codegen</groupId>
                 <artifactId>schema-merger</artifactId>
                 <version>${version.model.generator}</version>
             </dependency>
@@ -196,7 +200,7 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>com.rarible.protocol</groupId>
+                    <groupId>com.rarible.codegen</groupId>
                     <artifactId>model-generator-maven-plugin</artifactId>
                     <version>${version.model.generator}</version>
                     <executions>

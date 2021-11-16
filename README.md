@@ -59,7 +59,7 @@ Provided types are types taken from existing classes - from dependencies or from
 Minimalistic plugin configuration presented below - in such case plugin suggest all necessary resources placed in default folders.
 ```xml
 <plugin>
-    <groupId>com.rarible.protocol</groupId>
+    <groupId>com.rarible.codegen</groupId>
     <artifactId>model-generator-maven-plugin</artifactId>
 
     <executions>
@@ -160,7 +160,7 @@ components:
 In such case you need to extend your plugin configuration:    
 ```xml
 <plugin>
-    <groupId>com.rarible.protocol</groupId>
+    <groupId>com.rarible.codegen</groupId>
     <artifactId>model-generator-maven-plugin</artifactId>
     <configuration>
         
@@ -195,7 +195,7 @@ During merge plugin put all **paths** and **components** into single file. In so
     
 ```xml
 <plugin>
-    <groupId>com.rarible.protocol</groupId>
+    <groupId>com.rarible.codegen</groupId>
     <artifactId>model-generator-maven-plugin</artifactId>
     <configuration>
         <pathProcessor>
