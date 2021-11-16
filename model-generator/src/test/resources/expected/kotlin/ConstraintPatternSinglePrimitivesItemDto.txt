@@ -1,54 +1,11 @@
 package com.rarible.test.kotlin
 
 import javax.validation.constraints.*
-import java.math.BigDecimal
-import java.math.BigInteger
-import java.time.Instant
-import kotlin.Int
 import kotlin.Long
 import kotlin.String
-import kotlin.collections.List
-import kotlin.collections.Map
 
 data class ConstraintPatternSinglePrimitivesItemDto (
     val id : Long = 12,
     @field:Pattern(regexp = "^\d{3}-\d{2}-\d{4}$")
-    val name : String = "noname",
-    val index : Int,
-    val count : Int,
-    val date : Instant? = null,
-    val strings : List<String>? = listOf("string1", "string2"),
-    val longs : List<Long>? = listOf(),
-    val map : Map<String, Instant>? = null,
-    val type : Type,
-    val dataType : DataType? = DataType.LEGACY,
-    val features : List<Features>? = listOf(Features.BURN, Features.MINT),
-    val modes : List<Modes>,
-    val bigint : BigInteger? = BigInteger("12327893642873439824234234234234"),
-    val bigdec : BigDecimal? = BigDecimal("1.232789364287344E12"),
-    val bigdecarray : List<BigDecimal>? = listOf(BigDecimal("1.1"), BigDecimal("2.2"))
-) {
-
-    enum class Type {
-        ERC721,
-        ERC1155
-    }
-
-    enum class DataType {
-        LEGACY,
-        MODERN
-    }
-
-    enum class Features {
-        APPROVE,
-        BURN,
-        MINT
-    }
-
-    enum class Modes {
-        ONE,
-        TWO,
-        THREE
-    }
-
-}
+    val name : String = "noname"
+)
