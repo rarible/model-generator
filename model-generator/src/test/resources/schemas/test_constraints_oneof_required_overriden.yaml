@@ -14,6 +14,8 @@ components:
         id:
           type: string
         size:
+          minimum: 1
+          maximum: 10
           type: string
       oneOf:
         - $ref: '#/components/schemas/RequiredFieldChild1'

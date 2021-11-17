@@ -20,6 +20,8 @@ sealed class ConstraintRequiredFieldRootDto {
 //--------------- RequiredFieldChild1Dto ---------------//
 data class RequiredFieldChild1Dto (
     override val id : String,
+    @field:Min(1)
+    @field:Max(10)
     override val size : String? = null,
     val name : String,
     @field:Min(1)
@@ -30,6 +32,8 @@ data class RequiredFieldChild1Dto (
 //--------------- RequiredFieldChild2Dto ---------------//
 data class RequiredFieldChild2Dto (
     override val id : String,
+    @field:Min(1)
+    @field:Max(10)
     override val size : String,
     val name : String? = null,
     val enabled : Boolean

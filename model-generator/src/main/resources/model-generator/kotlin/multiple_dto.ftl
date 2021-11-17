@@ -1,10 +1,12 @@
 <#macro classFieldConstraints field>
-    <#if field.minimum?has_content>
-        <#lt>   @field:Min(${field.minimum})
-    </#if><#if field.maximum?has_content>
-        <#lt>   @field:Max(${field.maximum})
-    </#if><#if field.pattern?has_content>
-        <#lt>   @field:Pattern(regexp = "${field.maximum}")
+    <#if !field.abstract>
+        <#if field.minimum?has_content>
+            <#lt>    @field:Min(${field.minimum})
+        </#if><#if field.maximum?has_content>
+            <#lt>    @field:Max(${field.maximum})
+        </#if><#if field.pattern?has_content>
+            <#lt>    @field:Pattern(regexp = "${field.maximum}")
+        </#if>
     </#if>
 </#macro>
 package ${package}
