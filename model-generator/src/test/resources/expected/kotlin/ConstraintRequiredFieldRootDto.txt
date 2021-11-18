@@ -1,0 +1,40 @@
+package com.rarible.test.kotlin
+
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import javax.validation.constraints.*
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.String
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes(
+    JsonSubTypes.Type(name = "T1", value = RequiredFieldChild1Dto::class),
+    JsonSubTypes.Type(name = "T2", value = RequiredFieldChild2Dto::class)
+)
+sealed class ConstraintRequiredFieldRootDto {
+    abstract val id : String
+    abstract val size : String?
+}
+
+//--------------- RequiredFieldChild1Dto ---------------//
+data class RequiredFieldChild1Dto (
+    override val id : String,
+    @field:Min(1)
+    @field:Max(10)
+    override val size : String? = null,
+    val name : String,
+    @field:Min(1)
+    @field:Max(10)
+    val count : Int? = null
+) : ConstraintRequiredFieldRootDto()
+
+//--------------- RequiredFieldChild2Dto ---------------//
+data class RequiredFieldChild2Dto (
+    override val id : String,
+    @field:Min(1)
+    @field:Max(10)
+    override val size : String,
+    val name : String? = null,
+    val enabled : Boolean
+) : ConstraintRequiredFieldRootDto()

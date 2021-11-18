@@ -1,0 +1,53 @@
+openapi: 3.0.3
+info:
+servers:
+paths:
+
+components:
+  schemas:
+
+    ConstraintRequiredFieldRoot:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        size:
+          minimum: 1
+          maximum: 10
+          type: string
+      oneOf:
+        - $ref: '#/components/schemas/RequiredFieldChild1'
+        - $ref: '#/components/schemas/RequiredFieldChild2'
+
+    RequiredFieldChild1:
+      type: object
+      required:
+        - name
+      properties:
+        "@type":
+          type: string
+          enum:
+            - T1
+        name:
+          type: string
+        count:
+          minimum: 1
+          maximum: 10
+          type: integer
+
+    RequiredFieldChild2:
+      type: object
+      required:
+        - size
+        - enabled
+      properties:
+        "@type":
+          type: string
+          enum:
+            - T2
+        name:
+          type: string
+        enabled:
+          type: boolean

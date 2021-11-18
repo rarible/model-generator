@@ -95,6 +95,16 @@ internal class KotlinGeneratorTest {
         verifyGeneratedClasses(generateAsStrings("test_oneof_required_overriden.yaml", generator))
     }
 
+    @Test
+    fun `test test constraints oneof required overriden`() {
+        verifyGeneratedClasses(generateAsStrings("test_constraints_oneof_required_overriden.yaml", generator))
+    }
+
+    @Test
+    fun `test test constraints single primitives`() {
+        verifyGeneratedClasses(generateAsStrings("test_constraints_single_primitives.yaml", generator))
+    }
+
     private fun verifyGeneratedClasses(classes: Map<String, String>) {
         for ((_, text) in classes) {
             logger.info("generated: $text")
