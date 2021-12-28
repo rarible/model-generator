@@ -11,7 +11,7 @@ class TsGeneratorFactory(
 ) : AbstractGeneratorFactory() {
 
     private val qualifierGenerator: QualifierGenerator = QualifierGenerator { name, isEnum ->
-        if (!isEnum) name else name + "Enum"
+        name
     }
 
     override fun getGeneratorWithDefaultTypes(

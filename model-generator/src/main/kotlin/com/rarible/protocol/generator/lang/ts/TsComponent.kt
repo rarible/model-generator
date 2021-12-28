@@ -16,7 +16,7 @@ class TsComponent(
 
     override fun createFieldEnum(field: ComponentField): LangEnum {
         return LangEnum(
-            getSimpleClassName(getQualifier()) + field.name.capitalize() + "Enum",
+            getSimpleClassName(getQualifier()) + field.name.capitalize(),
             field.enumValues
         )
     }
