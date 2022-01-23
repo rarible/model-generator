@@ -34,7 +34,7 @@ components:
           type: string
         count:
           minimum: 1
-          maximum: 10
+          maximum: 1000
           type: integer
 
     RequiredFieldChild2:
