@@ -1,9 +1,9 @@
 <#macro classFieldConstraints field>
     <#if !field.abstract>
         <#if field.minimum?has_content>
-            <#lt>    @field:Min(${field.minimum})
+            <#lt>    @field:Min(${field.minimum?c})
         </#if><#if field.maximum?has_content>
-            <#lt>    @field:Max(${field.maximum})
+            <#lt>    @field:Max(${field.maximum?c})
         </#if><#if field.pattern?has_content>
             <#lt>    @field:Pattern(regexp = "${field.maximum}")
         </#if>

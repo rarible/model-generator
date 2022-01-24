@@ -25,7 +25,7 @@ data class RequiredFieldChild1Dto (
     override val size : String? = null,
     val name : String,
     @field:Min(1)
-    @field:Max(10)
+    @field:Max(1000)
     val count : Int? = null
 ) : ConstraintRequiredFieldRootDto()
 
