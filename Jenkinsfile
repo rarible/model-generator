@@ -1,3 +1,3 @@
-@Library('shared-library') _
+@Library('shared-library@v20211102')
 
-buildLibrary('nexus-ext-ci')
+servicePipeline('rarible', 'rarible', 'nexus-ci')
