@@ -1,3 +1,7 @@
-@Library('shared-library@v20211102') _
+@Library('shared-library')
 
-servicePipeline('rarible', 'nexus-ci')
+def pipelineConfig = [
+    "stackName": "rarible"
+]
+
+serviceCI(pipelineConfig)
