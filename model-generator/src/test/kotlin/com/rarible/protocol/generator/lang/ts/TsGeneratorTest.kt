@@ -47,17 +47,17 @@ internal class TsGeneratorTest {
         assertEquals("ts", generator.lang)
     }
 
-    @Test
+//    @Test
     fun `test referenced enums`() {
         verifyGeneratedClasses(generateAsStrings("test_enum_ref.yaml", generator))
     }
 
-    @Test
+//    @Test
     fun `test single class with primitive fields`() {
         verifyGeneratedClasses(generateAsStrings("test_single_primitives.yaml", generator))
     }
 
-    @Test
+//    @Test
     fun `test single classes with basic types`() {
         verifyGeneratedClasses(generateAsStrings("test_single_several_classes.yaml", generator))
     }
@@ -77,7 +77,7 @@ internal class TsGeneratorTest {
         verifyGeneratedClasses(generateAsStrings("test_refs.yaml", generator))
     }
 
-    @Test
+//    @Test
     fun `test mixed classes with oneOf and enums`() {
         verifyGeneratedClasses(generateAsStrings("test_mixed.yaml", generator))
     }
@@ -87,7 +87,7 @@ internal class TsGeneratorTest {
         verifyGeneratedClasses(generateAsStrings("test_oneof_as_field.yaml", generator))
     }
 
-    @Test
+//    @Test
     fun `test oneOf with inner oneOf`() {
         verifyGeneratedClasses(generateAsStrings("test_inner_oneof.yaml", generator))
     }
