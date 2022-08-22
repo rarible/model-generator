@@ -116,7 +116,7 @@ internal class KotlinGeneratorTest {
             for (i in 0..max(expected.size, original.size)) {
                 val expectedLine = if (i < expected.size) expected[i].trim() else ""
                 val originalLine = if (i < original.size) original[i].trim() else ""
-                Assertions.assertEquals(expectedLine, originalLine, "Validation of class '$name' failed at line $i:")
+                assertEquals(expectedLine, originalLine, "Validation of class '$name' failed at line $i:")
             }
         }
     }

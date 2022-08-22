@@ -1,8 +1,9 @@
-# model-generator
+# Model generator
 
-Model generator is an untility for generating DTO classes uses OpenAPI schema as model definition.
+Model generator is a utility for generating DTO classes uses OpenAPI schema as model definition.
 
 ## Description
+
 The purpose of this plugin is to generate model (DTO) classes for various languages (ATM only Kotlin is supported). Sources are generated based on OpenAPI description in .yaml file.
 
 [OpenAPI Specification](https://spec.openapis.org/oas/v3.0.1)
@@ -21,9 +22,10 @@ For sources generation plugin uses next files by default (specified relatively t
 /src/main/resources/model-generator/${lang}/primitives.json
 /src/main/resources/model-generator/${lang}/provided.json
 ```
-All of them are optional, even **openapi.yaml** (for cases when you want to build merged .yaml from external dependencies). If you don't want to use default structure, you can place files wherever you want, but in such case you have to specify thier paths explicitely in plugin conviguration.
+All of them are optional, even **openapi.yaml** (for cases when you want to build merged .yaml from external dependencies). If you don't want to use the default structure, you can place files wherever you want, but in such case you have to specify their paths explicitly in plugin configuration.
 
 ### Type definitions
+
 Each language uses different names for primitive types, such as String or Integer. And all of such types, used in your specification, must be specified in **primitivies.json**. For Kotlin plugin already has next types (you can override any of them in your project):
 ```js
 {
@@ -113,11 +115,13 @@ Full <generator> configuration with default settings:
 ```
     
 ### Dependencies
-You can split your schema into several projects and then build resulting model from set of atrtifacts. For example, there are several modules with OpenAPI specification:
+
+You can split your schema into several projects and then build resulting model from set of artifacts. For example, there are several modules with OpenAPI specification:
+
 1. model-common
 2. service-model   
     
-Lets assume **service-model**  depends from **model-common**. Specification of this module is next:
+Let's assume **service-model** depends on **model-common**. Specification of this module is next:
 ```yaml
 openapi: 3.0.1
 info:
@@ -137,7 +141,8 @@ components:
         name:
           type: string
 ```
-Since **service-model** depends from **model-common** we can use all component definition in **service-model** specification:
+
+Since **service-model** depends on **model-common** we can use all component definition in **service-model** specification:
 ```yaml
 openapi: 3.0.1
 info:
@@ -188,11 +193,12 @@ In such case you need to extend your plugin configuration:
     
 </plugin>            
 ```          
-**NOTE**: all primitive and provided types specified in dependencies will be available for current project, so you don't need to configure same types for different modules, if they uses dependency with such type definitions.
+**NOTE**: all primitive and provided types specified in dependencies will be available for current project, so you don't need to configure same types for different modules, if they use dependency with such type definitions.
     
 ### Paths processing
-During merge plugin put all **paths** and **components** into single file. In some cases it requires to rename API paths in result file. You can do it for all schemas, used by your project individually:
-    
+
+During merge plugin put all **paths** and **components** into single file. In some cases it requires renaming API paths in result file. You can do it for all schemas, used by your project individually:
+
 ```xml
 <plugin>
     <groupId>com.rarible.codegen</groupId>
@@ -221,4 +227,16 @@ During merge plugin put all **paths** and **components** into single file. In so
 </plugin>   
  ```
 
-    
+## Suggestions
+
+You are welcome to [suggest features](https://github.com/rarible/protocol/discussions) and [report bugs found](https://github.com/rarible/protocol/issues)!
+
+## Contributing
+
+The codebase is maintained using the "contributor workflow" where everyone without exception contributes patch proposals using "pull requests" (PRs). This facilitates social contribution, easy testing, and peer review.
+
+See more information on [CONTRIBUTING](https://github.com/rarible/protocol/blob/main/CONTRIBUTING.md).
+
+## License
+
+Model generator is available under [MIT License](LICENSE.md).
