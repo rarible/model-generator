@@ -34,7 +34,7 @@
     </distributionManagement>
 
     <properties>
-        <revision>1.4.3.1.ts</revision>
+        <revision>1.6.0.ts</revision>
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
