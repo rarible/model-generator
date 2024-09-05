@@ -1,6 +1,7 @@
 package com.rarible.protocol.generator.component
 
 import org.apache.commons.lang3.StringUtils
+import java.util.Locale
 
 data class ComponentField(
     val name: String,
@@ -21,5 +22,9 @@ data class ComponentField(
             text = "$text[${StringUtils.join(enumValues, ",")}]"
         }
         return text
+    }
+
+    val nameCapitalized: String = name.replaceFirstChar {
+        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
     }
 }

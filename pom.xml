@@ -34,12 +34,12 @@
     </distributionManagement>
 
     <properties>
-        <revision>1.6.1</revision>
+        <revision>1.7.0</revision>
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
-        <kotlin.version>1.6.21</kotlin.version>
+        <kotlin.version>1.7.20</kotlin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <generator.kotlin>kotlin</generator.kotlin>

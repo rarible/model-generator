@@ -1,7 +1,6 @@
 package com.rarible.protocol.merger.openapi
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.rarible.protocol.merger.SchemaMerger
@@ -36,29 +35,9 @@ class OpenapiSchemaMerger(
             }
             mergeOrSet(main, dep, "paths")
             mergeOrSet(main, dep, "info")
-            mergeTags(main, dep)
         }
 
         YAMLMapper().writeValue(dest, main)
-    }
-
-    private fun mergeTags(main: JsonNode, dep: JsonNode) {
-        main as ObjectNode
-
-        val mainField = main.get("tags")
-        val extField = dep.get("tags")
-        if (extField == null || !extField.isArray) {
-            return
-        }
-        val result = main.arrayNode()
-        val mainIterable = mainField ?: emptyList()
-        val extMap = extField.associateBy { it.get("name").textValue() }.toMutableMap()
-        mainIterable.forEach {
-            result.add(it)
-            extMap.remove(it.get("name").textValue())
-        }
-        result.addAll(extMap.values)
-        main.set<ArrayNode>("tags", result)
     }
 
     private fun mergeOrSet(main: JsonNode, dep: JsonNode, fieldName: String) {

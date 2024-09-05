@@ -60,11 +60,11 @@ public class ModelGeneratorTask {
 
         modelDependencyManager = new ModelDependencyManager(
                 log,
-                lang,
+                generatorConfig,
                 schemaDependencyManager
         );
 
-        generatorFactory = GeneratorRegistry.getGeneratorFactory(lang, generatorConfig.getPackageName());
+        generatorFactory = GeneratorRegistry.getGeneratorFactory(generatorConfig);
     }
 
     private void checkOutputDir() {

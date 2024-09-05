@@ -7,11 +7,12 @@ import com.rarible.protocol.generator.lang.AbstractGeneratorFactory
 import com.rarible.protocol.generator.type.ProvidedTypeReader
 
 class TsGeneratorFactory(
-    private val packageName: String
+    private val packageName: String,
+    private val enumSuffix: String,
 ) : AbstractGeneratorFactory() {
 
     private val qualifierGenerator: QualifierGenerator = QualifierGenerator { name, isEnum ->
-        if (!isEnum) name else name + "Enum"
+        if (!isEnum) name else name + enumSuffix
     }
 
     override fun getGeneratorWithDefaultTypes(
@@ -25,7 +26,8 @@ class TsGeneratorFactory(
             primitiveTypeFileReader,
             providedTypeFileReader,
             typeMapperFactory,
-            getQualifierGenerator()
+            getQualifierGenerator(),
+            TsGeneratorConfig(enumSuffix = enumSuffix),
         )
     }
 

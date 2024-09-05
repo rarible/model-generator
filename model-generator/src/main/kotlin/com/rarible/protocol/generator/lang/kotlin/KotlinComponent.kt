@@ -16,7 +16,7 @@ class KotlinComponent(
 ) {
     override fun createFieldEnum(field: ComponentField): LangEnum {
         return LangEnum(
-            field.name.capitalize(),
+            field.nameCapitalized,
             field.enumValues
         )
     }

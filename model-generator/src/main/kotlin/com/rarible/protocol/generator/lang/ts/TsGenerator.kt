@@ -18,7 +18,8 @@ class TsGenerator(
     primitiveTypesFileReader: ProvidedTypeReader,
     providedTypesFileReader: ProvidedTypeReader,
     typeMapperFactory: TypeMapperFactory,
-    qualifierGenerator: QualifierGenerator
+    qualifierGenerator: QualifierGenerator,
+    private val tsGeneratorConfig: TsGeneratorConfig,
 ) : AbstractGenerator(
     lang,
     packageName,
@@ -39,9 +40,9 @@ class TsGenerator(
         val leafDefinitions: HashSet<GeneratedComponent> = HashSet()
 
         for (rootDefinition in rootDefinitions) {
-            val kotlinComponent = TsComponent(null, rootDefinition)
-            if (kotlinComponent.isOneOf()) {
-                val leafs = kotlinComponent.getAllOneOfComponents()
+            val tsComponent = TsComponent(null, rootDefinition, tsGeneratorConfig)
+            if (tsComponent.isOneOf()) {
+                val leafs = tsComponent.getAllOneOfComponents()
                 leafs.forEach {
                     leafDefinitions.add(it.definition)
                     if (it.parent != null) {
@@ -54,15 +55,15 @@ class TsGenerator(
         rootDefinitions.removeAll(leafDefinitions)
 
         for (rootDefinition in rootDefinitions) {
-            val langComponent = TsComponent(null, rootDefinition)
+            val langComponent = TsComponent(null, rootDefinition, tsGeneratorConfig)
             if (langComponent.isOneOf()) {
-                val kotlinClass = langComponent.getLangOneOfClass()
-                val text = generate(MULTIPLE_TEMPLATE, kotlinClass)
-                writer.write(kotlinClass, text, outputFolder)
+                val tsClass = langComponent.getLangOneOfClass()
+                val text = generate(MULTIPLE_TEMPLATE, tsClass)
+                writer.write(tsClass, text, outputFolder)
             } else {
-                val kotlinClass = langComponent.getLangSingleClass()
-                val text = generate(SINGLE_TEMPLATE, kotlinClass)
-                writer.write(kotlinClass, text, outputFolder)
+                val tsClass = langComponent.getLangSingleClass()
+                val text = generate(SINGLE_TEMPLATE, tsClass)
+                writer.write(tsClass, text, outputFolder)
             }
         }
 
