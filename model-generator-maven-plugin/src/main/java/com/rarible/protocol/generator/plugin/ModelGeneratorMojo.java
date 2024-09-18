@@ -23,12 +23,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -162,7 +162,7 @@ public class ModelGeneratorMojo extends AbstractMojo {
         }
     }
 
-    private void mergeSchemas() throws MojoExecutionException, IOException {
+    private void mergeSchemas() throws IOException {
 
         schemaDependencyManager = new SchemaDependencyManager(log, dependencies, typeMapperSettings);
 
@@ -181,12 +181,12 @@ public class ModelGeneratorMojo extends AbstractMojo {
 
         String schemaText = "";
         if (schemaInputFile.exists()) {
-            schemaText = IOUtils.toString(new FileInputStream(schemaInputFile), StandardCharsets.UTF_8);
+            schemaText = IOUtils.toString(Files.newInputStream(schemaInputFile.toPath()), StandardCharsets.UTF_8);
             schemaText = schemaProcessor.process(schemaText);
         }
 
         SchemaMerger schemaMerger = typeMapperSettings.getSchemaMerger();
         log.debug("Using merger: " + schemaMerger.getClass().getName());
-        schemaMerger.mergeSchemas(schemaText, depSchemaTexts, schemaOutputFile);
+        schemaMerger.mergeSchemas(schemaText, depSchemaTexts, schemaOutputFile, schema.getMergeTags());
     }
 }
