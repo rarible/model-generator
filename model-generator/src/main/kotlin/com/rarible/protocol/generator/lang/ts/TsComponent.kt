@@ -8,7 +8,8 @@ import com.rarible.protocol.generator.lang.LangField
 
 class TsComponent(
     parent: LangComponent?,
-    definition: GeneratedComponent
+    definition: GeneratedComponent,
+    private val tsGeneratorConfig: TsGeneratorConfig,
 ) : LangComponent(
     parent,
     definition
@@ -16,7 +17,7 @@ class TsComponent(
 
     override fun createFieldEnum(field: ComponentField): LangEnum {
         return LangEnum(
-            getSimpleClassName(getQualifier()) + field.name.capitalize() + "Enum",
+            getSimpleClassName(getQualifier()) + field.nameCapitalized + tsGeneratorConfig.enumSuffix,
             field.enumValues
         )
     }
@@ -27,7 +28,7 @@ class TsComponent(
     }
 
     override fun fromComponent(parent: LangComponent, definition: GeneratedComponent): LangComponent {
-        return TsComponent(parent, definition)
+        return TsComponent(parent, definition, tsGeneratorConfig)
     }
 
     override fun sanitizeDefaultValue(field: LangField): LangField {

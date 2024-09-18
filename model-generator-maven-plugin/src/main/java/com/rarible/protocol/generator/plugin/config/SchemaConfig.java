@@ -1,10 +1,14 @@
 package com.rarible.protocol.generator.plugin.config;
 
+import org.apache.maven.plugins.annotations.Parameter;
+
 public class SchemaConfig {
 
     private String type;
     private String inputFile;
     private String outputFile;
+    @Parameter(defaultValue = "false")
+    private boolean mergeTags;
 
     public String getType() {
         return type;
@@ -32,5 +36,13 @@ public class SchemaConfig {
 
     public void setOutputFile(String outputFile) {
         this.outputFile = outputFile;
+    }
+
+    public Boolean getMergeTags() {
+        return mergeTags;
+    }
+
+    public void setMergeTags(Boolean mergeTags) {
+        this.mergeTags = mergeTags;
     }
 }

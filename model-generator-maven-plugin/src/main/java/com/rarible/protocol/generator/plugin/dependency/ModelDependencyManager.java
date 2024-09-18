@@ -2,6 +2,7 @@ package com.rarible.protocol.generator.plugin.dependency;
 
 import com.rarible.protocol.generator.GeneratorFactory;
 import com.rarible.protocol.generator.plugin.config.DependencyConfig;
+import com.rarible.protocol.generator.plugin.config.GeneratorConfig;
 import com.rarible.protocol.generator.plugin.lang.GeneratorRegistry;
 import com.rarible.protocol.generator.plugin.mapper.TypeMapperSettings;
 import com.rarible.protocol.generator.type.ProvidedTypeConstantReader;
@@ -17,7 +18,7 @@ public class ModelDependencyManager {
 
     private final Log log;
 
-    private final String lang;
+    private final GeneratorConfig generatorConfig;
     private final List<DependencyConfig> dependencies;
     private final TypeMapperSettings typeMapperSettings;
     private final SchemaDependencyManager schemaDependencyManager;
@@ -28,11 +29,11 @@ public class ModelDependencyManager {
     private List<ProvidedTypeReader> providedTypeReaders = new ArrayList<>();
 
     public ModelDependencyManager(Log log,
-                                  String lang,
+                                  GeneratorConfig generatorConfig,
                                   SchemaDependencyManager schemaDependencyManager
     ) throws MojoExecutionException, IOException {
         this.log = log;
-        this.lang = lang;
+        this.generatorConfig = generatorConfig;
         this.dependencies = schemaDependencyManager.getDependencies();
         this.typeMapperSettings = schemaDependencyManager.getTypeMapperSettings();
         this.schemaDependencyManager = schemaDependencyManager;
@@ -57,10 +58,7 @@ public class ModelDependencyManager {
         List<ModelDependencyProvider> dependencyProviders = new ArrayList<>();
         for (DependencyConfig dependencyConfig : dependencies) {
             log.info("Reading schema from jar: " + dependencyConfig.getName());
-            GeneratorFactory dependencyGeneratorFactory = GeneratorRegistry.getGeneratorFactory(
-                    lang,
-                    dependencyConfig.getPackageName()
-            );
+            GeneratorFactory dependencyGeneratorFactory = GeneratorRegistry.getGeneratorFactory(generatorConfig);
 
             ModelDependencyProvider dependencyProvider = new ModelDependencyProvider(
                     log,

@@ -129,7 +129,8 @@ internal class TsGeneratorTest {
 
     private fun createDefaultGenerator(): TsGenerator {
         val factory = TsGeneratorFactory(
-            "com.rarible.test.ts"
+            "com.rarible.test.ts",
+            enumSuffix = "Enum",
         )
 
         return factory.getGenerator(primitiveReader, providedReader, OpenApiTypeMapperFactory()) as TsGenerator

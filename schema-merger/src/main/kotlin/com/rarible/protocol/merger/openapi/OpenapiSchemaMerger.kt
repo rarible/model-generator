@@ -13,7 +13,12 @@ import java.io.File
 class OpenapiSchemaMerger(
 ) : SchemaMerger {
 
-    override fun mergeSchemas(originalText: String, dependenciesTexts: List<String>, dest: File) {
+    override fun mergeSchemas(
+        originalText: String,
+        dependenciesTexts: MutableList<String>,
+        dest: File,
+        mergeTags: Boolean
+    ) {
         val loader = JsonLoader()
         val main: ObjectNode = if (StringUtils.isBlank(originalText)) {
             loader.load(javaClass.getResource("/openapi.yaml")) as ObjectNode
@@ -36,7 +41,9 @@ class OpenapiSchemaMerger(
             }
             mergeOrSet(main, dep, "paths")
             mergeOrSet(main, dep, "info")
-            mergeTags(main, dep)
+            if (mergeTags) {
+                mergeTags(main, dep)
+            }
         }
 
         YAMLMapper().writeValue(dest, main)
@@ -68,13 +75,13 @@ class OpenapiSchemaMerger(
             return
         }
         if (mainField != null && mainField.isObject) {
-            val main = mainField as ObjectNode
-            val ext = extField as ObjectNode
+            val mainValue = mainField as ObjectNode
+            val extValue = extField as ObjectNode
 
-            val iter = ext.fields()
+            val iter = extValue.fields()
             while (iter.hasNext()) {
                 val (name, depField) = iter.next()
-                main.set<JsonNode>(name, depField)
+                mainValue.set<JsonNode>(name, depField)
             }
         } else {
             (main as ObjectNode).set<JsonNode>(fieldName, extField)

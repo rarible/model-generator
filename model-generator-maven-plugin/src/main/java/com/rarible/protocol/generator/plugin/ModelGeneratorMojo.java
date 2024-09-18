@@ -23,12 +23,11 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -99,12 +98,14 @@ public class ModelGeneratorMojo extends AbstractMojo {
         try {
             field = project.getClass().getDeclaredField("resolvedArtifacts");
             field.setAccessible(true);
-            Set<Artifact> result = (Set<Artifact>) field.get(project);
-            return result;
+            //noinspection unchecked
+            return (Set<Artifact>) field.get(project);
         } catch (ReflectiveOperationException e) {
             throw new MojoExecutionException(e.getMessage(), e);
         } finally {
-            field.setAccessible(false);
+            if (field != null) {
+                field.setAccessible(false);
+            }
         }
     }
 
@@ -134,7 +135,7 @@ public class ModelGeneratorMojo extends AbstractMojo {
         try {
             File tempSchema = File.createTempFile("openapi", "yaml");
             tempSchema.deleteOnExit();
-            IOUtils.copy(new URL(url).openStream(), new FileOutputStream(tempSchema));
+            IOUtils.copy(new URL(url).openStream(), Files.newOutputStream(tempSchema.toPath()));
             return tempSchema;
         } catch (IOException e) {
             throw new MojoExecutionException("Unable to download openapi.yaml from url: " + url, e);
@@ -162,7 +163,7 @@ public class ModelGeneratorMojo extends AbstractMojo {
         }
     }
 
-    private void mergeSchemas() throws MojoExecutionException, IOException {
+    private void mergeSchemas() throws IOException {
 
         schemaDependencyManager = new SchemaDependencyManager(log, dependencies, typeMapperSettings);
 
@@ -181,12 +182,12 @@ public class ModelGeneratorMojo extends AbstractMojo {
 
         String schemaText = "";
         if (schemaInputFile.exists()) {
-            schemaText = IOUtils.toString(new FileInputStream(schemaInputFile), StandardCharsets.UTF_8);
+            schemaText = IOUtils.toString(Files.newInputStream(schemaInputFile.toPath()), StandardCharsets.UTF_8);
             schemaText = schemaProcessor.process(schemaText);
         }
 
         SchemaMerger schemaMerger = typeMapperSettings.getSchemaMerger();
         log.debug("Using merger: " + schemaMerger.getClass().getName());
-        schemaMerger.mergeSchemas(schemaText, depSchemaTexts, schemaOutputFile);
+        schemaMerger.mergeSchemas(schemaText, depSchemaTexts, schemaOutputFile, schema.getMergeTags());
     }
 }

@@ -14,6 +14,8 @@ public class GeneratorConfig {
     private String providedTypesFile;
     @Parameter
     private String modelOutputDirectory;
+    @Parameter
+    private String tsEnumSuffix = "";
 
     public String getLang() {
         return lang;
@@ -53,5 +55,13 @@ public class GeneratorConfig {
 
     public void setModelOutputDirectory(String modelOutputDirectory) {
         this.modelOutputDirectory = modelOutputDirectory;
+    }
+
+    public String getTsEnumSuffix() {
+        return tsEnumSuffix;
+    }
+
+    public void setTsEnumSuffix(String tsEnumSuffix) {
+        this.tsEnumSuffix = tsEnumSuffix;
     }
 }
