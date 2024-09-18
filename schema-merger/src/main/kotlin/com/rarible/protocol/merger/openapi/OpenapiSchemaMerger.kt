@@ -75,13 +75,13 @@ class OpenapiSchemaMerger(
             return
         }
         if (mainField != null && mainField.isObject) {
-            val main = mainField as ObjectNode
-            val ext = extField as ObjectNode
+            val mainValue = mainField as ObjectNode
+            val extValue = extField as ObjectNode
 
-            val iter = ext.fields()
+            val iter = extValue.fields()
             while (iter.hasNext()) {
                 val (name, depField) = iter.next()
-                main.set<JsonNode>(name, depField)
+                mainValue.set<JsonNode>(name, depField)
             }
         } else {
             (main as ObjectNode).set<JsonNode>(fieldName, extField)
